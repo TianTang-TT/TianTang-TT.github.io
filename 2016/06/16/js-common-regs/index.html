@@ -6,17 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
-  <title>Tag: event | 轻言</title>
+  <title>js常用正则校验 | 轻言</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="柳轻侯的博客，web，前端开发，nodejs， javascript ，css">
-<meta property="og:type" content="website">
-<meta property="og:title" content="轻言">
-<meta property="og:url" content="http://tiantang-tt.github.io/tags/event/index.html">
+  <meta name="description" content="1.前言    这篇文章主要收集整理了常用的javascript的正则验证表达式，一部分为我工作中遇到的需要校验的规则，还有一些是我遇到的比较经典的js正则表达式，希望能对你有所帮助，若有疑问，请联系我。（持续更新中）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js常用正则校验">
+<meta property="og:url" content="http://tiantang-tt.github.io/2016/06/16/js-common-regs/index.html">
 <meta property="og:site_name" content="轻言">
-<meta property="og:description" content="柳轻侯的博客，web，前端开发，nodejs， javascript ，css">
+<meta property="og:description" content="1.前言    这篇文章主要收集整理了常用的javascript的正则验证表达式，一部分为我工作中遇到的需要校验的规则，还有一些是我遇到的比较经典的js正则表达式，希望能对你有所帮助，若有疑问，请联系我。（持续更新中）">
+<meta property="og:updated_time" content="2016-10-10T06:37:23.246Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="轻言">
-<meta name="twitter:description" content="柳轻侯的博客，web，前端开发，nodejs， javascript ，css">
+<meta name="twitter:title" content="js常用正则校验">
+<meta name="twitter:description" content="1.前言    这篇文章主要收集整理了常用的javascript的正则验证表达式，一部分为我工作中遇到的需要校验的规则，还有一些是我遇到的比较经典的js正则表达式，希望能对你有所帮助，若有疑问，请联系我。（持续更新中）">
   
     <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
   
@@ -144,59 +145,120 @@
 </nav>
 
       <div class="body-wrap">
+        <article id="post-js-common-regs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
         
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/10/06/event-sequence/" class="archive-article-date">
-  	<time datetime="2016-10-06T03:51:50.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/06/event-sequence/">js事件顺序执行</a>
+    <h1 class="article-title" itemprop="name">
+      js常用正则校验
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    这篇文章主要收集整理了常用的javascript的正则验证表达式，一部分为我工作中遇到的需要校验的规则，还有一些是我遇到的比较经典的js正则表达式，希望能对你有所帮助，若有疑问，请联系我。（持续更新中）<br></p>
+
+<a id="more"></a>
+<h3 id="2-常用js正则表达式"><a href="#2-常用js正则表达式" class="headerlink" title="2.常用js正则表达式"></a>2.常用js正则表达式</h3><figure class="highlight"><table><tr><td class="code"><pre><div class="line"></div><div class="line">// 大于等于1的数(包含小数)</div><div class="line">/^[1-9]\d*(\.\d+)?$/</div><div class="line"></div><div class="line">// 大于1的数(包含小数)</div><div class="line">/^(?!1+$)(?!1\.0+$)[1-9]\d*(\.\d+)?$/</div><div class="line"></div><div class="line">// 只能输入数字，字母，特殊字符，且三者必须全都包含，8位以上</div><div class="line">/^(?!^\d+$)(?![^a-zA-Z]+$)(?![\da-zA-Z]+$).&#123;8,&#125;$/</div><div class="line"></div><div class="line">// trim方法，去除white space,BOM，换行符</div><div class="line">/[\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF]+/g</div><div class="line"></div><div class="line">// 二代身份证是18位，一代身份证是15位</div><div class="line">/^(\d&#123;15&#125;|\d&#123;14&#125;x|\d&#123;18&#125;|\d&#123;17&#125;x)$/i</div><div class="line"></div><div class="line">// 手机号码验证</div><div class="line">/^(13[0-9]|14[5|7]|15[0-9]|18[0-9])\d&#123;8&#125;$/</div><div class="line"></div><div class="line">//邮箱格式校验</div><div class="line">/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/</div><div class="line"></div><div class="line">// 邮编共6位，第一位不为0</div><div class="line">/^[1-9][0-9]&#123;5&#125;$/</div><div class="line"></div><div class="line">// ip校验</div><div class="line">/^((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.)&#123;3&#125;(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))$/</div><div class="line"></div><div class="line">// 是否包含中文</div><div class="line">/[\u4E00-\u9FA5]+/g</div><div class="line"></div><div class="line">// 检测月份是否合法</div><div class="line">/^(\d&#123;4&#125;)-(0[1-9]|1[012])$/</div><div class="line"></div><div class="line">// 检测日期是否合法</div><div class="line">/^(\d&#123;4&#125;)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/</div><div class="line"></div><div class="line">// 检测带时间日期是否合法</div><div class="line">/^(\d&#123;4&#125;)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\s(0\d&#123;1&#125;|1\d&#123;1&#125;|2[0-3]):[0-5]\d&#123;1&#125;:([0-5]\d&#123;1&#125;)$/</div></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/06/16/js-common-regs/" class="archive-article-date">
+  	<time datetime="2016-06-16T11:20:27.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-06-16</time>
+</a>
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/event/">event</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RegExp/">RegExp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/正则/">正则</a></li></ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 	<i class="icon-price-tags"></i>
 	<a class="article-category-link" href="/categories/javascript/">javascript</a>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
-    
+  
+<nav id="article-nav">
+  
+    <a href="/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          HTMLCollection和NodeList以及NamedNodeMap之间的关系
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/08/FE-guide/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">前端开发规范</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="js-common-regs" data-title="js常用正则校验" data-url="http://tiantang-tt.github.io/2016/06/16/js-common-regs/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 
       </div>
@@ -219,9 +281,9 @@
 		mathjax: false,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",

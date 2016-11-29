@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
+  <title>js隐式类型转化例子分析 | 轻言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.前言    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js隐式类型转化例子分析">
+<meta property="og:url" content="http://tiantang-tt.github.io/2016/06/29/js-type-transform/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1.前言    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+<meta property="og:updated_time" content="2016-10-06T06:28:07.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js隐式类型转化例子分析">
+<meta name="twitter:description" content="1.前言    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+  
+    <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="null" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">柳轻侯</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">— 黄金白璧买歌笑</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/随笔">随笔</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">友链</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="3" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="#" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="#" title="rss">rss</a>
+		        
+					<a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">柳轻侯</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="null" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">柳轻侯</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">— 黄金白璧买歌笑</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-js-type-transform" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      js隐式类型转化例子分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]]<em>[~+[]]+~~!+[]]+({}+[])[[~!+[]</em>~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。<br></p>
+
+<a id="more"></a>
+<hr>
+<h3 id="2-思路"><a href="#2-思路" class="headerlink" title="2.思路"></a>2.思路</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="built_in">eval</span>(<span class="string">'(!(~+[])+&#123;&#125;)[--[~+""][+[]]*[~+[]]+~~!+[]]+(&#123;&#125;+[])[[~!+[]*~+[]]]'</span>)   <span class="comment">//'sb'</span></div></pre></td></tr></table></figure>
+<p><br>    乍一看毫无头绪，这段代码中没有任何英文，也没有数字，那么字符串’sb’是怎么出现的？仔细分析，代码中多次出现了’!’,’+’，’!’的作用是取反，返回一个布尔值，那么可能会出现’false’或者’true’，那么我们要的’sb’中的’s’已经出现，而’+’有一个重要的作用，那就是等同于Number()函数的效果，将值转为number类型，并且有拼接字符串的作用，如果’+’的一边是字符串而另一边不是，那么将会被隐式的转换为字符串类型并进行拼接。到这里，思路应该很清晰了，某些被转换后的值会出现英文字母和数字，然后再结合’[]’那么就可以取到相应的字母了。下面来具体分析原理。<br></p>
+
+<h3 id="3-具体分析"><a href="#3-具体分析" class="headerlink" title="3.具体分析"></a>3.具体分析</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">(!(~+[])+&#123;&#125;)[--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]]+(&#123;&#125;+[])[[~!+[]*~+[]]]</div><div class="line"></div><div class="line"><span class="comment">//将上面代码进行拆分，可得到如下部分</span></div><div class="line">(!(~+[])+&#123;&#125;)  ，[--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]] ， (&#123;&#125;+[]) ， [[~!+[]*~+[]]]</div><div class="line"><span class="comment">//分别将上述四部分用$1,$2,$3,$4来表示，即求$1和$2的运算结果 + $3和$4的运算结果。</span></div><div class="line"><span class="keyword">var</span> $<span class="number">1</span>, $<span class="number">2</span>, $<span class="number">3</span>, $<span class="number">4</span>;</div><div class="line">	$<span class="number">1</span> = (!(~+[])+&#123;&#125;);</div><div class="line">	$<span class="number">2</span> = [--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]];</div><div class="line">	$<span class="number">3</span> = (&#123;&#125;+[]);</div><div class="line">	$<span class="number">4</span> = [[~!+[]*~+[]]];</div><div class="line"></div><div class="line"><span class="comment">//分析$1 = (!(~+[])+&#123;&#125;);运算顺序为先计算(~+[]),然后对其取反，再与&#123;&#125;相加</span></div><div class="line">(~+[])           <span class="comment">//返回-1， +[]此处的加号相当Number函数，所以+[]返回0，再对其进行按位非操作，即取相反数再减去1</span></div><div class="line">!(~+[])          <span class="comment">//返回false</span></div><div class="line"><span class="literal">false</span> + &#123;&#125;       <span class="comment">//返回'false[object Object]', 一元加操作符会将布尔值和对象通过toString()方法分别</span></div><div class="line">                 <span class="comment">//转为'false'和'[object Object]'</span></div><div class="line"><span class="comment">//所以$1的运算结果为'false[object Object]'</span></div><div class="line"></div><div class="line"><span class="comment">//分析$2 = [--[~+""][+[]]*[~+[]]+~~!+[]]; 先计算--[~+""][+[]]，然后计算[~+[]]，两相作乘，然后与~~!+[]的结果相加</span></div><div class="line">--[~+<span class="string">""</span>][+[]]          <span class="comment">//返回-2，[~+""]返回[-1],[+[]]返回[0]，即为--[-1][0]</span></div><div class="line">                       <span class="comment">//由于方括号[]优先级高于--， 所以返回-2</span></div><div class="line">[~+[]]                 <span class="comment">//返回[-1]</span></div><div class="line">--[~+<span class="string">""</span>][+[]]*[~+[]]   <span class="comment">//返回2，一元乘操作符会将非数字转为数字，[-1]被转为-1,即为(-2)*(-1) </span></div><div class="line">~~!+[]                 <span class="comment">//返回1，~操作符会将布尔值转为number</span></div><div class="line">[<span class="number">2</span> + <span class="number">1</span>]</div><div class="line"><span class="comment">//所以$2的运算结果为[3]</span></div><div class="line"></div><div class="line"><span class="comment">//分析$3 = (&#123;&#125;+[]),一元加操作符会将对象通过toString()分别 转为'[object Object]' 和 ''</span></div><div class="line">(&#123;&#125;+[])          <span class="comment">//返回'[object Object]'</span></div><div class="line"><span class="comment">//所以$3的运算结果为'[object Object]'</span></div><div class="line"></div><div class="line"><span class="comment">//分析$4 = [[~!+[]*~+[]]];先计算~!+[]，后计算~+[]，然后结果相乘</span></div><div class="line">~!+[]           <span class="comment">//返回-2</span></div><div class="line">~+[]            <span class="comment">//返回-1</span></div><div class="line">[[~!+[]*~+[]]]  <span class="comment">//返回[[2]]</span></div><div class="line"><span class="comment">//所以$4的运算结果为[[2]]</span></div><div class="line"></div><div class="line"><span class="comment">//因此整个表达式可以简化为</span></div><div class="line"><span class="string">'false[object Object]'</span>[<span class="number">3</span>] + <span class="string">'[object Object]'</span>[[<span class="number">2</span>]]</div><div class="line"><span class="comment">//返回'sb'</span></div><div class="line"><span class="comment">//此处要注意'string'[[2]]这种写法，string后面跟方括号，里面需要一个number类型的数值n来返回'string'</span></div><div class="line"><span class="comment">//的第n位上的字符，因此方括号里面的值会被通过Number()方法转为数值类型，[2]被转为2</span></div></pre></td></tr></table></figure>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h3><p><br>    1.主要考察js中隐式类型转换,一元+和~操作符将值转为number类型的值，相当于Number方法<br>    2.当+操作符两边类型不同时，若有一边为字符串，则将另一边也转为字符串，然后执行拼接。<br>    3.将对象转为基本类型值时，先调用valueOf方法，若还是对象，则调用toString方法。<br>    4.数组的valueOf方法返回其自身。<br></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/06/29/js-type-transform/" class="archive-article-date">
+  	<time datetime="2016-06-29T05:45:57.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-06-29</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/javascript/">javascript</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/09/22/pretty-js-pieces/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          短小精悍的js代码段
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HTMLCollection和NodeList以及NamedNodeMap之间的关系</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="js-type-transform" data-title="js隐式类型转化例子分析" data-url="http://tiantang-tt.github.io/2016/06/29/js-type-transform/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 柳轻侯
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+      <li data-hook="tools-section-friends"><span class="text">友链</span><i class="icon-link"></i></li>
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/RegExp/" style="font-size: 10px;">RegExp</a> <a href="/tags/ecmascript/" style="font-size: 10px;">ecmascript</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/localStorage/" style="font-size: 10px;">localStorage</a> <a href="/tags/sessionStorage/" style="font-size: 10px;">sessionStorage</a> <a href="/tags/webStorage/" style="font-size: 10px;">webStorage</a> <a href="/tags/全等/" style="font-size: 10px;">全等</a> <a href="/tags/开发/" style="font-size: 10px;">开发</a> <a href="/tags/正则/" style="font-size: 10px;">正则</a> <a href="/tags/浏览器本地存储/" style="font-size: 10px;">浏览器本地存储</a> <a href="/tags/相等/" style="font-size: 10px;">相等</a>
+    			</div>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends">
+  		
+  			<div class="friends-wrap" id="js-friends">
+  			
+  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接1</a>
+  	        
+  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接2</a>
+  	        
+  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接3</a>
+  	        
+  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接4</a>
+  	        
+  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接5</a>
+  	        
+  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接6</a>
+  	        
+  	        </div>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
