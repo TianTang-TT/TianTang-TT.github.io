@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>轻言</title>
+  <subtitle>— 黄金白璧买歌笑</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://tiantang-tt.github.io/"/>
+  <updated>2016-04-05T07:39:39.581Z</updated>
+  <id>http://tiantang-tt.github.io/</id>
+  
+  <author>
+    <name>柳轻侯</name>
+    <email>honor_loyalty@126.com</email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://tiantang-tt.github.io/2016/11/29/hello-world/"/>
+    <id>http://tiantang-tt.github.io/2016/11/29/hello-world/</id>
+    <published>2016-11-29T08:05:35.595Z</published>
+    <updated>2016-04-05T07:39:39.581Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p><a href="http://tiantang-tt.github.io/">我的博客</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;开始&quot;&gt;&lt;a href=&quot;#开始&quot; class=&quot;headerlink&quot; title=&quot;开始&quot;&gt;&lt;/a&gt;开始&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;http://tiantang-tt.github.io/&quot;&gt;我的博客&lt;/a&gt;&lt;/p&gt;
+
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>js事件顺序执行</title>
+    <link href="http://tiantang-tt.github.io/2016/10/06/js%E4%BA%8B%E4%BB%B6%E9%A1%BA%E5%BA%8F%E6%89%A7%E8%A1%8C/"/>
+    <id>http://tiantang-tt.github.io/2016/10/06/js事件顺序执行/</id>
+    <published>2016-10-06T03:51:50.000Z</published>
+    <updated>2016-10-06T09:07:58.609Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p><br>    前几天朋友问到一个问题,js中的依次绑定多个点击事件，那么这些事件的执行顺序跟绑定顺序有联系吗？当然通过属性绑定事件只能绑定覆盖之前的事件，此处按下不表。通过addEventListener和attachEvent可以为dom对象绑定多个事件，由于某些原因，可能并不会将执行逻辑写到同一个处理程序中，而是在代码执行的不同阶段先后添加了处理不同逻辑的事件，那么事件的执行顺序是按照添加的顺序执行的吗，如果不是，该怎么让事件顺序执行。<br></p>
+
+<a id="more"></a>
+<h3 id="2-分析"><a href="#2-分析" class="headerlink" title="2. 分析"></a>2. 分析</h3><p><br>    为dom绑定多个事件有两个方法，addEventListener和attachEvent，前者是属于dom2级事件，支持ie9及以上，chrome,ff,通过此方法为dom绑定的事件会按照绑定的先后顺序执行，然而对于ie8以下的浏览器，并不支持dom2级事件，只能使用attachEvent来绑定事件，此方法虽然也可以绑定多个事件，但是事件的执行顺序确实与绑定顺序截然相反。<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.querySelector(<span class="string">'btn'</span>);</div><div class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="string">'first'</span>);</div><div class="line">&#125;);</div><div class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="string">'second'</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 点击按钮之后先弹出'first',后弹出'second'</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.querySelector(<span class="string">'btn'</span>);</div><div class="line"><span class="built_in">document</span>.attachEvent(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="string">'first'</span>);</div><div class="line">&#125;);</div><div class="line"><span class="built_in">document</span>.attachEvent(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    alert(<span class="string">'second'</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 点击按钮之后先弹出'second',后弹出'first'</span></div></pre></td></tr></table></figure>
+<h3 id="3-多个事件顺序执行"><a href="#3-多个事件顺序执行" class="headerlink" title="3. 多个事件顺序执行"></a>3. 多个事件顺序执行</h3><p><br>    如果因为业务需要一定要让绑定的事件按顺序执行，且支持ie8，那我们不得不对这两种方法做兼容。通过看jquery代码得到启发，我们可以把每次绑定的事件的事件处理程序通过压栈操作压入数组，当事件触发的时候，通过数组的迭代来顺序执行数组中的函数.这样一来，事件处理程序其实是和dom结构完全解耦了，不再是直接绑定在dom上，而是存储在一个数组中。这样一来，事件处理程序的执行作用域可能就会发生变化，那么我们需要在迭代数组的时候将上下文传入，这样就可以完美解决了。<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> DomEvent = <span class="function"><span class="keyword">function</span> (<span class="params">dom</span>) </span>&#123;</div><div class="line">	<span class="keyword">if</span> (!dom) &#123;</div><div class="line">		<span class="keyword">return</span> ;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">this</span>.el = dom;</div><div class="line">&#125;;</div><div class="line">DomEvent.prototype = &#123;</div><div class="line">	<span class="attr">constructor</span>: DomEvent,</div><div class="line">	<span class="attr">add</span>: <span class="function"><span class="keyword">function</span> (<span class="params">type, func</span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> el = <span class="keyword">this</span>.el,</div><div class="line">			self = <span class="keyword">this</span>;</div><div class="line">			eventList = <span class="keyword">this</span>[type + <span class="string">'Events'</span>];</div><div class="line">		<span class="keyword">if</span> (!eventList) &#123;</div><div class="line">			<span class="keyword">if</span> (el.addEventListener) &#123;</div><div class="line">				el.addEventListener(type, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">					self._fire(type);</div><div class="line">				&#125;);</div><div class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.attachEvent) &#123;</div><div class="line">				el.attachEvent(<span class="string">'on'</span> + type, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">					self._fire(type);</div><div class="line">				&#125;);</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				el[<span class="string">'on'</span> + type] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">					self._fire(type);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">this</span>[type + <span class="string">'Events'</span>] = [];</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">this</span>[type + <span class="string">'Events'</span>].push(func);</div><div class="line">	&#125;,</div><div class="line">	<span class="attr">_fire</span>: <span class="function"><span class="keyword">function</span> (<span class="params">type</span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> eventList = <span class="keyword">this</span>[type + <span class="string">'Events'</span>];</div><div class="line">		<span class="keyword">if</span> (!eventList) &#123;</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//ie8不支持forEach,需要做兼容</span></div><div class="line">		eventList.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">func</span>) </span>&#123;</div><div class="line">			func.call(<span class="keyword">this</span>.el);</div><div class="line">		&#125;)</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">var</span> div = <span class="built_in">document</span>.querySelector(<span class="string">'#test'</span>);</div><div class="line"><span class="keyword">var</span> des = <span class="keyword">new</span> DomEvent(div);</div><div class="line">des.add(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	alert(<span class="string">'first'</span>);</div><div class="line">&#125;);</div><div class="line">des.add(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	alert(<span class="string">'second'</span>);</div><div class="line">&#125;)</div><div class="line"><span class="comment">//先弹出first,然后是second</span></div><div class="line">des.add(<span class="string">'mouseover'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	alert(<span class="string">'over1'</span>);</div><div class="line">&#125;)</div><div class="line">des.add(<span class="string">'mouseover'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	alert(<span class="string">'over2'</span>);</div><div class="line">&#125;)</div><div class="line"><span class="comment">//鼠标滑过时先弹出over1，然后是over2</span></div></pre></td></tr></table></figure>
+<h3 id="4-原理"><a href="#4-原理" class="headerlink" title="4.原理"></a>4.原理</h3><p><br>    至此，顺序添加的事件都能顺序执行，且支持ie8（forEeach自己去做兼容），核心思想就是把多个事件合并为一个事件，在这个事件中顺序执行不同时段添加的处理程序，通过数组压栈来控制调用顺序。也就是所有的事件公用一个入口，然后在入口中处理调用顺序，依次调用。<br></p>
+
+<h3 id="5-缺点"><a href="#5-缺点" class="headerlink" title="5.缺点"></a>5.缺点</h3><p><br>    使用此方法有个缺点，那就是每个dom结构只能创建一个DomEvent对象，这导致如果需要在不同的作用域下为同一个dom结构绑定事件，必须将DomEvent对象创建在全局下，或者某个相对独立的作用域的父级作用域。如果为同一个dom结构创建对个DomEvent对象，那么将与原生绑定方法无异。<br></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1. 前言&quot;&gt;&lt;/a&gt;1. 前言&lt;/h3&gt;&lt;p&gt;&lt;br&gt;    前几天朋友问到一个问题,js中的依次绑定多个点击事件，那么这些事件的执行顺序跟绑定顺序有联系吗？当然通过属性绑定事件只能绑定覆盖之前的事件，此处按下不表。通过addEventListener和attachEvent可以为dom对象绑定多个事件，由于某些原因，可能并不会将执行逻辑写到同一个处理程序中，而是在代码执行的不同阶段先后添加了处理不同逻辑的事件，那么事件的执行顺序是按照添加的顺序执行的吗，如果不是，该怎么让事件顺序执行。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/categories/javascript/"/>
+    
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/tags/javascript/"/>
+    
+      <category term="event" scheme="http://tiantang-tt.github.io/tags/event/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>短小精悍的js代码段</title>
+    <link href="http://tiantang-tt.github.io/2016/09/22/%E7%9F%AD%E5%B0%8F%E7%B2%BE%E6%82%8D%E7%9A%84js%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    <id>http://tiantang-tt.github.io/2016/09/22/短小精悍的js代码段/</id>
+    <published>2016-09-22T04:23:56.000Z</published>
+    <updated>2016-09-22T04:41:00.557Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><br>    一些令叹为观止的js精巧代码<br></p>
+
+<a id="more"></a>
+<hr>
+<p><br></p>
+<h3 id="js代码段"><a href="#js代码段" class="headerlink" title="js代码段"></a>js代码段</h3><p></p><p><br>    生成随机颜色<br></p><br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 生成十六进制的随机颜色</span></div><div class="line"><span class="keyword">let</span> color16 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="string">"#"</span> + (<span class="function"><span class="keyword">function</span> (<span class="params">color</span>) </span>&#123;</div><div class="line">	    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">7</span> - color.length).join(<span class="string">"0"</span>) + color;</div><div class="line">	&#125;)((<span class="built_in">Math</span>.random() * <span class="number">0x1000000</span> &lt;&lt; <span class="number">0</span> ).toString(<span class="number">16</span>));</div><div class="line">&#125;;</div><div class="line">color16();        <span class="comment">// "#dd90f2"</span></div><div class="line">color16();        <span class="comment">// "#d8b15e"</span></div><div class="line">color16();        <span class="comment">// "#036f98"</span></div></pre></td></tr></table></figure><p></p>
+<p></p><p><br>    生成固定位数的随机id<br></p><br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 生成固定位数的随机id</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateTipId</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> tipId = <span class="string">''</span>;</div><div class="line">	<span class="keyword">for</span> (; tipId.length &lt; <span class="number">16</span>; tipId += <span class="built_in">Math</span>.random().toString(<span class="number">36</span>).substr(<span class="number">2</span>));</div><div class="line">	<span class="keyword">return</span> tipId.substr(<span class="number">0</span>, <span class="number">16</span>);</div><div class="line">&#125;;</div><div class="line">generateTipId()   <span class="comment">// "tbi34lo197o3z7y7"</span></div><div class="line">generateTipId()   <span class="comment">// "qgpyetdfp1hhdy2y"</span></div><div class="line">generateTipId()   <span class="comment">// "0qz3mcts495rg126"</span></div></pre></td></tr></table></figure><p></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;&lt;br&gt;    一些令叹为观止的js精巧代码&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/categories/javascript/"/>
+    
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/tags/javascript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>js隐式类型转化例子分析</title>
+    <link href="http://tiantang-tt.github.io/2016/06/29/js%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E4%BE%8B%E5%AD%90%E5%88%86%E6%9E%90/"/>
+    <id>http://tiantang-tt.github.io/2016/06/29/js隐式类型转换例子分析/</id>
+    <published>2016-06-29T05:45:57.000Z</published>
+    <updated>2016-10-06T06:28:07.091Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]]<em>[~+[]]+~~!+[]]+({}+[])[[~!+[]</em>~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。<br></p>
+
+<a id="more"></a>
+<hr>
+<h3 id="2-思路"><a href="#2-思路" class="headerlink" title="2.思路"></a>2.思路</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="built_in">eval</span>(<span class="string">'(!(~+[])+&#123;&#125;)[--[~+""][+[]]*[~+[]]+~~!+[]]+(&#123;&#125;+[])[[~!+[]*~+[]]]'</span>)   <span class="comment">//'sb'</span></div></pre></td></tr></table></figure>
+<p><br>    乍一看毫无头绪，这段代码中没有任何英文，也没有数字，那么字符串’sb’是怎么出现的？仔细分析，代码中多次出现了’!’,’+’，’!’的作用是取反，返回一个布尔值，那么可能会出现’false’或者’true’，那么我们要的’sb’中的’s’已经出现，而’+’有一个重要的作用，那就是等同于Number()函数的效果，将值转为number类型，并且有拼接字符串的作用，如果’+’的一边是字符串而另一边不是，那么将会被隐式的转换为字符串类型并进行拼接。到这里，思路应该很清晰了，某些被转换后的值会出现英文字母和数字，然后再结合’[]’那么就可以取到相应的字母了。下面来具体分析原理。<br></p>
+
+<h3 id="3-具体分析"><a href="#3-具体分析" class="headerlink" title="3.具体分析"></a>3.具体分析</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">(!(~+[])+&#123;&#125;)[--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]]+(&#123;&#125;+[])[[~!+[]*~+[]]]</div><div class="line"></div><div class="line"><span class="comment">//将上面代码进行拆分，可得到如下部分</span></div><div class="line">(!(~+[])+&#123;&#125;)  ，[--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]] ， (&#123;&#125;+[]) ， [[~!+[]*~+[]]]</div><div class="line"><span class="comment">//分别将上述四部分用$1,$2,$3,$4来表示，即求$1和$2的运算结果 + $3和$4的运算结果。</span></div><div class="line"><span class="keyword">var</span> $<span class="number">1</span>, $<span class="number">2</span>, $<span class="number">3</span>, $<span class="number">4</span>;</div><div class="line">	$<span class="number">1</span> = (!(~+[])+&#123;&#125;);</div><div class="line">	$<span class="number">2</span> = [--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]];</div><div class="line">	$<span class="number">3</span> = (&#123;&#125;+[]);</div><div class="line">	$<span class="number">4</span> = [[~!+[]*~+[]]];</div><div class="line"></div><div class="line"><span class="comment">//分析$1 = (!(~+[])+&#123;&#125;);运算顺序为先计算(~+[]),然后对其取反，再与&#123;&#125;相加</span></div><div class="line">(~+[])           <span class="comment">//返回-1， +[]此处的加号相当Number函数，所以+[]返回0，再对其进行按位非操作，即取相反数再减去1</span></div><div class="line">!(~+[])          <span class="comment">//返回false</span></div><div class="line"><span class="literal">false</span> + &#123;&#125;       <span class="comment">//返回'false[object Object]', 一元加操作符会将布尔值和对象通过toString()方法分别</span></div><div class="line">                 <span class="comment">//转为'false'和'[object Object]'</span></div><div class="line"><span class="comment">//所以$1的运算结果为'false[object Object]'</span></div><div class="line"></div><div class="line"><span class="comment">//分析$2 = [--[~+""][+[]]*[~+[]]+~~!+[]]; 先计算--[~+""][+[]]，然后计算[~+[]]，两相作乘，然后与~~!+[]的结果相加</span></div><div class="line">--[~+<span class="string">""</span>][+[]]          <span class="comment">//返回-2，[~+""]返回[-1],[+[]]返回[0]，即为--[-1][0]</span></div><div class="line">                       <span class="comment">//由于方括号[]优先级高于--， 所以返回-2</span></div><div class="line">[~+[]]                 <span class="comment">//返回[-1]</span></div><div class="line">--[~+<span class="string">""</span>][+[]]*[~+[]]   <span class="comment">//返回2，一元乘操作符会将非数字转为数字，[-1]被转为-1,即为(-2)*(-1) </span></div><div class="line">~~!+[]                 <span class="comment">//返回1，~操作符会将布尔值转为number</span></div><div class="line">[<span class="number">2</span> + <span class="number">1</span>]</div><div class="line"><span class="comment">//所以$2的运算结果为[3]</span></div><div class="line"></div><div class="line"><span class="comment">//分析$3 = (&#123;&#125;+[]),一元加操作符会将对象通过toString()分别 转为'[object Object]' 和 ''</span></div><div class="line">(&#123;&#125;+[])          <span class="comment">//返回'[object Object]'</span></div><div class="line"><span class="comment">//所以$3的运算结果为'[object Object]'</span></div><div class="line"></div><div class="line"><span class="comment">//分析$4 = [[~!+[]*~+[]]];先计算~!+[]，后计算~+[]，然后结果相乘</span></div><div class="line">~!+[]           <span class="comment">//返回-2</span></div><div class="line">~+[]            <span class="comment">//返回-1</span></div><div class="line">[[~!+[]*~+[]]]  <span class="comment">//返回[[2]]</span></div><div class="line"><span class="comment">//所以$4的运算结果为[[2]]</span></div><div class="line"></div><div class="line"><span class="comment">//因此整个表达式可以简化为</span></div><div class="line"><span class="string">'false[object Object]'</span>[<span class="number">3</span>] + <span class="string">'[object Object]'</span>[[<span class="number">2</span>]]</div><div class="line"><span class="comment">//返回'sb'</span></div><div class="line"><span class="comment">//此处要注意'string'[[2]]这种写法，string后面跟方括号，里面需要一个number类型的数值n来返回'string'</span></div><div class="line"><span class="comment">//的第n位上的字符，因此方括号里面的值会被通过Number()方法转为数值类型，[2]被转为2</span></div></pre></td></tr></table></figure>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h3><p><br>    1.主要考察js中隐式类型转换,一元+和~操作符将值转为number类型的值，相当于Number方法<br>    2.当+操作符两边类型不同时，若有一边为字符串，则将另一边也转为字符串，然后执行拼接。<br>    3.将对象转为基本类型值时，先调用valueOf方法，若还是对象，则调用toString方法。<br>    4.数组的valueOf方法返回其自身。<br></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1.前言&quot;&gt;&lt;/a&gt;1.前言&lt;/h3&gt;&lt;p&gt;&lt;br&gt;    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]]&lt;em&gt;[~+[]]+~~!+[]]+({}+[])[[~!+[]&lt;/em&gt;~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/categories/javascript/"/>
+    
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/tags/javascript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HTMLCollection和NodeList以及NamedNodeMap之间的关系</title>
+    <link href="http://tiantang-tt.github.io/2016/06/27/HTMLCollection%E5%92%8CNodeList%E4%BB%A5%E5%8F%8ANamedNodeMap%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/"/>
+    <id>http://tiantang-tt.github.io/2016/06/27/HTMLCollection和NodeList以及NamedNodeMap之间的关系/</id>
+    <published>2016-06-27T12:10:11.000Z</published>
+    <updated>2016-06-29T05:42:24.631Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    之所以把这三者放到一起，是因为这三个对象都是”Array-like”的（类数组）,它们具有像数组一样的特性，比如具有length属性，都可以通过索引[index]来获取相应的元素。更为重要的是，它们都是’live’的，是’有生命有呼吸的对象’，这么说是因为这三者都是动态的，会实时更新查询dom结构。<br></p>
+
+<a id="more"></a>
+<hr>
+<h3 id="2-背景"><a href="#2-背景" class="headerlink" title="2.背景"></a>2.背景</h3><figure class="highlight html"><table><tr><td class="code"><pre><div class="line"><span class="comment">&lt;!--有如下dom结构--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"t1"</span> <span class="attr">class</span>=<span class="string">"active"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"tt1"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"tt2"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"tt3"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> nodelist = <span class="built_in">document</span>.getElementById(<span class="string">'t1'</span>).childNodes;</div><div class="line"><span class="keyword">var</span> htmlcollections = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'div'</span>);</div><div class="line"><span class="keyword">var</span> attrs = <span class="built_in">document</span>.getElementById(<span class="string">'t1'</span>).attributes;</div><div class="line"></div><div class="line">nodelist <span class="keyword">instanceof</span> NodeList                 <span class="comment">//true</span></div><div class="line">htmlcollections <span class="keyword">instanceof</span> HTMLCollection    <span class="comment">//true</span></div><div class="line">attrs <span class="keyword">instanceof</span> NamedNodeMap                <span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p><br>    由上面可以看出，通过getElemetnsByTagName获取的是一个HTMLCollection,从方法名来看，getElementsByTagName是通过标签名获取到的一个元素的集合，是elements(元素)的集合，虽然说这些元素中可能包含其它非element节点，比如text节点，但是这些节点是附属于某个element的，并不是通过tagName来获取到的。element.childNodes获取到的是一个NodeList，是Node(节点)的 集合，可能同时包括element节点其他节点，例如上面代码中的nodelist就有7个节点，其中3个element，4个text节点(在ie9及以下的浏览器中空白符不算入文本节点)。element.attributes获取的则是一个特性Attribute集合，而集合中的每一个元素，都是Attr类型的对象。Attr对象有三个属性，name、value和specified。但是在日常应用中，一般会应用getAttribute()、setAttribute()和romoveAttribute()来操作特性，不需要直接访问特性对象。<br></p>
+
+<h3 id="3-定义"><a href="#3-定义" class="headerlink" title="3.定义"></a>3.定义</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">interface HTMLCollection &#123;</div><div class="line">  readonly attribute unsigned long   length;</div><div class="line">  Node               item(<span class="keyword">in</span> unsigned long index);</div><div class="line">  Node               namedItem(<span class="keyword">in</span> DOMString name);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">interface NodeList &#123;</div><div class="line">  Node               item(<span class="keyword">in</span> unsigned long index);</div><div class="line">  readonly attribute unsigned long   length;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">interface NamedNodeMap &#123;</div><div class="line">  Node               getNamedItem(<span class="keyword">in</span> DOMString name);</div><div class="line">  Node               setNamedItem(<span class="keyword">in</span> Node arg)</div><div class="line">                                        raises(DOMException);</div><div class="line">  Node               removeNamedItem(<span class="keyword">in</span> DOMString name)</div><div class="line">                                        raises(DOMException);</div><div class="line">  Node               item(<span class="keyword">in</span> unsigned long index);</div><div class="line">  readonly attribute unsigned long    length;</div><div class="line">  <span class="comment">// Introduced in DOM Level 2:</span></div><div class="line">  Node               getNamedItemNS(<span class="keyword">in</span> DOMString namespaceURI, </div><div class="line">                                    <span class="keyword">in</span> DOMString localName);</div><div class="line">  <span class="comment">// Introduced in DOM Level 2:</span></div><div class="line">  Node               setNamedItemNS(<span class="keyword">in</span> Node arg)</div><div class="line">                                        raises(DOMException);</div><div class="line">  <span class="comment">// Introduced in DOM Level 2:</span></div><div class="line">  Node               removeNamedItemNS(<span class="keyword">in</span> DOMString namespaceURI, </div><div class="line">                                       <span class="keyword">in</span> DOMString localName)</div><div class="line">                                        raises(DOMException);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p><br>    由上面接口定义可以看出， 这三种对象都可以通过[index]来便利查找，都可以通过item(index)方法来查询对应的值，但是HTMLCollection实例比NodeList实例和NamedNodeMap实例多了namedItem方法    ，NamedNodeMap的实例则是有更多的取值设值得api,但在开发中我们一般用getAttribute()、setAttribute()和romoveAttribute()来操作特性，不需要直接访问特性对象。对类数组而言，我们可以把它们转成真正的数组，以便使用以下数组的特有方法。<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> divs = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"div"</span>);</div><div class="line">	divs <span class="keyword">instanceof</span> <span class="built_in">Array</span>;               <span class="comment">//false</span></div><div class="line"><span class="keyword">var</span> divArray = <span class="built_in">Array</span>.prototype.slice.call(divs);</div><div class="line">	divArray <span class="keyword">instanceof</span> <span class="built_in">Array</span>;           <span class="comment">//true</span></div><div class="line">	divArray.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item,index</span>)</span>&#123;</div><div class="line">		<span class="comment">//do something</span></div><div class="line">	&#125;)</div></pre></td></tr></table></figure>
+<h3 id="4-注意"><a href="#4-注意" class="headerlink" title="4.注意"></a>4.注意</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> divs = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"div"</span>),</div><div class="line">       i,</div><div class="line">       div;</div><div class="line">   <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; divs.length; i++) &#123;</div><div class="line">       div = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line">       <span class="built_in">document</span>.body.appendChild(div);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><br>    以上代码是无限循环，HTMLCollection、NodeList以及NamedNodeMap这三个集合都是“动态的”，每当文档发生变化时，他们都会更新。他们将始终保持这最新、最准确的消息。我们知道dom操作是很”昂贵”的，频繁的进行dom操作会造成性能的极大损耗，在上面的for循环中，每循环一次都要查一遍dom结构来获取最新的信息，如果dom结构很复杂嵌套很深，那么这种查找的性能损耗就可想而知了。因此我们可以把查询结果缓存到一个变量中就可以避免每次都查找的窘境了。<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> divs = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"div"</span>),</div><div class="line">        i,</div><div class="line">        len,   <span class="comment">//len用来缓存divs的长度，创建一个number副本，避免每次都查找</span></div><div class="line">        div;</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>, len = divs.length; i &lt; len; i++) &#123;  </div><div class="line">        div = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line">        <span class="built_in">document</span>.body.appendChild(div);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p><br>    值得一提的是querySelectorAll()也将会返回一个NodeList(如果存在)，但是这时候的NodeList却并不是动态的，而是类似于一个快照一样，并不会实时查询，因为这个NodeList是一个<b>StaticNodeList</b><br></p>
+
+
+<h3 id="5-总结"><a href="#5-总结" class="headerlink" title="5.总结"></a>5.总结</h3><p><br>    1.理解HTMLCollection，NodeList以及NamedNodeMap各自代表了，有哪些共性。<br>    2.它们都是类数组，有length属性，[index]取值方法。<br>    3.他们都是动态的，必要的时候要缓存起来。<br>    4.querySelectorAll()返回一个静态StaticNodeList。<br></p>
+
+<h3 id="6-参考资料"><a href="#6-参考资料" class="headerlink" title="6.参考资料"></a>6.参考资料</h3><ol>
+<li><a href="http://www.cnblogs.com/wangfupeng1988/p/3626300.html" target="_blank" rel="external">js便签笔记（1）——说说HTMLCollection、NodeList以及NamedNodeMap</a></li>
+<li><a href="https://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-536297177" target="_blank" rel="external">Document Object Model Core</a></li>
+<li><a href="https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-75708506" target="_blank" rel="external">Document Object Model HTML</a></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1.前言&quot;&gt;&lt;/a&gt;1.前言&lt;/h3&gt;&lt;p&gt;&lt;br&gt;    之所以把这三者放到一起，是因为这三个对象都是”Array-like”的（类数组）,它们具有像数组一样的特性，比如具有length属性，都可以通过索引[index]来获取相应的元素。更为重要的是，它们都是’live’的，是’有生命有呼吸的对象’，这么说是因为这三者都是动态的，会实时更新查询dom结构。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/categories/javascript/"/>
+    
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/tags/javascript/"/>
+    
+      <category term="HTML" scheme="http://tiantang-tt.github.io/tags/HTML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>js常用正则校验</title>
+    <link href="http://tiantang-tt.github.io/2016/06/16/js%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E6%A0%A1%E9%AA%8C/"/>
+    <id>http://tiantang-tt.github.io/2016/06/16/js常用正则校验/</id>
+    <published>2016-06-16T11:20:27.000Z</published>
+    <updated>2016-10-10T06:37:23.246Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    这篇文章主要收集整理了常用的javascript的正则验证表达式，一部分为我工作中遇到的需要校验的规则，还有一些是我遇到的比较经典的js正则表达式，希望能对你有所帮助，若有疑问，请联系我。（持续更新中）<br></p>
+
+<a id="more"></a>
+<h3 id="2-常用js正则表达式"><a href="#2-常用js正则表达式" class="headerlink" title="2.常用js正则表达式"></a>2.常用js正则表达式</h3><figure class="highlight"><table><tr><td class="code"><pre><div class="line"></div><div class="line">// 大于等于1的数(包含小数)</div><div class="line">/^[1-9]\d*(\.\d+)?$/</div><div class="line"></div><div class="line">// 大于1的数(包含小数)</div><div class="line">/^(?!1+$)(?!1\.0+$)[1-9]\d*(\.\d+)?$/</div><div class="line"></div><div class="line">// 只能输入数字，字母，特殊字符，且三者必须全都包含，8位以上</div><div class="line">/^(?!^\d+$)(?![^a-zA-Z]+$)(?![\da-zA-Z]+$).&#123;8,&#125;$/</div><div class="line"></div><div class="line">// trim方法，去除white space,BOM，换行符</div><div class="line">/[\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF]+/g</div><div class="line"></div><div class="line">// 二代身份证是18位，一代身份证是15位</div><div class="line">/^(\d&#123;15&#125;|\d&#123;14&#125;x|\d&#123;18&#125;|\d&#123;17&#125;x)$/i</div><div class="line"></div><div class="line">// 手机号码验证</div><div class="line">/^(13[0-9]|14[5|7]|15[0-9]|18[0-9])\d&#123;8&#125;$/</div><div class="line"></div><div class="line">//邮箱格式校验</div><div class="line">/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/</div><div class="line"></div><div class="line">// 邮编共6位，第一位不为0</div><div class="line">/^[1-9][0-9]&#123;5&#125;$/</div><div class="line"></div><div class="line">// ip校验</div><div class="line">/^((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.)&#123;3&#125;(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))$/</div><div class="line"></div><div class="line">// 是否包含中文</div><div class="line">/[\u4E00-\u9FA5]+/g</div><div class="line"></div><div class="line">// 检测月份是否合法</div><div class="line">/^(\d&#123;4&#125;)-(0[1-9]|1[012])$/</div><div class="line"></div><div class="line">// 检测日期是否合法</div><div class="line">/^(\d&#123;4&#125;)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/</div><div class="line"></div><div class="line">// 检测带时间日期是否合法</div><div class="line">/^(\d&#123;4&#125;)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])\s(0\d&#123;1&#125;|1\d&#123;1&#125;|2[0-3]):[0-5]\d&#123;1&#125;:([0-5]\d&#123;1&#125;)$/</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1.前言&quot;&gt;&lt;/a&gt;1.前言&lt;/h3&gt;&lt;p&gt;&lt;br&gt;    这篇文章主要收集整理了常用的javascript的正则验证表达式，一部分为我工作中遇到的需要校验的规则，还有一些是我遇到的比较经典的js正则表达式，希望能对你有所帮助，若有疑问，请联系我。（持续更新中）&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/categories/javascript/"/>
+    
+    
+      <category term="RegExp" scheme="http://tiantang-tt.github.io/tags/RegExp/"/>
+    
+      <category term="正则" scheme="http://tiantang-tt.github.io/tags/%E6%AD%A3%E5%88%99/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前端开发规范</title>
+    <link href="http://tiantang-tt.github.io/2016/06/08/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/"/>
+    <id>http://tiantang-tt.github.io/2016/06/08/前端开发规范/</id>
+    <published>2016-06-08T06:34:36.000Z</published>
+    <updated>2016-06-12T03:15:13.982Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><br>    软件bug的修复是昂贵的，并且随着时间的推移，这些bug的成本也会增加，尤其当这些bug潜伏并慢慢出现在已经发布的软件中时。当你发现bug的时候就立即修复它是最好的，此时你代码要解决的问题在你脑中还是很清晰的。否则，你转移到其他任务，忘了那个特定的代码，一段时间后再去查看这些代码就需要，此摘要也包括一些与代码不太相关的习惯，但对整体代码的创建息息相关，包括撰写API文档、执行同行评审。这些习惯和最佳做法可以帮助你写出更好的，更易于理解和维护的代码。<br></p>
+
+<a id="more"></a>
+<hr>
+<p><br></p>
+<h3 id="全局变量的问题"><a href="#全局变量的问题" class="headerlink" title="全局变量的问题"></a>全局变量的问题</h3><p><br>    全局变量的问题在于，你的JavaScript应用程序和web页面上的所有代码都共享了这些全局变量，他们住在同一个全局命名空间，所以当程序的两个不同部分定义同名但不同作用的全局变量的时候，命名冲突在所难免。<br><br><br>    由于JavaScript的两个特征，不自觉地创建出全局变量是出乎意料的容易。首先，你可以甚至不需要声明就可以使用变量；第二，JavaScript有隐含的全局概念，意味着你不声明的任何变量都会成为一个全局对象属性。参考下面的代码：<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 不推荐写法: 隐式全局变量 </span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">x, y</span>) </span>&#123; </div><div class="line">   result = x + y; </div><div class="line">   <span class="keyword">return</span> result;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//推荐写法，始终使用var声明变量</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">x, y</span>) </span>&#123;</div><div class="line">   <span class="keyword">var</span> result = x + y;</div><div class="line">   <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><br>    另一个创建隐式全局变量的反例就是使用任务链进行部分var声明。<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> a = b = <span class="number">0</span>;      <span class="comment">//a是局部变量但是b却隐式的创建了全局变量</span></div><div class="line">                    <span class="comment">//另外，变量是不可通过delete操作符删除的</span></div></pre></td></tr></table></figure>
+<h3 id="访问全局变量"><a href="#访问全局变量" class="headerlink" title="访问全局变量"></a>访问全局变量</h3><p><br>    在浏览器中，全局对象可以通过window属性在代码的任何位置访问（除非你做了些比较出格的事情，像是声明了一个名为window的局部变量）。但是在其他环境下，这个方便的属性可能被叫做其他什么东西（甚至在程序中不可用）。如果你需要在没有硬编码的window标识符下访问全局对象，你可以在任何层级的函数作用域中做如下操作：<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> global = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">   <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;());</div><div class="line"><span class="comment">//严格模式下不可用</span></div></pre></td></tr></table></figure>
+<h3 id="单var形式"><a href="#单var形式" class="headerlink" title="单var形式"></a>单var形式</h3><p><br>    在函数顶部使用单var语句来声明变量，将此作用域中可能用到的变量事先声明，防止变量在定义之前使用的逻辑错误和重复声明。你也可以在声明的时候做一些实际的工作，例如前面代码中的sum = a + b这个情况，另外一个例子就是当你使用DOM（文档对象模型）引用时，你可以使用单一的var把DOM引用一起指定为局部变量，就如下面代码所示的：<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</div><div class="line">   <span class="comment">//将此作用域中要用到的变量提前声明</span></div><div class="line">   <span class="keyword">var</span> a = <span class="number">1</span>,</div><div class="line">       b = <span class="number">2</span>,</div><div class="line">       sum = a + b,</div><div class="line">       myobject = &#123;&#125;,</div><div class="line">       i,</div><div class="line">       j;</div><div class="line">   <span class="comment">// function body...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> el = <span class="built_in">document</span>.getElementById(<span class="string">'result'</span>) <span class="comment">//缓存dom引用，避免每次使用都要查找</span></div></pre></td></tr></table></figure>
+<h3 id="变量和声明提前"><a href="#变量和声明提前" class="headerlink" title="变量和声明提前"></a>变量和声明提前</h3><p><br>    JavaScript中，你可以在函数的任何位置声明多个var语句，并且它们就好像是在函数顶部声明一样发挥作用，这种行为称为hoisting（悬置/置顶解析/预解析）。当你使用了一个变量，然后不久在函数中又重新声明的话，就可能产生逻辑错误。对于JavaScript，只要你的变量是在同一个作用域中（同一函数），它都被当做是声明的，即使是它在var声明前使用的时候。看下面这个例子：<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 反例</span></div><div class="line">myname = <span class="string">'global'</span>; <span class="comment">// 全局变量</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    alert(myname); <span class="comment">// 'undefined'</span></div><div class="line">    <span class="keyword">var</span> myname = <span class="string">'local'</span>;</div><div class="line">    alert(myname); <span class="comment">// 'local'</span></div><div class="line">&#125;</div><div class="line">func();</div></pre></td></tr></table></figure>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p><br>    在for循环中，你可以循环取得数组或是数组类似对象的值，譬如arguments和HTMLCollection对象。这种形式的循环的不足在于每次循环的时候数组的长度都要去获取下。这回降低你的代码执行效率，尤其当myarray不是数组，而是一个HTMLCollection对象的时候通常的循环形式如下<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 反例</span></div><div class="line"><span class="comment">// 次佳的循环</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; myarray.length; i++) &#123;</div><div class="line">   <span class="comment">// 使用myarray[i]做点什么</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><br>    集合的麻烦在于它们实时查询基本文档（HTML页面）。这意味着每次你访问任何集合的长度，你要实时查询DOM，而DOM操作一般都是比较昂贵的.这就是为什么当你循环获取值时，缓存数组(或集合)的长度是比较好的形式，正如下面代码显示的：<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//当myarray是一个NodeList的时候更能凸显这种方法的优异性</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, max = myarray.length; i &lt; max; i++) &#123;</div><div class="line">   <span class="comment">// 使用myarray[i]做点什么</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="for-in-循环"><a href="#for-in-循环" class="headerlink" title="for- in 循环"></a>for- in 循环</h3><p><br>    for-in循环应该用在非数组对象的遍历上，使用for-in进行循环也被称为“枚举”。从技术上将，你可以使用for-in循环数组（因为JavaScript中数组也是对象），但这是不推荐的。因为如果数组对象已被自定义的功能增强，就可能发生逻辑错误。另外，在for-in中，属性列表的顺序（序列）是不能保证的。所以最好数组使用正常的for循环，对象使用for-in循环。有个很重要的hasOwnProperty()方法，当遍历对象属性的时候可以过滤掉从原型链上下来的属性。思考下面一段代码<br></p>
+
+<h3 id="不-扩展内置原型"><a href="#不-扩展内置原型" class="headerlink" title="(不)扩展内置原型"></a>(不)扩展内置原型</h3><p><br>    扩增构造函数的prototype属性是个很强大的增加功能的方法，但有时候它太强大了。增加内置的构造函数原型（如Object(), Array(), 或Function()）挺诱人的，但是这严重降低了可维护性，因为它让你的代码变得难以预测。使用你代码的其他开发人员很可能更期望使用内置的JavaScript方法来持续不断地工作，而不是你另加的方法。另外，属性添加到原型中，可能会导致不使用hasOwnProperty属性时在循环中显示出来，这会造成混乱。因此，不增加内置原型是最好的。<br></p>
+
+<h3 id="switch形式"><a href="#switch形式" class="headerlink" title="switch形式"></a>switch形式</h3><p><br>    你可以通过类似下面形式的switch语句增强可读性和健壮性：<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> inspect_me = <span class="number">0</span>,</div><div class="line">    result = <span class="string">''</span>;</div><div class="line"><span class="keyword">switch</span> (inspect_me) &#123;</div><div class="line"><span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">   result = <span class="string">'zero'</span>;</div><div class="line">   <span class="keyword">break</span>;</div><div class="line"><span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">   result = <span class="string">'one'</span>;</div><div class="line">   <span class="keyword">break</span>;</div><div class="line"><span class="keyword">default</span>:</div><div class="line">   result = <span class="string">'unknown'</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//每个case和switch对齐（花括号缩进规则除外）</span></div><div class="line"><span class="comment">//每个case中代码缩进</span></div><div class="line"><span class="comment">//每个case以break清除结束</span></div><div class="line"><span class="comment">//避免贯穿（故意忽略break）。如果你非常确信贯穿是最好的方法，务必记录此情况，因为对于有些阅读人而言，它们可能看起来是错误的。</span></div><div class="line"><span class="comment">//以default结束switch：确保总有健全的结果，即使无情况匹配。</span></div></pre></td></tr></table></figure>
+<h3 id="避免隐式类型转换"><a href="#避免隐式类型转换" class="headerlink" title="避免隐式类型转换"></a>避免隐式类型转换</h3><p><br>    JavaScript的变量在比较的时候会隐式类型转换。这就是为什么一些诸如：false == 0 或 “” == 0 返回的结果是true。为避免引起混乱的隐含类型转换，在你比较值和表达式类型的时候始终使用===和!==操作符。<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> zero = <span class="number">0</span>;</div><div class="line"><span class="keyword">if</span> (zero === <span class="literal">false</span>) &#123;</div><div class="line">   <span class="comment">// 不执行，因为zero为0, 而不是false</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 反面示例</span></div><div class="line"><span class="keyword">if</span> (zero == <span class="literal">false</span>) &#123;</div><div class="line">   <span class="comment">// 执行了...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="避免-Avoiding-eval"><a href="#避免-Avoiding-eval" class="headerlink" title="避免(Avoiding) eval()"></a>避免(Avoiding) eval()</h3><p><br>    __ 请避免使用这个方法，用其他方法代替来实现你想要的效果<br></p>
+
+<h3 id="parseInt-下的数值转换-Number-Conversions-with-parseInt"><a href="#parseInt-下的数值转换-Number-Conversions-with-parseInt" class="headerlink" title="parseInt()下的数值转换(Number Conversions with parseInt())"></a>parseInt()下的数值转换(Number Conversions with parseInt())</h3><p><br>    使用parseInt()你可以从字符串中获取数值，该方法接受另一个基数参数，这经常省略，但不应该。当字符串以”0″开头的时候就有可能会出问题，例如，部分时间进入表单域，在ECMAScript 3中，开头为”0″的字符串被当做8进制处理了，但这已在ECMAScript 5中改变了。为了避免矛盾和意外的结果，总是指定基数参数。<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> month = <span class="string">'06'</span>,</div><div class="line">    year = <span class="string">'09'</span>;</div><div class="line">month = <span class="built_in">parseInt</span>(month, <span class="number">10</span>);</div><div class="line">year = <span class="built_in">parseInt</span>(year, <span class="number">10</span>);</div></pre></td></tr></table></figure>
+<h3 id="缩进"><a href="#缩进" class="headerlink" title="缩进"></a>缩进</h3><p><br>    建议使用tab缩进（1tab === 4space)<br></p>
+
+<h3 id="花括号"><a href="#花括号" class="headerlink" title="花括号"></a>花括号</h3><p><br>    花括号（亦称大括号，下同）应总被使用，即使在它们为可选的时候。技术上将，在in或是for中如果语句仅一条，花括号是不需要的，但是你还是应该总是使用它们，这会让代码更有持续性和易于更新。想象下你有一个只有一条语句的for循环，你可以忽略花括号，而没有解析的错误。<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//建议左花括号写在表达式后面</span></div><div class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;  </div><div class="line">   alert(<span class="string">'It is TRUE!'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 警告:意外的返回值</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</div><div class="line">   <span class="keyword">return</span></div><div class="line">  <span class="comment">// 下面代码不执行</span></div><div class="line">   &#123;</div><div class="line">      <span class="attr">name</span> : <span class="string">'Batman'</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">构造函数：首字母大写</div><div class="line">普通函数：驼峰式写法</div><div class="line">文件命名：驼峰式写法</div><div class="line">内部函数：前面加下划线_</div></pre></td></tr></table></figure>
+<h3 id="空格"><a href="#空格" class="headerlink" title="空格"></a>空格</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//参数列表和for循环, 和 ; 前不允许有空格。</span></div><div class="line"><span class="comment">// good</span></div><div class="line">callFunc(a, b);</div><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</div><div class="line"></div><div class="line"><span class="comment">//比较操作符&lt; , &gt; , =两边加空格</span></div><div class="line"><span class="keyword">if</span>(a &lt; b)</div><div class="line"><span class="keyword">if</span>(a == b)</div><div class="line"></div><div class="line"><span class="comment">//对象创建时，属性中的 : 两边必须有空格。</span></div><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">    <span class="attr">a</span> : <span class="number">1</span>,</div><div class="line">    <span class="attr">b</span> : <span class="number">2</span>,</div><div class="line">    <span class="attr">c</span> : <span class="number">3</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="引号"><a href="#引号" class="headerlink" title="引号"></a>引号</h3><p></p><p><br>    js中单引号和双引号并没有明显的含义区分，用单引号和双引号都可以，但为了规范性，我们有一下建议<br></p><br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//在html中用双引号，在js代码中用单引号</span></div><div class="line">&lt;input type=<span class="string">"file"</span> value=<span class="string">"upload"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span></div><div class="line"><span class="keyword">var</span> a = <span class="string">"verisTest"</span>;</div><div class="line"><span class="comment">//注意，在json中必须用双引号，否则可能会出错</span></div><div class="line"><span class="keyword">var</span> jsonObj = &#123;</div><div class="line">	<span class="string">"a"</span> : <span class="string">"1"</span>,</div><div class="line">	<span class="string">"b"</span> : <span class="number">2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure><p></p>
+<h3 id="分号"><a href="#分号" class="headerlink" title="分号"></a>分号</h3><p></p><p><br>    分号代表某段语句的结束，在js中某些语句后面可以不加分号，因为js解析引擎正在解析代码的时候会自动识别并添加分号，但是并非所有情况都能正确识别，因此我们建议在每个结束语句后面都添加分号。<br></p><br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">a = b</div><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">...</div><div class="line">&#125;)()</div><div class="line"></div><div class="line">会被解释为 a = b(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;)()</div></pre></td></tr></table></figure><p></p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><ol>
+<li><a href="http://www.zhangxinxu.com/wordpress/2010/10/%E7%BF%BB%E8%AF%91-%E9%AB%98%E8%B4%A8%E9%87%8Fjavascript%E4%BB%A3%E7%A0%81%E4%B9%A6%E5%86%99%E5%9F%BA%E6%9C%AC%E8%A6%81%E7%82%B9/" target="_blank" rel="external">翻译-高质量JavaScript代码书写基本要点</a></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;&lt;br&gt;    软件bug的修复是昂贵的，并且随着时间的推移，这些bug的成本也会增加，尤其当这些bug潜伏并慢慢出现在已经发布的软件中时。当你发现bug的时候就立即修复它是最好的，此时你代码要解决的问题在你脑中还是很清晰的。否则，你转移到其他任务，忘了那个特定的代码，一段时间后再去查看这些代码就需要，此摘要也包括一些与代码不太相关的习惯，但对整体代码的创建息息相关，包括撰写API文档、执行同行评审。这些习惯和最佳做法可以帮助你写出更好的，更易于理解和维护的代码。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/categories/javascript/"/>
+    
+    
+      <category term="开发" scheme="http://tiantang-tt.github.io/tags/%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浏览器本地存储,localStorage,sessionStorage</title>
+    <link href="http://tiantang-tt.github.io/2016/04/07/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8-localStorage-sessionStorage/"/>
+    <id>http://tiantang-tt.github.io/2016/04/07/浏览器本地存储-localStorage-sessionStorage/</id>
+    <published>2016-04-07T11:39:46.000Z</published>
+    <updated>2016-04-26T04:41:35.165Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    一般来说，当我们首次登陆某个网站的时候，浏览器会默认提供一个“记住密码”的功能来询问你是否需要浏览器来记住你的登陆密码，这些密码会以加密的形式安全的存放在你的本地磁盘上。但是我们需要的往往并不仅仅是记住密码而已，有时候我们希望存储更多的信息在本地。浏览器tab页中的信息通常会在关闭标签页的时候销毁，只有那些保存在cookie的信息会被写入到磁盘中，所以当你再次打开浏览器的时候，除了cookie中的信息，你上次访问网页的信息将会全部丢失，因此我们不得不一次次的输入那些重复的信息，白白浪费自己的时间，而现在，html5提供的本地存储功能webStorage可以帮我们完美的解决这个问题。<br></p>
+
+<a id="more"></a>
+<hr>
+<p><br></p>
+<h3 id="2-webStorage"><a href="#2-webStorage" class="headerlink" title="2.webStorage"></a>2.webStorage</h3><p><br>    以往我们用cookie来将需要的信息保存到本地，下次需要这些信息的时候直接从cookie中获取就可以了，这种便捷的方式一直以来是web开发人员本地存储的主要方式，但这种方式也有自己的弊端，比如cookie大小有限制，相当轻量，因此能存放的信息量不大，而且每发请求都会带上相应的cookie，如果cookie中包含敏感信息，那么这种行为就相当危险了。web Storage主要有以下两个目标<br></p>
+
+<pre><code>* 提供一种cookie之外存储的会话的途径.
+* 提供一种可以存储大量可以跨会话存储的机制
+</code></pre><p><br>    支持webStorage的浏览器的window上定义了两个属性，localStorage和sessionStorage,这两个属性都是storage对象的实例，下面是storage接口的定义<br></p>
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><div class="line">interface Storage &#123;</div><div class="line">  readonly attribute <span class="keyword">unsigned</span> <span class="keyword">long</span> length;</div><div class="line">  DOMString? key(<span class="keyword">unsigned</span> <span class="keyword">long</span> index);</div><div class="line">  getter DOMString? getItem(DOMString key);</div><div class="line">  <span class="function">setter <span class="keyword">void</span> <span class="title">setItem</span><span class="params">(DOMString key, DOMString value)</span></span>;</div><div class="line">  <span class="function">deleter <span class="keyword">void</span> <span class="title">removeItem</span><span class="params">(DOMString key)</span></span>;</div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p><br>    所以localStorage和sessionStorage也拥有setItem,getItem,removeItem等方法，下面分别来讲这两种存储方法各有什么特点。ps:下文中的webStorage对象指的是localStorage或sessionStorage<br></p>
+
+<hr>
+<p><br></p>
+<h3 id="3-localStorage和webStorage"><a href="#3-localStorage和webStorage" class="headerlink" title="3.localStorage和webStorage"></a>3.localStorage和webStorage</h3><p><br>    由于webStorage中信息的存储（目前）只能存储字符串，所以如果存储别的类型的数据，会被浏览器默认转为字符串存储起来。<br></p>
+
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//api</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//若key不存在，则创建该key,并把相应的值设为value，</span></div><div class="line"><span class="comment">//若key已经存在，则判断当前value和原始值oldvalue是否相等，若相等，则do nogthing，什么也不做(__注意:此种情况不会触发事件)</span></div><div class="line"><span class="comment">//若key存在且value!=oldvalue,则用value覆盖oldValue;</span></div><div class="line">setItem(key,value):存储一条记录</div><div class="line"></div><div class="line"><span class="comment">//若key不存在，则do nothing，什么也不做(__注意:此种情况不会触发事件)</span></div><div class="line"><span class="comment">//若key存在，则返回该key相对应的value</span></div><div class="line">getItem(key):获取一条记录</div><div class="line"></div><div class="line"><span class="comment">//若key不存在，则do nothing，什么也不做(__注意:此种情况不会触发事件)</span></div><div class="line"><span class="comment">//若key存在，则清除对应的记录</span></div><div class="line">removeItem(key):清除一条记录</div><div class="line"></div><div class="line">clear():清除当前webStorage对象的所有键值对</div><div class="line"></div><div class="line"><span class="comment">//若n&gt;length,则返回null</span></div><div class="line">key(n):获取第n条记录的key</div><div class="line"></div><div class="line"><span class="comment">//获取当前webStorage对象的记录条数</span></div><div class="line">length:总数属性</div></pre></td></tr></table></figure>
+<p><br>    这里要注意的一点是可以通过设置属性来存储一条记录，通过查询该属性来获取该记录，通过delete操作符来删除该记录(非ie8及以下)<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> ls = localStorage;</div><div class="line">ls.setItem(<span class="string">"name"</span>,<span class="string">"honor"</span>)        <span class="comment">//等价于ls.name = "honor"</span></div><div class="line">ls.setItem(<span class="string">"name"</span>,<span class="string">"柳轻侯"</span>)       <span class="comment">//直接覆盖原来的oldvalue,相当于ls.name = "柳轻侯"</span></div><div class="line">ls.removeItem(<span class="string">"name"</span>)             <span class="comment">//等价于delete(ls.name),此举仅在非ie8下生效</span></div></pre></td></tr></table></figure>
+<hr>
+<p><br></p>
+<h3 id="4-生命周期和作用域"><a href="#4-生命周期和作用域" class="headerlink" title="4.生命周期和作用域"></a>4.生命周期和作用域</h3><p><br>    如我们所知，cookie可以设置domain和cookie,那么localStorage和sessionStorage是否也有作用域和生命周期呢，答案是显然的，并且不同的作用域和生命周期是localStorage和sessionStorage的主要区别。和cooie不同，ls(localStorage)和ss(sessionStorage)有默认的作用域和生命周期，ls存储的数据是永久性的(存储在用户的磁盘上)，除非用户可以得去清除存储的数据，否则将一直存在下去，不会过期。<br><br><br>    可读取共同ls的文档应该是同源的(同协议，同域，同端口)，通源文档分享同一个ls对象，可以相互读取或覆盖对方的数据，两个不同窗口tab页之间可以相互通信，没有类似于cookie的path限制，或者你可以把ls的path当成’/‘。但有一点需要注意，虽然同源文档共同维护同一个ls对象，且这个ls对象是存储在用户的磁盘上的，但是 不同的浏览器却又有相对独立的作用域，比如你使用chrome为www.test.com设置了一个ls对象，你用FireFox访问www.text.com却访问不到上次在chrome中设置的ls对象，别的浏览器也一样。<br></p><br><p><br>    ss对象的生命周期一般是当前window对象的生命周期，也就是说除非当前tab页关闭，否则这个ss对象是一直存在的，当然前提是你刷新的tab页跟之前的页面是同源的(同协议，同域，同端口)。但是不同的window之间是不可以共享同一个ss，即使两个window的url是一模一样的，也就是说，不同的tab页之间的信息共享是被严格限制的，no way!.<br></p>
+
+<hr>
+<p><br></p>
+<h3 id="5-存储事件"><a href="#5-存储事件" class="headerlink" title="5.存储事件"></a>5.存储事件</h3><p><br>    只要ls或ss的数据对象发生改变，浏览器在其他对该数据可见的窗口对象上会触发存储事件（在对数据进行改变的窗口上反而不会触发，也就是说同源的a页面和b页面，如果a页面中对ls对象做出修改，那么会在b页面上触发存储事件，而a页面上却不会触发。（__注意： 只有数据真正发生改变时才会触发存储事件，do nothing的情况是不会触发事件的）。 我们可以通过dom2的事件监听方法addEventListere方法监听storage事件<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//与storage事件相关的五个属性（ie8不支持）</span></div><div class="line">key: 被设置或移除的键名字，如果为clear事件，则该属性为<span class="literal">null</span></div><div class="line">newVlaue：被设置项的新值，如果书removeItem事件，则该属性为<span class="literal">null</span></div><div class="line">oldValue: 被设置或移除的项的原始值，若该项是新增项，则该属性是<span class="literal">null</span></div><div class="line">storageArea: 目标<span class="built_in">window</span>对象上的localStorage属性或sessionStorage属性</div><div class="line">url: 触发该事件的文档的url</div></pre></td></tr></table></figure>
+<hr>
+<p><br></p>
+<h3 id="6-浏览器支持"><a href="#6-浏览器支持" class="headerlink" title="6.浏览器支持"></a>6.浏览器支持</h3><p><img src="http://7xt6mo.com1.z0.glb.clouddn.com/heavenimUfMv.jpg" alt=""></p>
+<p><br>    chrome和safri的ss和ls大小限制为2.5Mb,其他浏览器为5Mb,这个容量足以应对大部分需求。要特别注意，ie8不支持delete操作符，为保证兼容性，应该尽量使用stemItem,getItem，removeItem<br></p>
+
+<hr>
+<p><br></p>
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7.总结"></a>7.总结</h3><p><br>    总体来说html5的本都存储还是很强大的，可以我们大部分需求，但并非所有浏览器都实现了这个接口，所以在使用之前最好先检测一下看浏览器是否支持ls和ss。另外，目前ls和ss都只能存储字符串，如果想要存储一些复杂的接口，可将其先转化为字符串然后存储，用的时候再将格式还原。<br></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1.前言&quot;&gt;&lt;/a&gt;1.前言&lt;/h3&gt;&lt;p&gt;&lt;br&gt;    一般来说，当我们首次登陆某个网站的时候，浏览器会默认提供一个“记住密码”的功能来询问你是否需要浏览器来记住你的登陆密码，这些密码会以加密的形式安全的存放在你的本地磁盘上。但是我们需要的往往并不仅仅是记住密码而已，有时候我们希望存储更多的信息在本地。浏览器tab页中的信息通常会在关闭标签页的时候销毁，只有那些保存在cookie的信息会被写入到磁盘中，所以当你再次打开浏览器的时候，除了cookie中的信息，你上次访问网页的信息将会全部丢失，因此我们不得不一次次的输入那些重复的信息，白白浪费自己的时间，而现在，html5提供的本地存储功能webStorage可以帮我们完美的解决这个问题。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/categories/javascript/"/>
+    
+    
+      <category term="localStorage" scheme="http://tiantang-tt.github.io/tags/localStorage/"/>
+    
+      <category term="sessionStorage" scheme="http://tiantang-tt.github.io/tags/sessionStorage/"/>
+    
+      <category term="webStorage" scheme="http://tiantang-tt.github.io/tags/webStorage/"/>
+    
+      <category term="浏览器本地存储" scheme="http://tiantang-tt.github.io/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>javascript中的相等操作符</title>
+    <link href="http://tiantang-tt.github.io/2016/04/05/javascript%E4%B8%AD%E7%9A%84%E7%9B%B8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6/"/>
+    <id>http://tiantang-tt.github.io/2016/04/05/javascript中的相等操作符/</id>
+    <published>2016-04-05T04:41:56.000Z</published>
+    <updated>2016-04-13T02:48:50.713Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    我们在编程的过程中，经常会遇到判断两个变量是否相等的情况，ECMAscript提供了两种相等操作符”==”和”===”来判断，这两种操作都会返回一个boolean值。一般来说，我们把”==”称之为相等，称”===”为全等。当两相比较的两个变量数据类型一致时，情况比较简单，而当操作符两边的变量类型不一致，甚至其中的某个变量是对象时，情况就比较复杂了，下面分别介绍当操作数类型不同时运算结果会怎么样。<br></p>
+
+<a id="more"></a>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="2-全等操作符-“-”"><a href="#2-全等操作符-“-”" class="headerlink" title="2.全等操作符 “===”"></a>2.全等操作符 “===”</h3><p><br>    全等操作符”===”的情况相对来说比较简单。当用全等操作符”===”来判断时，首先检查操作符两边操作数数据类型是否一致，若不一致，则直接返回false,否则，才进行下一步判断。如果是两个boolean的比较，则”===”两边必须同为true或同为false,才可以返回true,否则返回false.若两相比较的是数字，那么只有当这两个数字大小相等时才会返回true，否则返回false。如果要比较的两个变量是字符串，先比较两个字符串的长度length是否相等，如果长度不一样，则返回false,如果相等，则从两个变量的第一个字符开始比较是否相等，一直比较到最后一位，如果其中的某一位不想等，则返回false,否则返回true,(<strong>注意:字符串的比较是不会忽略空格的，所以在比较两个字符串是否相等时，为确保安全，应该先去除空格，然后把两个字符串同转为大写或者小写之后再进行比较</strong>)。而null只有在null===null的情况下才会返回true,其它情况都返回false,同样，undefined只有在undefined===undefined的情况下才会返回true,否则返回false。如：<br></p><br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//若数据类类型不同，则直接返回false</span></div><div class="line"><span class="literal">true</span> === <span class="number">1</span>       <span class="comment">//false</span></div><div class="line"><span class="string">"1"</span> === <span class="number">1</span>        <span class="comment">//false</span></div><div class="line">  </div><div class="line"><span class="comment">//boolean的比较</span></div><div class="line"><span class="literal">true</span> === <span class="literal">true</span>    <span class="comment">//true</span></div><div class="line"><span class="literal">true</span> === <span class="literal">false</span>   <span class="comment">//false</span></div><div class="line"></div><div class="line"><span class="comment">//string的比较</span></div><div class="line"><span class="string">"hello"</span> === <span class="string">"helloworrld"</span> <span class="comment">//false</span></div><div class="line"><span class="string">"hello"</span> === <span class="string">"world"</span>  <span class="comment">//false</span></div><div class="line"><span class="string">"hello"</span> === <span class="string">" hello"</span> <span class="comment">//false</span></div><div class="line"><span class="string">"hello"</span> === <span class="string">"hellO"</span>  <span class="comment">//false</span></div><div class="line"><span class="string">"hello"</span> === <span class="string">"hello"</span>  <span class="comment">//true</span></div><div class="line"></div><div class="line"><span class="comment">//number的比较</span></div><div class="line"><span class="number">1</span> === <span class="number">1</span>    <span class="comment">//true</span></div><div class="line"><span class="number">1</span> === <span class="number">1.0</span>  <span class="comment">//true</span></div><div class="line"><span class="number">1</span> === <span class="number">1.2</span>  <span class="comment">//false</span></div><div class="line"></div><div class="line"><span class="comment">//null和undefined的比较</span></div><div class="line"><span class="literal">undefined</span> === <span class="literal">undefined</span>   <span class="comment">//true</span></div><div class="line"><span class="literal">null</span> === <span class="literal">null</span>             <span class="comment">//true</span></div><div class="line"><span class="literal">undefined</span> === <span class="literal">null</span>        <span class="comment">//false,两者在"=="时才返回true</span></div></pre></td></tr></table></figure><br><br><p><br>    如果进行”===”比较的两个操作数不是基本类型值，而是两个对象，这时候判断依据就是，判断这两个变量是否是”同一个”对象<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> a,b,c;</div><div class="line">a = b = &#123;</div><div class="line">	<span class="attr">name</span> : <span class="string">'柳轻侯'</span>,</div><div class="line">	<span class="attr">city</span> : <span class="string">'南京'</span></div><div class="line">&#125;;</div><div class="line">c = &#123;</div><div class="line">	<span class="attr">name</span> : <span class="string">'柳轻侯'</span>,</div><div class="line">	<span class="attr">city</span> : <span class="string">'南京'</span></div><div class="line">&#125;;</div><div class="line">a === b      <span class="comment">//true</span></div><div class="line">a === c      <span class="comment">//false</span></div></pre></td></tr></table></figure>
+<p><br>    两个对象仅仅”长得一样”是不够的，a和c都是Object实例，且两者拥有相同的属性和值，可是这两个却不是”同一个”对象，因为实际上a和c指向了两个不同的实例，所以这两个对象是不全等的。而a和b却是指向了同一个对象，换个说法，a和b是同一个对象的不同别名，他们实际上指向的对象是完全相同的，所以a === b。”!==” 与 “===” 比较规则一样，在此不再赘述。<br></p>
+
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="3-相等操作符”-”"><a href="#3-相等操作符”-”" class="headerlink" title="3.相等操作符”==”"></a>3.相等操作符”==”</h3><p><br>    全等操作符在进行判断的时候，如果两个变量的类型不同，则直接返回false,而与此不同，”==”相等操作符在判断的时候，如果两个变量的类型不同，则会做一个<a href="">隐式的类型转换</a>，把要比较的两个值转化为相同的类型再做比较，那么这种转化规则是怎么样的？<br></p><br><p><br>    在转化不同数据类型时，相等和不等操作符遵循下面的基本规则<br></p>
+
+<pre><code>* 如果其中一个操作数是是boolean值，则在比较之前会先将boolean值转化为number值，true转化为1，false转为0;
+* 如果其中一个操作数是string类型，而另一个是number类型，则在比较之前先将string类型转化为number类型再进行判断;
+* 在比较之前，undefined和null是不会转为其他值进行比较的;
+* 如果其中一个操作数是对象，而另一个是基本类型值，则在比较之前先将对象转为基本类型值，然后再依据前面的规则进行后续的比较;
+</code></pre><p><br>    两个操作数在比较时遵循下列规则<br></p>
+
+<pre><code>* undefined和null是相等的，即：undefined == null;
+* 如果有一个操作数是NaN，那么返回false，即使两个操作数都是NaN,也会返回false;
+* 如果两个操作数是对象，则比较规则跟&quot;===&quot;的比较规则是一样的，除非这两个操作数是同一个对象，则返回true，否则返回false;
+</code></pre><p><br>    此处需要注意的是，NaN == NaN是返回false的，NaN意思是 not a number,也就是说该操作数是一个非数字，这个非数字是不确定的，它的值是未知的，甚至可能根本就不能用javascript的语法表示出来，这样一个未知量是不能用来进行特定比较的，两个未知的东西，如果不能确定它的值是什么，当然不能说 NaN == NaN。那么既然不能用”==”来比较，我们怎么去判定一个变量是不是NaN呢 ，既然不能用相等来判定，那么不妨反其道而行之，用”!=”来判定，判定一个变量是否不等于NaN。比如：<br></p>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//如果需要判定一个变量是不是NaN,可以如下</span></div><div class="line"><span class="comment">//a是你需要判定的变量</span></div><div class="line"><span class="keyword">if</span>((<span class="keyword">typeof</span> a === <span class="string">"number"</span>) &amp;&amp; a != <span class="literal">NaN</span> )&#123;   <span class="comment">//此处需要注意，NaN也是number类型</span></div><div class="line">	<span class="comment">//TODO  </span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="4-常见比较情况及其结果"><a href="#4-常见比较情况及其结果" class="headerlink" title="4.常见比较情况及其结果"></a>4.常见比较情况及其结果</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="literal">null</span> == <span class="literal">undefined</span>   <span class="comment">// true </span></div><div class="line"><span class="string">"NaN"</span> == <span class="literal">NaN</span>        <span class="comment">// false </span></div><div class="line"><span class="number">5</span> == <span class="literal">NaN</span>            <span class="comment">// false </span></div><div class="line"><span class="literal">NaN</span> == <span class="literal">NaN</span>          <span class="comment">// false  </span></div><div class="line"><span class="literal">NaN</span> != <span class="literal">NaN</span>          <span class="comment">// true </span></div><div class="line"><span class="literal">false</span> == <span class="number">0</span>          <span class="comment">// true </span></div><div class="line"><span class="literal">true</span> == <span class="number">1</span>           <span class="comment">// true </span></div><div class="line"><span class="literal">true</span> == <span class="number">2</span>           <span class="comment">// false </span></div><div class="line"><span class="literal">undefined</span> == <span class="number">0</span>      <span class="comment">// false </span></div><div class="line"><span class="literal">null</span> == <span class="number">0</span>           <span class="comment">// false</span></div><div class="line"><span class="string">"5"</span> == <span class="number">5</span>            <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="5-典型例题解析"><a href="#5-典型例题解析" class="headerlink" title="5.典型例题解析"></a>5.典型例题解析</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">![] == []            <span class="comment">//true</span></div></pre></td></tr></table></figure>
+<p><br>    这是一道比较容易令人困惑的题，按照正常的思维模式，对一个操作数逻辑取反，跟这个操作数本身的值是相对的，如果这个操作数本身的值是true,那么取反之后就是false，反之，如果这个操作数的值是false，那么对其逻辑取反之后就是true，无论如何也不会是同一个值，可是事实上却是![] == []。首先，![]的值是false，因为这里[]被当成了一个数组的实例，是一个对象，而对象都是真值，对其取反，得到一个假值，也就是false。其次看等号右边，[]是一个对象，要将其转为基本类型值，会先调用数组的valueOf方法，而数组的valueOf方法返回数组本身，没有得到一个基本值，这时候要继续调用数组的toString方法，得到一个””空字符串，所以这时候也就变成了false == “”是否为真的问题了，而根据前面的规则，如果有一个操作数为boolean值，会将其转为数值，false转化为0。进而，问题转化为0 == “”是否为真值的问题，当number和string比较时，会将string转为number，而””会转为0。最后，问题变演化成了0 == 0是否为真值，毋庸置疑，结果是true。这里要注意的就是![]，它被当成了一个整体的逻辑值，是直接对对象进行取反，是一个假值，而不是先把[]转化为基本值再取反<br></p>
+
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="6-小结"><a href="#6-小结" class="headerlink" title="6.小结"></a>6.小结</h3><p></p><p><br>    “==”在比较不同类型值得时候会进行隐式的类型转化，而”===”不会转化，全等一定相等，相等却不一定全等，这是一个充分不必要条件。undefined和null相等而不全等，且在相等比较的时候不会转化为其他类型的值。NaN是不等于NaN 的，要判断某个变量是不是NaN，要用”!=”。对象和非对象在进行比较的时候会先转为基本类型值然后再根据上面的规则进行比较。<br></p><br><br><p></p>
+<hr>
+<p><br></p>
+<h3 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7.参考资料"></a>7.参考资料</h3><ul>
+<li>《javascript高级程序设计》</li>
+<li>《javascript权威指南》</li>
+</ul>
+<hr>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1.前言&quot;&gt;&lt;/a&gt;1.前言&lt;/h3&gt;&lt;p&gt;&lt;br&gt;    我们在编程的过程中，经常会遇到判断两个变量是否相等的情况，ECMAscript提供了两种相等操作符”==”和”===”来判断，这两种操作都会返回一个boolean值。一般来说，我们把”==”称之为相等，称”===”为全等。当两相比较的两个变量数据类型一致时，情况比较简单，而当操作符两边的变量类型不一致，甚至其中的某个变量是对象时，情况就比较复杂了，下面分别介绍当操作数类型不同时运算结果会怎么样。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/categories/javascript/"/>
+    
+    
+      <category term="javascript" scheme="http://tiantang-tt.github.io/tags/javascript/"/>
+    
+      <category term="js" scheme="http://tiantang-tt.github.io/tags/js/"/>
+    
+      <category term="ecmascript" scheme="http://tiantang-tt.github.io/tags/ecmascript/"/>
+    
+      <category term="相等" scheme="http://tiantang-tt.github.io/tags/%E7%9B%B8%E7%AD%89/"/>
+    
+      <category term="全等" scheme="http://tiantang-tt.github.io/tags/%E5%85%A8%E7%AD%89/"/>
+    
+  </entry>
+  
+</feed>

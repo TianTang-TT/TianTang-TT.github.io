@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>js隐式类型转化例子分析 | 轻言</title>
+
+  
+  <meta name="keywords" content="隐式类型转换,sb,Web,前端,JavaScript,html5,css3">
+  
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.前言    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js隐式类型转化例子分析">
+<meta property="og:url" content="http://tiantang-tt.github.io/2016/06/29/js隐式类型转换例子分析/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1.前言    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+<meta property="og:updated_time" content="2016-10-06T06:28:07.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js隐式类型转化例子分析">
+<meta name="twitter:description" content="1.前言    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+  
+    <link rel="alternate" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <!-- 下面这个字体加载太慢了-->
+  <!-- 
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+   -->
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">轻言</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">— 黄金白璧买歌笑</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://tiantang-tt.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-js隐式类型转换例子分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/29/js隐式类型转换例子分析/" class="article-date">
+  <time datetime="2016-06-29T05:45:57.000Z" itemprop="datePublished">2016-06-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      js隐式类型转化例子分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]]<em>[~+[]]+~~!+[]]+({}+[])[[~!+[]</em>~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。<br></p>
+
+<a id="more"></a>
+<hr>
+<h3 id="2-思路"><a href="#2-思路" class="headerlink" title="2.思路"></a>2.思路</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="built_in">eval</span>(<span class="string">'(!(~+[])+&#123;&#125;)[--[~+""][+[]]*[~+[]]+~~!+[]]+(&#123;&#125;+[])[[~!+[]*~+[]]]'</span>)   <span class="comment">//'sb'</span></div></pre></td></tr></table></figure>
+<p><br>    乍一看毫无头绪，这段代码中没有任何英文，也没有数字，那么字符串’sb’是怎么出现的？仔细分析，代码中多次出现了’!’,’+’，’!’的作用是取反，返回一个布尔值，那么可能会出现’false’或者’true’，那么我们要的’sb’中的’s’已经出现，而’+’有一个重要的作用，那就是等同于Number()函数的效果，将值转为number类型，并且有拼接字符串的作用，如果’+’的一边是字符串而另一边不是，那么将会被隐式的转换为字符串类型并进行拼接。到这里，思路应该很清晰了，某些被转换后的值会出现英文字母和数字，然后再结合’[]’那么就可以取到相应的字母了。下面来具体分析原理。<br></p>
+
+<h3 id="3-具体分析"><a href="#3-具体分析" class="headerlink" title="3.具体分析"></a>3.具体分析</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">(!(~+[])+&#123;&#125;)[--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]]+(&#123;&#125;+[])[[~!+[]*~+[]]]</div><div class="line"></div><div class="line"><span class="comment">//将上面代码进行拆分，可得到如下部分</span></div><div class="line">(!(~+[])+&#123;&#125;)  ，[--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]] ， (&#123;&#125;+[]) ， [[~!+[]*~+[]]]</div><div class="line"><span class="comment">//分别将上述四部分用$1,$2,$3,$4来表示，即求$1和$2的运算结果 + $3和$4的运算结果。</span></div><div class="line"><span class="keyword">var</span> $<span class="number">1</span>, $<span class="number">2</span>, $<span class="number">3</span>, $<span class="number">4</span>;</div><div class="line">	$<span class="number">1</span> = (!(~+[])+&#123;&#125;);</div><div class="line">	$<span class="number">2</span> = [--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]];</div><div class="line">	$<span class="number">3</span> = (&#123;&#125;+[]);</div><div class="line">	$<span class="number">4</span> = [[~!+[]*~+[]]];</div><div class="line"></div><div class="line"><span class="comment">//分析$1 = (!(~+[])+&#123;&#125;);运算顺序为先计算(~+[]),然后对其取反，再与&#123;&#125;相加</span></div><div class="line">(~+[])           <span class="comment">//返回-1， +[]此处的加号相当Number函数，所以+[]返回0，再对其进行按位非操作，即取相反数再减去1</span></div><div class="line">!(~+[])          <span class="comment">//返回false</span></div><div class="line"><span class="literal">false</span> + &#123;&#125;       <span class="comment">//返回'false[object Object]', 一元加操作符会将布尔值和对象通过toString()方法分别</span></div><div class="line">                 <span class="comment">//转为'false'和'[object Object]'</span></div><div class="line"><span class="comment">//所以$1的运算结果为'false[object Object]'</span></div><div class="line"></div><div class="line"><span class="comment">//分析$2 = [--[~+""][+[]]*[~+[]]+~~!+[]]; 先计算--[~+""][+[]]，然后计算[~+[]]，两相作乘，然后与~~!+[]的结果相加</span></div><div class="line">--[~+<span class="string">""</span>][+[]]          <span class="comment">//返回-2，[~+""]返回[-1],[+[]]返回[0]，即为--[-1][0]</span></div><div class="line">                       <span class="comment">//由于方括号[]优先级高于--， 所以返回-2</span></div><div class="line">[~+[]]                 <span class="comment">//返回[-1]</span></div><div class="line">--[~+<span class="string">""</span>][+[]]*[~+[]]   <span class="comment">//返回2，一元乘操作符会将非数字转为数字，[-1]被转为-1,即为(-2)*(-1) </span></div><div class="line">~~!+[]                 <span class="comment">//返回1，~操作符会将布尔值转为number</span></div><div class="line">[<span class="number">2</span> + <span class="number">1</span>]</div><div class="line"><span class="comment">//所以$2的运算结果为[3]</span></div><div class="line"></div><div class="line"><span class="comment">//分析$3 = (&#123;&#125;+[]),一元加操作符会将对象通过toString()分别 转为'[object Object]' 和 ''</span></div><div class="line">(&#123;&#125;+[])          <span class="comment">//返回'[object Object]'</span></div><div class="line"><span class="comment">//所以$3的运算结果为'[object Object]'</span></div><div class="line"></div><div class="line"><span class="comment">//分析$4 = [[~!+[]*~+[]]];先计算~!+[]，后计算~+[]，然后结果相乘</span></div><div class="line">~!+[]           <span class="comment">//返回-2</span></div><div class="line">~+[]            <span class="comment">//返回-1</span></div><div class="line">[[~!+[]*~+[]]]  <span class="comment">//返回[[2]]</span></div><div class="line"><span class="comment">//所以$4的运算结果为[[2]]</span></div><div class="line"></div><div class="line"><span class="comment">//因此整个表达式可以简化为</span></div><div class="line"><span class="string">'false[object Object]'</span>[<span class="number">3</span>] + <span class="string">'[object Object]'</span>[[<span class="number">2</span>]]</div><div class="line"><span class="comment">//返回'sb'</span></div><div class="line"><span class="comment">//此处要注意'string'[[2]]这种写法，string后面跟方括号，里面需要一个number类型的数值n来返回'string'</span></div><div class="line"><span class="comment">//的第n位上的字符，因此方括号里面的值会被通过Number()方法转为数值类型，[2]被转为2</span></div></pre></td></tr></table></figure>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h3><p><br>    1.主要考察js中隐式类型转换,一元+和~操作符将值转为number类型的值，相当于Number方法<br>    2.当+操作符两边类型不同时，若有一边为字符串，则将另一边也转为字符串，然后执行拼接。<br>    3.将对象转为基本类型值时，先调用valueOf方法，若还是对象，则调用toString方法。<br>    4.数组的valueOf方法返回其自身。<br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://tiantang-tt.github.io/2016/06/29/js隐式类型转换例子分析/" data-id="ciw382fod000gjsn8x206ts2f" class="article-share-link">Share</a>
+      
+        <a href="http://tiantang-tt.github.io/2016/06/29/js隐式类型转换例子分析/#comments" class="article-comment-link">评论</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/22/短小精悍的js代码段/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          短小精悍的js代码段
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/27/HTMLCollection和NodeList以及NamedNodeMap之间的关系/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HTMLCollection和NodeList以及NamedNodeMap之间的关系</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+ 
+  <section id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-js隐式类型转换例子分析" data-title="js隐式类型转化例子分析" data-url="http://tiantang-tt.github.io/2016/06/29/js隐式类型转换例子分析/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'heavenliu'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  </section>
+  </section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/">HTML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegExp/">RegExp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ecmascript/">ecmascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/event/">event</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/localStorage/">localStorage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sessionStorage/">sessionStorage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webStorage/">webStorage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/全等/">全等</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发/">开发</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/正则/">正则</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器本地存储/">浏览器本地存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/相等/">相等</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/HTML/" style="font-size: 10px;">HTML</a> <a href="/tags/RegExp/" style="font-size: 10px;">RegExp</a> <a href="/tags/ecmascript/" style="font-size: 10px;">ecmascript</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/localStorage/" style="font-size: 10px;">localStorage</a> <a href="/tags/sessionStorage/" style="font-size: 10px;">sessionStorage</a> <a href="/tags/webStorage/" style="font-size: 10px;">webStorage</a> <a href="/tags/全等/" style="font-size: 10px;">全等</a> <a href="/tags/开发/" style="font-size: 10px;">开发</a> <a href="/tags/正则/" style="font-size: 10px;">正则</a> <a href="/tags/浏览器本地存储/" style="font-size: 10px;">浏览器本地存储</a> <a href="/tags/相等/" style="font-size: 10px;">相等</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/29/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/06/js事件顺序执行/">js事件顺序执行</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/22/短小精悍的js代码段/">短小精悍的js代码段</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/29/js隐式类型转换例子分析/">js隐式类型转化例子分析</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/27/HTMLCollection和NodeList以及NamedNodeMap之间的关系/">HTMLCollection和NodeList以及NamedNodeMap之间的关系</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 柳轻侯<br>
+      email:  honor_loyalty@126.com<br>
+      Powered by <a href="http://tiantang-tt.github.io/" target="_blank">轻言原创</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:50px;cursor: pointer;">
+<a title="返回顶部" href="#"><img src="/css/images/scrollup.png"/></a>
+</div>
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
