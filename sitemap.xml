@@ -2,16 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/12/01/principle-of-jsonp/</loc>
+    <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
     
-    <lastmod>2016-12-02T05:12:18.149Z</lastmod>
+    <lastmod>2016-12-02T08:23:06.581Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://tiantang-tt.github.io/2016/10/06/event-sequence/</loc>
     
-    <lastmod>2016-11-29T09:04:35.321Z</lastmod>
+    <lastmod>2016-12-02T08:22:33.719Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
+    
+    <lastmod>2016-12-02T08:21:54.828Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
+    
+    <lastmod>2016-12-02T08:21:38.321Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
+    
+    <lastmod>2016-12-02T08:19:35.910Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
+    
+    <lastmod>2016-12-02T08:19:16.662Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
+    
+    <lastmod>2016-12-02T08:18:43.439Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/12/01/principle-of-jsonp/</loc>
+    
+    <lastmod>2016-12-02T08:18:22.453Z</lastmod>
     
   </url>
   
@@ -23,51 +65,9 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
-    
-    <lastmod>2016-10-10T06:37:23.246Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
-    
-    <lastmod>2016-10-06T06:28:07.091Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
-    
-    <lastmod>2016-09-22T04:41:00.557Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
-    
-    <lastmod>2016-06-29T05:42:24.631Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
-    
-    <lastmod>2016-06-12T03:15:13.982Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
     
     <lastmod>2016-04-26T04:41:35.165Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
-    
-    <lastmod>2016-04-13T02:48:50.713Z</lastmod>
     
   </url>
   

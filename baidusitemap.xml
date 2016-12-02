@@ -4,16 +4,26 @@
 
     
   <url>
-    <loc>http://tiantang-tt.github.io/2016/12/01/principle-of-jsonp/</loc>
-    <lastmod>2016-12-02T05:12:18.149Z</lastmod>
+    <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
+    <lastmod>2016-12-02T08:23:06.581Z</lastmod>
     <data>
         <display>
-        <title>jsonp跨域的原理</title>
-        <pubTime>2016-12-01T09:26:07.000Z</pubTime>
+        <title>javascript中的相等操作符</title>
+        <pubTime>2016-04-05T04:41:56.000Z</pubTime>
         
         <tag>javascript</tag>
          
-        <tag>jsonp</tag>
+        <tag>js</tag>
+         
+        <tag>ecmascript</tag>
+         
+        <tag>相等</tag>
+         
+        <tag>全等</tag>
+         
+        <tag>js中的相等操作符</tag>
+         
+        <tag>js中的相等和全等</tag>
          
          
            
@@ -27,7 +37,7 @@
     
   <url>
     <loc>http://tiantang-tt.github.io/2016/10/06/event-sequence/</loc>
-    <lastmod>2016-11-29T09:04:35.321Z</lastmod>
+    <lastmod>2016-12-02T08:22:33.719Z</lastmod>
     <data>
         <display>
         <title>js事件顺序执行</title>
@@ -36,6 +46,132 @@
         <tag>javascript</tag>
          
         <tag>event</tag>
+         
+         
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
+    <lastmod>2016-12-02T08:21:54.828Z</lastmod>
+    <data>
+        <display>
+        <title>前端开发规范</title>
+        <pubTime>2016-06-08T06:34:36.000Z</pubTime>
+        
+        <tag>开发</tag>
+         
+         
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
+    <lastmod>2016-12-02T08:21:38.321Z</lastmod>
+    <data>
+        <display>
+        <title>HTMLCollection和NodeList以及NamedNodeMap之间的关系</title>
+        <pubTime>2016-06-27T12:10:11.000Z</pubTime>
+        
+        <tag>HTML</tag>
+         
+        <tag>javascript</tag>
+         
+         
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
+    <lastmod>2016-12-02T08:19:35.910Z</lastmod>
+    <data>
+        <display>
+        <title>js常用正则校验</title>
+        <pubTime>2016-06-16T11:20:27.000Z</pubTime>
+        
+        <tag>RegExp</tag>
+         
+        <tag>正则</tag>
+         
+         
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
+    <lastmod>2016-12-02T08:19:16.662Z</lastmod>
+    <data>
+        <display>
+        <title>js隐式类型转化例子分析</title>
+        <pubTime>2016-06-29T05:45:57.000Z</pubTime>
+        
+        <tag>javascript</tag>
+         
+         
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
+    <lastmod>2016-12-02T08:18:43.439Z</lastmod>
+    <data>
+        <display>
+        <title>短小精悍的js代码段</title>
+        <pubTime>2016-09-22T04:23:56.000Z</pubTime>
+        
+        <tag>javascript</tag>
+         
+         
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/12/01/principle-of-jsonp/</loc>
+    <lastmod>2016-12-02T08:18:22.453Z</lastmod>
+    <data>
+        <display>
+        <title>jsonp跨域的原理</title>
+        <pubTime>2016-12-01T09:26:07.000Z</pubTime>
+        
+        <tag>javascript</tag>
+         
+        <tag>jsonp</tag>
          
          
            
@@ -63,110 +199,6 @@
 
     
   <url>
-    <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
-    <lastmod>2016-10-10T06:37:23.246Z</lastmod>
-    <data>
-        <display>
-        <title>js常用正则校验</title>
-        <pubTime>2016-06-16T11:20:27.000Z</pubTime>
-        
-        <tag>RegExp</tag>
-         
-        <tag>正则</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
-    <lastmod>2016-10-06T06:28:07.091Z</lastmod>
-    <data>
-        <display>
-        <title>js隐式类型转化例子分析</title>
-        <pubTime>2016-06-29T05:45:57.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
-    <lastmod>2016-09-22T04:41:00.557Z</lastmod>
-    <data>
-        <display>
-        <title>短小精悍的js代码段</title>
-        <pubTime>2016-09-22T04:23:56.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
-    <lastmod>2016-06-29T05:42:24.631Z</lastmod>
-    <data>
-        <display>
-        <title>HTMLCollection和NodeList以及NamedNodeMap之间的关系</title>
-        <pubTime>2016-06-27T12:10:11.000Z</pubTime>
-        
-        <tag>HTML</tag>
-         
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
-    <lastmod>2016-06-12T03:15:13.982Z</lastmod>
-    <data>
-        <display>
-        <title>前端开发规范</title>
-        <pubTime>2016-06-08T06:34:36.000Z</pubTime>
-        
-        <tag>开发</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
     <lastmod>2016-04-26T04:41:35.165Z</lastmod>
     <data>
@@ -181,34 +213,6 @@
         <tag>webStorage</tag>
          
         <tag>浏览器本地存储</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
-    <lastmod>2016-04-13T02:48:50.713Z</lastmod>
-    <data>
-        <display>
-        <title>javascript中的相等操作符</title>
-        <pubTime>2016-04-05T04:41:56.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-        <tag>js</tag>
-         
-        <tag>ecmascript</tag>
-         
-        <tag>相等</tag>
-         
-        <tag>全等</tag>
          
          
            

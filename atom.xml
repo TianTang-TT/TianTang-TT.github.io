@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://tiantang-tt.github.io/"/>
-  <updated>2016-12-02T05:12:18.149Z</updated>
+  <updated>2016-12-02T08:18:22.453Z</updated>
   <id>http://tiantang-tt.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://tiantang-tt.github.io/2016/12/01/principle-of-jsonp/"/>
     <id>http://tiantang-tt.github.io/2016/12/01/principle-of-jsonp/</id>
     <published>2016-12-01T09:26:07.000Z</published>
-    <updated>2016-12-02T05:12:18.149Z</updated>
+    <updated>2016-12-02T08:18:22.453Z</updated>
     
     <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p><br>    jsonp是一种常用的跨域手段，和反向代理，服务端做跨域处理相比，jsonp更显得方便轻巧，因而被大量用来处理跨域的请求，那么，这种请求方式到底是用了什么黑魔法，来解决令我们头疼的跨域问题。<br></p>
 
@@ -63,7 +63,7 @@
     <link href="http://tiantang-tt.github.io/2016/10/06/event-sequence/"/>
     <id>http://tiantang-tt.github.io/2016/10/06/event-sequence/</id>
     <published>2016-10-06T03:51:50.000Z</published>
-    <updated>2016-11-29T09:04:35.321Z</updated>
+    <updated>2016-12-02T08:22:33.719Z</updated>
     
     <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p><br>    前几天朋友问到一个问题,js中的依次绑定多个点击事件，那么这些事件的执行顺序跟绑定顺序有联系吗？当然通过属性绑定事件只能绑定覆盖之前的事件，此处按下不表。通过addEventListener和attachEvent可以为dom对象绑定多个事件，由于某些原因，可能并不会将执行逻辑写到同一个处理程序中，而是在代码执行的不同阶段先后添加了处理不同逻辑的事件，那么事件的执行顺序是按照添加的顺序执行的吗，如果不是，该怎么让事件顺序执行。<br></p>
 
@@ -98,7 +98,7 @@
     <link href="http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/"/>
     <id>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</id>
     <published>2016-09-22T04:23:56.000Z</published>
-    <updated>2016-09-22T04:41:00.557Z</updated>
+    <updated>2016-12-02T08:18:43.439Z</updated>
     
     <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><br>    一些令叹为观止的js精巧代码<br></p>
 
@@ -127,7 +127,7 @@
     <link href="http://tiantang-tt.github.io/2016/06/29/js-type-transform/"/>
     <id>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</id>
     <published>2016-06-29T05:45:57.000Z</published>
-    <updated>2016-10-06T06:28:07.091Z</updated>
+    <updated>2016-12-02T08:19:16.662Z</updated>
     
     <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]]<em>[~+[]]+~~!+[]]+({}+[])[[~!+[]</em>~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。<br></p>
 
@@ -158,7 +158,7 @@
     <link href="http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/"/>
     <id>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</id>
     <published>2016-06-27T12:10:11.000Z</published>
-    <updated>2016-06-29T05:42:24.631Z</updated>
+    <updated>2016-12-02T08:21:38.321Z</updated>
     
     <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    之所以把这三者放到一起，是因为这三个对象都是”Array-like”的（类数组）,它们具有像数组一样的特性，比如具有length属性，都可以通过索引[index]来获取相应的元素。更为重要的是，它们都是’live’的，是’有生命有呼吸的对象’，这么说是因为这三者都是动态的，会实时更新查询dom结构。<br></p>
 
@@ -208,7 +208,7 @@
     <link href="http://tiantang-tt.github.io/2016/06/16/js-common-regs/"/>
     <id>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</id>
     <published>2016-06-16T11:20:27.000Z</published>
-    <updated>2016-10-10T06:37:23.246Z</updated>
+    <updated>2016-12-02T08:19:35.910Z</updated>
     
     <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    这篇文章主要收集整理了常用的javascript的正则验证表达式，一部分为我工作中遇到的需要校验的规则，还有一些是我遇到的比较经典的js正则表达式，希望能对你有所帮助，若有疑问，请联系我。（持续更新中）<br></p>
 
@@ -235,7 +235,7 @@
     <link href="http://tiantang-tt.github.io/2016/06/08/FE-guide/"/>
     <id>http://tiantang-tt.github.io/2016/06/08/FE-guide/</id>
     <published>2016-06-08T06:34:36.000Z</published>
-    <updated>2016-06-12T03:15:13.982Z</updated>
+    <updated>2016-12-02T08:21:54.828Z</updated>
     
     <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><br>    软件bug的修复是昂贵的，并且随着时间的推移，这些bug的成本也会增加，尤其当这些bug潜伏并慢慢出现在已经发布的软件中时。当你发现bug的时候就立即修复它是最好的，此时你代码要解决的问题在你脑中还是很清晰的。否则，你转移到其他任务，忘了那个特定的代码，一段时间后再去查看这些代码就需要，此摘要也包括一些与代码不太相关的习惯，但对整体代码的创建息息相关，包括撰写API文档、执行同行评审。这些习惯和最佳做法可以帮助你写出更好的，更易于理解和维护的代码。<br></p>
 
@@ -285,7 +285,7 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//建议左花括号写在表达式后面</span></div><div class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;  </div><div class="line">   alert(<span class="string">'It is TRUE!'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 警告:意外的返回值</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span>(<span class="params"></span>) </span>&#123;</div><div class="line">   <span class="keyword">return</span></div><div class="line">  <span class="comment">// 下面代码不执行</span></div><div class="line">   &#123;</div><div class="line">      <span class="attr">name</span> : <span class="string">'Batman'</span></div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">构造函数：首字母大写</div><div class="line">普通函数：驼峰式写法</div><div class="line">文件命名：驼峰式写法</div><div class="line">内部函数：前面加下划线_</div></pre></td></tr></table></figure>
 <h3 id="空格"><a href="#空格" class="headerlink" title="空格"></a>空格</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//参数列表和for循环, 和 ; 前不允许有空格。</span></div><div class="line"><span class="comment">// good</span></div><div class="line">callFunc(a, b);</div><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</div><div class="line"></div><div class="line"><span class="comment">//比较操作符&lt; , &gt; , =两边加空格</span></div><div class="line"><span class="keyword">if</span>(a &lt; b)</div><div class="line"><span class="keyword">if</span>(a == b)</div><div class="line"></div><div class="line"><span class="comment">//对象创建时，属性中的 : 两边必须有空格。</span></div><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">    <span class="attr">a</span> : <span class="number">1</span>,</div><div class="line">    <span class="attr">b</span> : <span class="number">2</span>,</div><div class="line">    <span class="attr">c</span> : <span class="number">3</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<h3 id="引号"><a href="#引号" class="headerlink" title="引号"></a>引号</h3><p></p><p><br>    js中单引号和双引号并没有明显的含义区分，用单引号和双引号都可以，但为了规范性，我们有一下建议<br></p><br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//在html中用双引号，在js代码中用单引号</span></div><div class="line">&lt;input type=<span class="string">"file"</span> value=<span class="string">"upload"</span>&gt;&lt;/input&gt;</div><div class="line"><span class="keyword">var</span> a = <span class="string">"verisTest"</span>;</div><div class="line"><span class="comment">//注意，在json中必须用双引号，否则可能会出错</span></div><div class="line"><span class="keyword">var</span> jsonObj = &#123;</div><div class="line">	<span class="string">"a"</span> : <span class="string">"1"</span>,</div><div class="line">	<span class="string">"b"</span> : <span class="number">2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure><p></p>
+<h3 id="引号"><a href="#引号" class="headerlink" title="引号"></a>引号</h3><p></p><p><br>    js中单引号和双引号并没有明显的含义区分，用单引号和双引号都可以，但为了规范性，我们有一下建议<br></p><br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">//在html中用双引号，在js代码中用单引号</span></div><div class="line">&lt;input type=<span class="string">"file"</span> value=<span class="string">"upload"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span></div><div class="line"><span class="keyword">var</span> a = <span class="string">"verisTest"</span>;</div><div class="line"><span class="comment">//注意，在json中必须用双引号，否则可能会出错</span></div><div class="line"><span class="keyword">var</span> jsonObj = &#123;</div><div class="line">	<span class="string">"a"</span> : <span class="string">"1"</span>,</div><div class="line">	<span class="string">"b"</span> : <span class="number">2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure><p></p>
 <h3 id="分号"><a href="#分号" class="headerlink" title="分号"></a>分号</h3><p></p><p><br>    分号代表某段语句的结束，在js中某些语句后面可以不加分号，因为js解析引擎正在解析代码的时候会自动识别并添加分号，但是并非所有情况都能正确识别，因此我们建议在每个结束语句后面都添加分号。<br></p><br><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line">a = b</div><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">...</div><div class="line">&#125;)()</div><div class="line"></div><div class="line">会被解释为 a = b(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;...&#125;)()</div></pre></td></tr></table></figure><p></p>
 <h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><ol>
 <li><a href="http://www.zhangxinxu.com/wordpress/2010/10/%E7%BF%BB%E8%AF%91-%E9%AB%98%E8%B4%A8%E9%87%8Fjavascript%E4%BB%A3%E7%A0%81%E4%B9%A6%E5%86%99%E5%9F%BA%E6%9C%AC%E8%A6%81%E7%82%B9/" target="_blank" rel="external">翻译-高质量JavaScript代码书写基本要点</a></li>
@@ -378,7 +378,7 @@
     <link href="http://tiantang-tt.github.io/2016/04/05/equal-in-js/"/>
     <id>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</id>
     <published>2016-04-05T04:41:56.000Z</published>
-    <updated>2016-04-13T02:48:50.713Z</updated>
+    <updated>2016-12-02T08:23:06.581Z</updated>
     
     <content type="html"><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p><br>    我们在编程的过程中，经常会遇到判断两个变量是否相等的情况，ECMAscript提供了两种相等操作符”==”和”===”来判断，这两种操作都会返回一个boolean值。一般来说，我们把”==”称之为相等，称”===”为全等。当两相比较的两个变量数据类型一致时，情况比较简单，而当操作符两边的变量类型不一致，甚至其中的某个变量是对象时，情况就比较复杂了，下面分别介绍当操作数类型不同时运算结果会怎么样。<br></p>
 
@@ -449,6 +449,10 @@
       <category term="相等" scheme="http://tiantang-tt.github.io/tags/%E7%9B%B8%E7%AD%89/"/>
     
       <category term="全等" scheme="http://tiantang-tt.github.io/tags/%E5%85%A8%E7%AD%89/"/>
+    
+      <category term="js中的相等操作符" scheme="http://tiantang-tt.github.io/tags/js%E4%B8%AD%E7%9A%84%E7%9B%B8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6/"/>
+    
+      <category term="js中的相等和全等" scheme="http://tiantang-tt.github.io/tags/js%E4%B8%AD%E7%9A%84%E7%9B%B8%E7%AD%89%E5%92%8C%E5%85%A8%E7%AD%89/"/>
     
   </entry>
   
