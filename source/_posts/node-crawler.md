@@ -13,6 +13,7 @@ keywords: ['node 爬虫', 'node crawler', 'node spider', '知乎爬虫', '爬虫
 <!--more-->
 
 ### 主要构想
+
 > nodejs为前端接触后端架起了一座桥梁，现在后端能做的很多事情，我们用nodejs也能来实现，比如爬虫。作为前端工程师，我选用nodejs
   来实现这个小爬虫。此文中以spider来代替该爬虫。spider的主要作用是用来爬取自己知乎账号的最近动态，获取自己的基本资料，然后抓取两百条数据
   来分析自己最近都做了哪些操作，当然，你可以抓取更多，这是可以配置的。控制台的数据可视化并不是很好，因此用express搭建了简单的服务器，通过浏览器
@@ -21,15 +22,19 @@ keywords: ['node 爬虫', 'node crawler', 'node spider', '知乎爬虫', '爬虫
 ### 使用模块
 
 ##### superagent
+
 > 发起http请求，请求知乎接口来获取数据
 
 ##### cheerio
+
 > 抓取页面后操作dom来提取页面中的数据，api及用法跟jquery类似
 
 ##### express
+
 > 用来起简单的服务，以便于在浏览器中查看爬虫抓取的的数据
 
 ##### jade
+
 > 页面模板引擎
 
 ### 使用方法
@@ -43,6 +48,7 @@ keywords: ['node 爬虫', 'node crawler', 'node spider', '知乎爬虫', '爬虫
 </p>
 
 ### 主要代码
+
 ```js
 const superagent = require('superagent');
 const cheerio = require('cheerio');
