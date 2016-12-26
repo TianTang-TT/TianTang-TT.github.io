@@ -69,8 +69,9 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-#theme: yilia 
-theme: landscape
+theme: yilia 
+#theme: landscape
+#theme: next
 
 duoshuo_shortname: heavenliu
 
