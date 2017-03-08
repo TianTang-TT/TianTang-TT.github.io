@@ -69,7 +69,9 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: yilia 
+
+theme: maupassant
+#theme: yilia 
 #theme: landscape
 #theme: next
 
