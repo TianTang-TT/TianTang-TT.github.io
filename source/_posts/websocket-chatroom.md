@@ -8,7 +8,7 @@ keywords: [nodejs+websocket, 聊天室, 在线聊天室, socketio聊天室]
 
 ### 1. 前言
 <p>
-	随着浏览器怼html5的支持，我们现在可以用前端做一些很有意思的事情，比如在线聊天室，今天就谈谈怎么用nodejs+websocket实现一个简单的在线聊天室。本文用socket.io打造一个在线聊天室，取名为uchat，‘有聊’或者叫‘友聊‘。
+	随着浏览器对html5的支持，我们现在可以用前端做一些很有意思的事情，比如在线聊天室，今天就谈谈怎么用nodejs+websocket实现一个简单的在线聊天室。本文用socket.io打造一个在线聊天室，取名为uchat，‘有聊’或者叫‘友聊‘。
 </p>
 
 <!-- more -->
