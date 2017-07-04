@@ -1,5 +1,5 @@
 ---
-title: config-https-in-nginx
+title: nginx配置https
 date: 2017-04-18 17:18:49
 categories: nginx
 tags: [nginx, https]

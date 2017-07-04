@@ -1,5 +1,5 @@
 ---
-title: postMessage-in-html5
+title: postMessage实现页面间通信
 date: 2017-07-03 17:21:54
 categories: [html5]
 tags: [html5, postMessage]

@@ -1,5 +1,5 @@
 ---
-title: websocket-chatroom
+title: websocket实现聊天室功能，仿微信pc端
 date: 2017-01-09 19:02:21
 categories: nodejs
 tags: [nodejs, javascript, websocket, socket.io]
