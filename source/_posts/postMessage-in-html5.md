@@ -14,7 +14,7 @@ keywords: [html页面通信, postMessage, postMessage页面通信, postMessage�
 
 ### 2.简介
 <p>
-    window.postMessage() 方法可以安全地实现跨源通信。通常，当且仅当执行它们的页面位于具有相同的协议（通常为https），端口号（443为https的默认值），以及主机(模数 Document.domain 由两个页面设置为相同的值)。 window.postMessage() 方法提供了一种受控机制，以便在正确使用时以安全的方式规避此限制。
+    window.postMessage() 方法可以安全地实现跨源通信。通常，当且仅当两个页面具有相同的协议（通常为https），端口号（443为https的默认值），以及主机(模数 Document.domain 由两个页面设置为相同的值)才可以进行通信。 window.postMessage() 方法提供了一种受控机制，以便在正确使用时以安全的方式规避此限制。
     window.postMessage() 方法被调用时，会在所有页面脚本执行完毕之后（e.g., 在该方法之后设置的事件、之前设置的timeout 事件,etc.）向目标窗口派发一个  MessageEvent 消息。 
 </p>
 
