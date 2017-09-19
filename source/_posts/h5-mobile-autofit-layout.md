@@ -47,12 +47,12 @@ keywords: [h5, mobile, viewport, layoutviewport, visualviewport, dpr, px, ppi, m
 ##### 位图像素
 > 一个位图像素是栅格图像(如：png, jpg, gif等),最小的数据单元。每一个位图像素都包含着一些自身的显示信息(如：显示位置，颜色值，透明度等)。
 
-理论上来说，1个位图像素对应于1个物理像素，图片才能得到完美清晰的展示，在一般的屏幕下，我们也确实是这么做的，假设需要显示一个200x300px的图片元素，那我们用一张200x300px的图片便能完美呈现，但是在如果在高清屏下，这么做图片就会显得有点模糊。还是以iphone6为例，又上面的内容我们可以知道，在iphone6下，1个设备独立像素实际上是由4个物理像素点来渲染，那么200x300像素的图实际上就会有400x600个物理像素点来渲染，而我们提供的图片却只有200x300，因此便会出现1个位图像素由4个物理像素点来渲染的情况，而问题是这4个像素点所取的色值跟这1个位图像素的色值是不一样的，遵循的原理是就近取色，色值只能跟这个位图像素的色值相近，而不是相同，因此图片会在高清屏下出现模糊的情况。
+理论上来说，1个位图像素对应于1个物理像素，图片才能得到完美清晰的展示，在一般的屏幕下，我们也确实是这么做的，假设需要显示一个`200x300px`的图片元素，那我们用一张`200x300px`的图片便能完美呈现，但是在如果在高清屏下，这么做图片就会显得有点模糊。还是以iphone6为例，又上面的内容我们可以知道，在iphone6下，1个设备独立像素实际上是由4个物理像素点来渲染，那么`200x300`像素的图实际上就会有`400x600`个物理像素点来渲染，而我们提供的图片却只有`200x300`，因此便会出现1个位图像素由4个物理像素点来渲染的情况，而问题是这4个像素点所取的色值跟这1个位图像素的色值是不一样的，遵循的原理是就近取色，色值只能跟这个位图像素的色值相近，而不是相同，因此图片会在高清屏下出现模糊的情况。
 ![](http://7xt6mo.com1.z0.glb.clouddn.com/4.png)
 
-那么这种情况我们怎么解决呢，答案就是@2x图，也就是2倍图。这也是为什么在一开始说设计师将画布放大，提供@2x图和@3x图(为dpr为3的设备准备)的原因。在iphone6下，我们渲染一个200x300px的图，使用的将是@2x图，也就是400x600px的元素，由于1css像素由4物理像素渲染，那么一个位图像素一一对应一个物理像素，达到1:1的匹配度，高清图得以完美呈现。
+那么这种情况我们怎么解决呢，答案就是@2x图，也就是2倍图。这也是为什么在一开始说设计师将画布放大，提供@2x图和@3x图(为dpr为3的设备准备)的原因。在iphone6下，我们渲染一个`200x300px`的图，使用的将是@2x图，也就是`400x600px`的元素，由于1css像素由4物理像素渲染，那么一个位图像素一一对应一个物理像素，达到1:1的匹配度，高清图得以完美呈现。
 
-但是如果我们在所有的屏幕上都是用@2x图的话，又会出现什么问题呢。前面说到了在dpr为1的屏幕下，1css像素=1物理像素，之间已经是1:1对应的关系了。还举之前的栗子，我们有一个200x300px的图片元素要渲染，提供了@2x的图来渲染这个元素，因为1css像素由1物理像素来渲染，提供的400x600像素的图就会显得有点'多余'，1个物理像素点只能就近的选取1个位图像素来渲染。虽然不会造成模糊，但是看起来图片却是损失了锐利度，而且造成了资源的浪费。
+但是如果我们在所有的屏幕上都是用@2x图的话，又会出现什么问题呢。前面说到了在dpr为1的屏幕下，1css像素=1物理像素，之间已经是1:1对应的关系了。还举之前的栗子，我们有一个`200x300px`的图片元素要渲染，提供了@2x的图来渲染这个元素，因为1css像素由1物理像素来渲染，提供的`400x600`像素的图就会显得有点'多余'，1个物理像素点只能就近的选取1个位图像素来渲染。虽然不会造成模糊，但是看起来图片却是损失了锐利度，而且造成了资源的浪费。
 ![](http://7xt6mo.com1.z0.glb.clouddn.com/2.png)
 
 如何解决这种问题？前文中提到，我们可以在css和js中都可以获取到dpr，那么我们通过不同的dpr来加载不同的图片。针对不同的dpr，当需要图片的时候，我们可以在图片url上缀上@2x还是@3x图片的信息，比如需要一张图logo.png,它的地址是
@@ -123,8 +123,7 @@ http://www.test.com/img/logo_@3x.png
 拿ios设备举例，layout viewport固定为980px，默认打开页面的情况下，visual viewport会将这个框缩放到980px。这样我们就能看到全部的内容了
 ![](http://7xt6mo.com1.z0.glb.clouddn.com/1187269555-56fe00de67dec_articlex.png)
 ![](http://7xt6mo.com1.z0.glb.clouddn.com/670635995-56fe00df1806c_articlex.png)
-默认情况下html元素的宽取自layout viewport，那么不同机型浏览器的layout是不同的，ios980px，android800px。在pc端我们通过document.documentElement.clientWidth取得viewport的宽度。
-在移动端中，clientWidth获取的将是layout viewport的尺寸，而innerWidth获取的是visual viewport的尺寸。一般情况下我们会设置meta标签：
+默认情况下html元素的宽取自layout viewport，那么不同机型浏览器的layout是不同的，ios980px，android800px。在pc端我们通过document.documentElement.clientWidth取得viewport的宽度。在移动端中，clientWidth获取的将是layout viewport的尺寸，而innerWidth获取的是visual viewport的尺寸。一般情况下我们会设置meta标签：
 
 ```CSS
 
@@ -136,4 +135,146 @@ minimum-scale：允许用户缩放到的最小比例。
 user-scalable：用户是否可以手动缩放
 
 ```
+
+meta标签中的width设置的就是layout viewport的尺寸，默认情况下，visual viewport会将页面缩放到和layout viewport同样的宽度，具体情况请看[viewport知识](https://segmentfault.com/a/1190000004403496).当我们设置以下meta标签的时候，ideal viewport = visual viewpor = layout viewport;
+```html
+<meta name="viewport" content="width=device-width, initial-scale = 1, user-scalable=no" />
+```
+
+目前来说，移动端适配方案最实用的方案莫过于使用rem进行适配。对于rem的适配，我们要做的就是针对不同dpr不同尺寸改变html元素的`font-size`大小，网易的移动端适配方案，还有手淘的`lib-flexible`都是基于此原理的。
+
+##### 网易rem方案
+详情请查看[使用Flexible实现手淘H5页面的终端适配](http://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html);具体操作步骤如下。
+* 设置以下meta标签
+```HTML
+<meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1">
+```
+
+* 计算html的font-size
+取参考标准1rem = 100px;换算关系为1px = 1/100rem；以750px设计稿为例，整体宽7.5rem；
+页面上以7.5rem 为参考，则1rem = window.innerWidth / 7.5 + 'px'; 
+所以document.documentElement.style.fontSize = window.innerWidth / 7.5 + 'px'; 也就是说html的`font-size`大小，即rem始终是1rem = 屏幕宽度/(设计稿宽度/100),由此可算出以下设备的html的`font-size`值
+* iphone 5 ：320/7.5 = 42.667px
+* iphone 6 : 375/7.5 = 50px;
+* iphone 6p: 414/7.5 = 55.2px;
+
+查看[网易新闻的webapp页面](http://3g.163.com/touch/news/subchannel/all?dataversion=A&uversion=A&version=v_standard#adaptation=pc)，跟我们的计算值一样。当然，对640的设计图来说，这个基准值就由7.5变成了6.4，其他步骤还是不变的，参考设计图写代码的时候，仍然是1rem = 100px，在别的尺寸屏幕下就会进行自动适配。理论上来说，1rem可以设置为任意值的px，为什么要取100这个系数，是因为这样是为了方便进行rem值的计算。如果设计稿中有一个`200x300px`的元素，那我们可以直接口算出rem值
+```CSS
+width: 2rem;
+height: 3rem
+```
+
+但是这个方案仍然有弊端，在retina屏幕下，1css像素依然由多个物理像素来渲染
+，由此带来的1px边框问题和高清图片仍然没有得到解决，只是解决了布局自动适配的问题。
+
+##### 手淘lib-flexible方案
+* 在flexible中，只对iOS 进行了判断，对于安卓设备，始终认为其dpr为1.
+```javascript
+if (!dpr && !scale) { 
+    var isAndroid = win.navigator.appVersion.match(/android/gi); 
+    var isIPhone = win.navigator.appVersion.match(/iphone/gi);
+    var devicePixelRatio = win.devicePixelRatio;
+    if (isIPhone) { // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案 
+        if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) { 
+            dpr = 3; 
+        } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)){ 
+            dpr = 2; 
+        } else { 
+            dpr = 1; 
+        } 
+    } else {
+        // 其他设备下，仍旧使用1倍的方案 
+        dpr = 1; 
+    } 
+    scale = 1 / dpr; 
+}
+
+```
+
+* flexible会根据dpr动态计算页面的缩放值，将scale设置为`1/dpr`,这样一来，由于将页面缩小为原来的`1/dpr`倍,使得1css像素正好对应1物理像素。
+```js
+docEl.setAttribute('data-dpr', dpr);
+    if (!metaEl) {
+        metaEl = doc.createElement('meta');
+        metaEl.setAttribute('name', 'viewport');
+        metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+        if (docEl.firstElementChild) {
+            docEl.firstElementChild.appendChild(metaEl);
+        } else {
+            var wrap = doc.createElement('div');
+            wrap.appendChild(metaEl);
+            doc.write(wrap.innerHTML);
+        }
+    }
+```
+
+* 动态设置html的`font-size`值，将其设置为页面宽度width的十分之一(hack 10vw);即`1rem = clientWidth/10`,将页面整体分为10分，也就是10rem。lib-flexible中使用getBoundingClientRect来计算html的宽度，后期改为clientWidth。
+```js
+function refreshRem(){
+    var width = docEl.getBoundingClientRect().width;
+    if (width / dpr > 540) {
+        width = 540 * dpr;
+    }
+    var rem = width / 10;
+    docEl.style.fontSize = rem + 'px';
+    flexible.rem = win.rem = rem;
+}
+```
+
+经过这样的设置，根据dpr动态缩放页面，使得1css像素对应1物理像素，然后将html的`font-size`设置为页面宽度的1/10进行布局的适配。例如，750px的设计稿，通过计算html的`font-size`应该是`750/10 = 750px`, 即`1rem = 75px`;在iphone6下，屏宽375px；由于dpr为2，那么scale将为0.5，因此，经过缩放的页面layout viewport的宽度应该为750px，刚好跟设计稿对应，设计稿中`200x300px`的区域，写代码的时候也是`200x300px`,然后将px转化为rem就可以了。这个转化工作可以使用插件来做，或者用postcss的插件`px2rem`来进行转化。
+
+*优点*
+* 通过缩放页面，使得1css像素对应1物理像素，解决了由此带来的1px边框问题和高清图问题。统一使用@2x的图即可。
+
+*缺点*
+* rem需要动态的计算，口算难度有点大，需要借助插件或者构建工具。并且没有考虑ipad或者dpr不为1的安卓，在这些设备下依然存在1px边框问题和高清图片问题。
+
+
+上面两种方案无论是网易的适配方案，还是flexible方案，都需要加载一段js来动态的计算rem，flexible可以看成是网易方案的加强版，都可以满足适配的条件。而对于字体来说，我们希望在不同尺寸的设备上看到同样大小的文字，不希望文本在retina屏幕下变小，另外我们希望在大屏幕上看到更多的文字。而现在绝大多数字体文件都带一些点阵尺寸，通常是16px， 24px，不希望出现13px， 17px这样的尺寸，而rem计算出来的尺寸却很可能出现这些奇数尺寸。
+如此一来，在写h5页面的过程中，rem并不适合应用到文本上，所以flexible中建议文本不使用rem做单位，仍然用px，只不过需要通过`[data-dpr]`属性区分不同dpr设备下的字体大小。
+```CSS
+div { 
+    width: 1rem; 
+    height: 0.4rem; 
+    font-size: 12px; // 默认写上dpr为1的fontSize 
+} 
+[data-dpr="2"] div { 
+    font-size: 24px; 
+} 
+[data-dpr="3"] div { 
+    font-size: 36px; 
+}
+```
+
+当然也可以用过scss less这样的css预处理工具来处理
+```SCSS
+@mixin font-dpr($font-size){ 
+    font-size: $font-size; 
+    [data-dpr="2"] & { 
+        font-size: $font-size * 2; 
+    } 
+    [data-dpr="3"] & { 
+        font-size: $font-size * 3; 
+    } 
+}
+```
+
+##### flexible2.0方案
+上面介绍的`lib-flexible`方案其实是对vw/vh的hack，而随着移动端对vw/vh的逐渐支持，这种hack也会慢慢变得没有必要。[flexible2.0方案](https://www.w3cplus.com/css/vw-for-layout.html)便直接使用vw/vh进行适配。当然这样做也是存在风险的，因为还有很多设备不支持vw/vh,直接使用这种方案略显激进。而且不缩放页面，1px问题和高清图问题又会随之出现。
+
+以上是关于移动端适配性问题的一点浅薄理解，如有不对的地方，还望指正。
+
+### 参考资料
+部分观点引用下面资料。
+[http://www.w3cplus.com/css/viewports.html](http://www.w3cplus.com/css/viewports.html)
+[http://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html](http://www.w3cplus.com/mobile/lib-flexible-for-html5-layout.html)
+[http://www.w3cplus.com/css/towards-retina-web.html](http://www.w3cplus.com/css/towards-retina-web.html)
+[https://div.io/topic/1092](https://div.io/topic/1092)
+[https://segmentfault.com/a/1190000004403496](https://segmentfault.com/a/1190000004403496)
+[https://github.com/jawil/blog/issues/21](https://github.com/jawil/blog/issues/21)
+[https://zhuanlan.zhihu.com/p/25216275](https://zhuanlan.zhihu.com/p/25216275)
+[http://www.cnblogs.com/lyzg/p/4877277.html](http://www.cnblogs.com/lyzg/p/4877277.html)
+[http://www.cnblogs.com/lyzg/p/5058356.html](http://www.cnblogs.com/lyzg/p/5058356.html)
+[http://web.jobbole.com/90084/](http://web.jobbole.com/90084/)
+[https://www.w3cplus.com/css/vw-for-layout.html](https://www.w3cplus.com/css/vw-for-layout.html)
 
