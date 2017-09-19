@@ -54,3 +54,60 @@ keywords: [h5, mobile, viewport, layoutviewport, visualviewport, dpr, px, ppi, m
 
 但是如果我们在所有的屏幕上都是用@2x图的话，又会出现什么问题呢。前面说到了在dpr为1的屏幕下，1css像素=1物理像素，之间已经是1:1对应的关系了。还举之前的栗子，我们有一个200x300px的图片元素要渲染，提供了@2x的图来渲染这个元素，因为1css像素由1物理像素来渲染，提供的400x600像素的图就会显得有点'多余'，1个物理像素点只能就近的选取1个位图像素来渲染。虽然不会造成模糊，但是看起来图片却是损失了锐利度，而且造成了资源的浪费。
 ![](http://7xt6mo.com1.z0.glb.clouddn.com/2.png)
+
+如何解决这种问题？前文中提到，我们可以在css和js中都可以获取到dpr，那么我们通过不同的dpr来加载不同的图片。针对不同的dpr，当需要图片的时候，我们可以在图片url上缀上@2x还是@3x图片的信息，比如需要一张图logo.png,它的地址是
+`http://www.test.com/img/logo.png`
+那么，在dpr不同的设备下，这个url的文件名应该是不同的
+```js
+// dpr = 1
+http://www.test.com/img/logo.png
+
+// dpr = 2
+http://www.test.com/img/logo_@2x.png
+
+// dpr = 3
+http://www.test.com/img/logo_@3x.png
+```
+具体到代码中，我们可以借助scss，less等工具来实现，根据不同的dpr加载不同的图片。
+
+### 5. 1px边框问题
+图片1像素边框的问题大概是设计师比较关注的问题，那么，什么是1像素边框问题。在retina屏幕下，1px的css像素实际上是由4个物理像素来渲染的，体现在宽高上就是1px宽的border，实际上是由2px的物理像素来渲染的。设计稿上是最细的线1px的边框，在实际的retina屏幕下却是由2物理像素来渲染的，而设计师要的则是最细的1px的物理像素渲染的线。也就是说，实际上我们需要在代码中写0.5px，那这样，这条线就会由1个物理像素的宽度了。但是问题是，除了iOS 8及以上，ios7以下，android等其他系统里，0.5px会被当成为0px处理。
+![](http://7xt6mo.com1.z0.glb.clouddn.com/1.png)
+
+如何实现这样的一个0.5px的线呢，一种简单的做法就是元素的scale
+```CSS
+
+.scale{
+    position: relative;
+}
+.scale:after{
+    content:"";
+    position: absolute;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    border-bottom:1px solid #ddd;
+    -webkit-transform:scaleY(.5);
+    -webkit-transform-origin:0 0;
+}
+
+```
+
+我们在代码中继续写`border: 1px solid #ddd`,然后通过`transform:scaleY(0.5)`缩小0.5倍来达到0.5px的目的，但是这样的hack不够通用(比如圆角)，写起来也很麻烦。
+网上解决方案也很多，这里比较推荐的还是`页面整体scale`方案，对于`dpr=2`的页面，比如iphone6，加入如下的`meta`标签，将页面缩放`1/dpr`以实现0.5px的效果。
+```html
+<meta name="viewport" content="width=640,initial-scale=0.5,maximum-scale=0.5, minimum-scale=0.5,user-scalable=no">
+```
+这样可以完美实现1px物理像素的线，但是同时也带来了一些问题：
+* 字体大小会被缩放
+* 页面布局也会被缩放
+这两个问题后面会讲到。
+
+### 6. 多屏适配问题
+做PC页面的时候，我们按照设计图的尺寸来就好，这个侧边栏200px，那个按钮50px的。可是，当我们开始做移动端页面的时候，设计师给了一份宽度为750px的设计图。那么，我们把这份设计图实现在各个手机上的过程就是『适配』。
+![](http://7xt6mo.com1.z0.glb.clouddn.com/rem-6.jpg)
+上图是著名的手淘前端团队的协作模式，而整个手淘设计师和前端开发的适配协作基本思路是：
+* 选择一种尺寸作为设计和开发基准
+* 定义一套适配规则，自动适配剩下的
+* 特殊适配效果给出设计效果
+在设计和开发协作过程中，设计师通常会以iphone6为基准设计尺寸，交付给前端的是`750x1334px`的设计图，前端开发人员通过一套适配规则自动适配到其他的尺寸。在研究适配方案以前，我们先普及一下基本的概念。
