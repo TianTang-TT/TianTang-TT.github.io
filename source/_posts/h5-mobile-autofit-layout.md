@@ -111,3 +111,29 @@ http://www.test.com/img/logo_@3x.png
 * 定义一套适配规则，自动适配剩下的
 * 特殊适配效果给出设计效果
 在设计和开发协作过程中，设计师通常会以iphone6为基准设计尺寸，交付给前端的是`750x1334px`的设计图，前端开发人员通过一套适配规则自动适配到其他的尺寸。在研究适配方案以前，我们先普及一下基本的概念。
+##### layout viewport
+> layout viewport的概念其实跟pc端的viewport是一样的，是作为html的”上层“元素。将宽继承给html。html内的各元素都是以layout viewport为基准进行布局的。但跟pc端不同的是，pc端的viewport的宽是由浏览器的窗口的宽决定的，用户可以手动拖动窗口改变宽的大小。但是移动端的不同平台的浏览器呈现不同的layout viewport。
+
+##### visual viewport
+> 将visual viewport想象成覆盖手机屏幕的一个框，这个框带有类似pc端缩放的功能，而且这个框的度量单位也是css像素。这就意味着，在layout viewport不变的情况，我们能看到多少css像素的东西，取决于这个框的缩放程度。默认情况下。大多数移动端浏览器会将visual viewport这个框缩放到与layout viewport相同。
+
+##### ideal viewport
+> 理想视口，不需要用户缩放和横向滚动条就能正常的查看网站的所有内容；显示的文字的大小是合适，何种分辨率下，显示出来的大小都是差不多的。当然，不只是文字，其他元素像图片什么的也是这个道理。Ideal viewport尺寸视屏幕而定，即屏幕宽度，也就是设备独立像素尺寸。
+
+拿ios设备举例，layout viewport固定为980px，默认打开页面的情况下，visual viewport会将这个框缩放到980px。这样我们就能看到全部的内容了
+![](http://7xt6mo.com1.z0.glb.clouddn.com/1187269555-56fe00de67dec_articlex.png)
+![](http://7xt6mo.com1.z0.glb.clouddn.com/670635995-56fe00df1806c_articlex.png)
+默认情况下html元素的宽取自layout viewport，那么不同机型浏览器的layout是不同的，ios980px，android800px。在pc端我们通过document.documentElement.clientWidth取得viewport的宽度。
+在移动端中，clientWidth获取的将是layout viewport的尺寸，而innerWidth获取的是visual viewport的尺寸。一般情况下我们会设置meta标签：
+
+```CSS
+
+width：控制 layout viewport 的大小。
+height：和 width 相对应，指定高度。
+initial-scale：初始缩放比例，也即是当页面第一次 load 的时候缩放比例。
+maximum-scale：允许用户缩放到的最大比例。
+minimum-scale：允许用户缩放到的最小比例。
+user-scalable：用户是否可以手动缩放
+
+```
+
