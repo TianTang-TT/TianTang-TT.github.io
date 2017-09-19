@@ -7,9 +7,8 @@ keywords: [短小精悍的js代码片段]
 ---
 
 ### 前言
-<p>
-	一些令叹为观止的js精巧代码
-</p>
+
+一些令叹为观止的js精巧代码
 
 <!--more-->
 
@@ -17,9 +16,9 @@ keywords: [短小精悍的js代码片段]
 <br>
 
 ### js代码段
-<p>
-	生成随机颜色
-</p>
+
+生成随机颜色
+
 ```javascript
 // 生成十六进制的随机颜色
 let color16 = function () {
@@ -31,9 +30,9 @@ color16();        // "#dd90f2"
 color16();        // "#d8b15e"
 color16();        // "#036f98"
 ```
-<p>
-	生成固定位数的随机id
-</p>
+
+生成固定位数的随机id
+
 ```javascript
 // 生成固定位数的随机id
 function generateTipId () {

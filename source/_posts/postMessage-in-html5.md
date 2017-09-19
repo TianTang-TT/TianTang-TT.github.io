@@ -6,17 +6,15 @@ tags: [html5, postMessage]
 keywords: [html页面通信, postMessage, postMessage页面通信, postMessage跨域]
 ---
 ### 1.前言
-<p>
-    跨域问题是前端开发中的常见问题，我们一般的解决方案无非是配置反向代理，jsonp或者cors，这些方案在前后端交互中比较有用，但是在某些场景下，这些手段就略显乏力。比如客户端页面之间的通信，子页面和父页面的通信，或者不同tab页面之间的通信，这时候由于浏览器同源策略的限制，会造成跨域问题，父子页面间无法进行通信，更不要提tab页签之前的通信。当然我们可以通过websocket这类的双工通信方式来解决，但是这需要经过服务端，而html5中postMessage的出现便可以很好地解决这种问题
-</p>
+
+跨域问题是前端开发中的常见问题，我们一般的解决方案无非是配置反向代理，jsonp或者cors，这些方案在前后端交互中比较有用，但是在某些场景下，这些手段就略显乏力。比如客户端页面之间的通信，子页面和父页面的通信，或者不同tab页面之间的通信，这时候由于浏览器同源策略的限制，会造成跨域问题，父子页面间无法进行通信，更不要提tab页签之前的通信。当然我们可以通过websocket这类的双工通信方式来解决，但是这需要经过服务端，而html5中postMessage的出现便可以很好地解决这种问题
 
 <!-- more -->
 
 ### 2.简介
-<p>
-    window.postMessage() 方法可以安全地实现跨源通信。通常，当且仅当两个页面具有相同的协议（通常为https），端口号（443为https的默认值），以及主机(模数 Document.domain 由两个页面设置为相同的值)才可以进行通信。 window.postMessage() 方法提供了一种受控机制，以便在正确使用时以安全的方式规避此限制。
+
+window.postMessage() 方法可以安全地实现跨源通信。通常，当且仅当两个页面具有相同的协议（通常为https），端口号（443为https的默认值），以及主机(模数 Document.domain 由两个页面设置为相同的值)才可以进行通信。 window.postMessage() 方法提供了一种受控机制，以便在正确使用时以安全的方式规避此限制。
     window.postMessage() 方法被调用时，会在所有页面脚本执行完毕之后（e.g., 在该方法之后设置的事件、之前设置的timeout 事件,etc.）向目标窗口派发一个  MessageEvent 消息。 
-</p>
 
 ### 3.基本语法
 
@@ -32,14 +30,11 @@ keywords: [html页面通信, postMessage, postMessage页面通信, postMessage�
 ##### [transfer] 
 > 是一串和message 同时传递的 [Transferable](https://developer.mozilla.org/zh-CN/docs/Web/API/Transferable) 对象. 这些对象的所有权将被转移给消息的接收方，而发送一方将不再保有所有权。
  
-<p>
-    当目标窗口接收到消息之后会触发一个message事件，将MessageEvent对象传进来，因此我们可以通过为目标窗口添加message事件来监听通信。而父页面上发过来的信息以及相应的事件属性
-</p> 
+当目标窗口接收到消息之后会触发一个message事件，将MessageEvent对象传进来，因此我们可以通过为目标窗口添加message事件来监听通信。而父页面上发过来的信息以及相应的事件属性
 
 ### 4. 使用示例
-<p>
-    那么具体怎么使用呢？主要是通过`otherWindow.postMessage(message, targetOrigin)`来调用。比如我们要跟iframe内嵌的iframe通信，那么这个otherWindow就是这个iframe的window对象，我们可以通过`document.querySelector('#iframeid').contentWindow`来获取，然后通过postMessage方法来发送消息。而在iframe页面收到消息时，会触发一个message事件，接受一个messageEvent对象，从父页面上传进来的消息和相关事件的属性就挂载在这个messageEvent对象上。我们可以通过监听messge来接受父页面上传过来的消息
-</p>
+
+那么具体怎么使用呢？主要是通过`otherWindow.postMessage(message, targetOrigin)`来调用。比如我们要跟iframe内嵌的iframe通信，那么这个otherWindow就是这个iframe的window对象，我们可以通过`document.querySelector('#iframeid').contentWindow`来获取，然后通过postMessage方法来发送消息。而在iframe页面收到消息时，会触发一个message事件，接受一个messageEvent对象，从父页面上传进来的消息和相关事件的属性就挂载在这个messageEvent对象上。我们可以通过监听messge来接受父页面上传过来的消息
 
 ```js
 window.addEventListener("message", event);
@@ -132,19 +127,16 @@ event 对象中主要包含以下属性。
 ![](http://7xt6mo.com1.z0.glb.clouddn.com/postMessage.png)
 ### 5. 使用场景
 ##### (1) 页面之间的通信
-<p>
+
     当你使用多页应用时，需要两个页面之间进行实时的通信，而又不想通过服务端进行websocket之类借助服务端实现的通信，那postMessage将是一个很好的方式。子页面可以通过window.open方法打开，var win = window.open(pageurl, '_blank');那么这个win就是新打开的tab窗口的引用，可以同win.postMessage方法来对新打开的tab页发送消息。当你在新打开的页面监听message事件，便可以从message事件对象中得到原页面发送的消息，同时可以得到原页面的window对象的引用source，这时候就可以在新的页面上利用这个source调用postMessage方法来对原页面发消息。这样就实现了两个页面的实时通信。
-</p>
 
 ##### (2) 通过iframe授权登录
-<p>
-    当公司有多个网站或者多款产品，而这些网站的账号密码是可以通用的，比如我注册了我司的网站a，那么我再登录我司的网站b的时候就可以通过网站a的用户名和密码来登录网站b，类似于令牌一样的，那么你只需要做一套登录页面就可以。实现的原理很简单，比如我们需要在index.html页面上需要进行某个操作，而这个操作需要用户登录之后才可以进行，那我们便可以通过引入一个iframe，或者打开一个新的tab页面来让用户进行登录(这个iframe页或者新的tab页就是我们需要的登录页)，然后在index上监听message事件，当登录成功或者失败之后，通过postMessage将登录结果发送回index页面，这样父页面便可以通过这个登录结果进行后续的操作。
-</p>
+
+当公司有多个网站或者多款产品，而这些网站的账号密码是可以通用的，比如我注册了我司的网站a，那么我再登录我司的网站b的时候就可以通过网站a的用户名和密码来登录网站b，类似于令牌一样的，那么你只需要做一套登录页面就可以。实现的原理很简单，比如我们需要在index.html页面上需要进行某个操作，而这个操作需要用户登录之后才可以进行，那我们便可以通过引入一个iframe，或者打开一个新的tab页面来让用户进行登录(这个iframe页或者新的tab页就是我们需要的登录页)，然后在index上监听message事件，当登录成功或者失败之后，通过postMessage将登录结果发送回index页面，这样父页面便可以通过这个登录结果进行后续的操作。
 
 ### 6. 安全隐患
-<p>
+
 页面监听到message事件之后必须对源页面合法性进行校验，也就是说你必须校验event.origin属性，确保这个消息是可信页面发送过来的，否则如果是恶意的第三方网站发送的恶意代码，那么可能造成一些严重的后果。例如你的站点监听着一个message，并且没有判断message的来源，导致可以给他发message，message中有websocket的url的话，站点会和发送message的站点建立websocket链接，并且会把认证后的token传递给发送者站点。再比如你是需要将event.data的值进行dom操作，如果恶意的第三方将xss攻击代码加入data，那么如果你不校验消息来源的合法性的话，就很可能造成xss攻击。__如果您不希望从其他网站接收message，请不要为message事件添加任何事件侦听器,否则，请始终使用origin和source属性验证发件人的身份。__
-</p>
 
 ```js
 // 校验origin合法性的方法,如果只想接受来自'https://verify.com'的消息

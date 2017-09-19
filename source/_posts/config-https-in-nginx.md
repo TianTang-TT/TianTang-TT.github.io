@@ -7,9 +7,8 @@ keywords: [nginx, https, nginx配置https]
 ---
 
 ### 1. 前言
-<p>
-    在chrome下使用google地图api的时候发现没有反应，不能获取用户的地理位置，查看控制台后发现必须要使用https请求，而我的nginx服务器配置为http请求，因此打算在nginx中配置https。配置步骤如下。
-</p>
+
+在chrome下使用google地图api的时候发现没有反应，不能获取用户的地理位置，查看控制台后发现必须要使用https请求，而我的nginx服务器配置为http请求，因此打算在nginx中配置https。配置步骤如下。
 
 <!--more-->
 <br>
