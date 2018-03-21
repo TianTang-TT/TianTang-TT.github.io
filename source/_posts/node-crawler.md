@@ -1,5 +1,5 @@
 ---
-title: node-crawler
+title: node爬虫抓取知乎动态
 date: 2016-12-22 16:12:20
 categories: Node
 tags: [node, spider, crawler]
@@ -42,9 +42,9 @@ keywords: ['node 爬虫', 'node crawler', 'node spider', '知乎爬虫', '爬虫
 3. 打开浏览器，输入`localhost:3000`便可查看效果
 
 ### 分析
-<p>
+
   整个爬虫其实很简单，主要作用就是发送请求收集数据然后进行分析，当然分析这一步不一定算到爬虫里面，可以自己写别的模块来进行数据的分析和加工。用`superagent`请求知乎接口拿到特定的数据，然而有的接口是有限的，有的数据是通过服务端渲染直接显示在页面上的，不能通过知乎的接口直接拿到，所以需要从渲染好的页面上进行抓取，因此需要用到`cheerio`模块来进行dom操作，拿到相应的dom结构然后取值。这里需要注意的是这种需要登录的网站请求可能会有权限验证，因此需要在发请求的时候为请求带上相应的cookie和authorization的数据，否则将请求就失败，为了获取cookie和authorization，所以做了一个登陆入口来获取相应的授权。
-</p>
+
 
 ### 目录说明
 ![](http://7xt6mo.com1.z0.glb.clouddn.com/1482825152%281%29.jpg)
