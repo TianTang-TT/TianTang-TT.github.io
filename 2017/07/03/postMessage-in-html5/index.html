@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
+  <title>postMessage实现页面间通信 | 轻言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.前言跨域问题是前端开发中的常见问题，我们一般的解决方案无非是配置反向代理，jsonp或者cors，这些方案在前后端交互中比较有用，但是在某些场景下，这些手段就略显乏力。比如客户端页面之间的通信，子页面和父页面的通信，或者不同tab页面之间的通信，这时候由于浏览器同源策略的限制，会造成跨域问题，父子页面间无法进行通信，更不要提tab页签之前的通信。当然我们可以通过websocket这类的双工通信">
+<meta name="keywords" content="html页面通信,postMessage,postMessage页面通信,postMessage跨域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="postMessage实现页面间通信">
+<meta property="og:url" content="http://tiantang-tt.github.io/2017/07/03/postMessage-in-html5/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1.前言跨域问题是前端开发中的常见问题，我们一般的解决方案无非是配置反向代理，jsonp或者cors，这些方案在前后端交互中比较有用，但是在某些场景下，这些手段就略显乏力。比如客户端页面之间的通信，子页面和父页面的通信，或者不同tab页面之间的通信，这时候由于浏览器同源策略的限制，会造成跨域问题，父子页面间无法进行通信，更不要提tab页签之前的通信。当然我们可以通过websocket这类的双工通信">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/postMessage.png">
+<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/postMessage-caniuse.png">
+<meta property="og:updated_time" content="2018-11-01T11:38:18.989Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="postMessage实现页面间通信">
+<meta name="twitter:description" content="1.前言跨域问题是前端开发中的常见问题，我们一般的解决方案无非是配置反向代理，jsonp或者cors，这些方案在前后端交互中比较有用，但是在某些场景下，这些手段就略显乏力。比如客户端页面之间的通信，子页面和父页面的通信，或者不同tab页面之间的通信，这时候由于浏览器同源策略的限制，会造成跨域问题，父子页面间无法进行通信，更不要提tab页签之前的通信。当然我们可以通过websocket这类的双工通信">
+<meta name="twitter:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/postMessage.png">
+  
+    <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+
+  
+
+</head>
+</html>
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">柳轻侯</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">— 黄金白璧买歌笑</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/随笔/">随笔</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			
+    			
+            
+    			
+    			<a data-idx="2" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">柳轻侯</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">柳轻侯</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">— 黄金白璧买歌笑</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/随笔/">随笔</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-postMessage-in-html5" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      postMessage实现页面间通信
+    </h1>
+  
+
+        <a href="/2017/07/03/postMessage-in-html5/" class="archive-article-date">
+  	<time datetime="2017-07-03T09:21:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-03</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>跨域问题是前端开发中的常见问题，我们一般的解决方案无非是配置反向代理，jsonp或者cors，这些方案在前后端交互中比较有用，但是在某些场景下，这些手段就略显乏力。比如客户端页面之间的通信，子页面和父页面的通信，或者不同tab页面之间的通信，这时候由于浏览器同源策略的限制，会造成跨域问题，父子页面间无法进行通信，更不要提tab页签之前的通信。当然我们可以通过websocket这类的双工通信方式来解决，但是这需要经过服务端，而html5中postMessage的出现便可以很好地解决这种问题</p>
+<a id="more"></a>
+<h3 id="2-简介"><a href="#2-简介" class="headerlink" title="2.简介"></a>2.简介</h3><p>window.postMessage() 方法可以安全地实现跨源通信。通常，当且仅当两个页面具有相同的协议（通常为https），端口号（443为https的默认值），以及主机(模数 Document.domain 由两个页面设置为相同的值)才可以进行通信。 window.postMessage() 方法提供了一种受控机制，以便在正确使用时以安全的方式规避此限制。<br>    window.postMessage() 方法被调用时，会在所有页面脚本执行完毕之后（e.g., 在该方法之后设置的事件、之前设置的timeout 事件,etc.）向目标窗口派发一个  MessageEvent 消息。 </p>
+<h3 id="3-基本语法"><a href="#3-基本语法" class="headerlink" title="3.基本语法"></a>3.基本语法</h3><h5 id="postMessage"><a href="#postMessage" class="headerlink" title="postMessage"></a>postMessage</h5><blockquote>
+<p>otherWindow.postMessage(message, targetOrigin, [transfer]);</p>
+</blockquote>
+<h5 id="otherWindow"><a href="#otherWindow" class="headerlink" title="otherWindow"></a>otherWindow</h5><blockquote>
+<p>其他窗口的一个引用，比如iframe的contentWindow属性、执行window.open返回的窗口对象、或者是命名过或数值索引的window.frames。</p>
+</blockquote>
+<h5 id="targetOrigin"><a href="#targetOrigin" class="headerlink" title="targetOrigin"></a>targetOrigin</h5><blockquote>
+<p>通过窗口的origin属性来指定哪些窗口能接收到消息事件，其值可以是字符串”*“（表示无限制）或者一个URI。在发送消息的时候，如果目标窗口的协议、主机地址或端口这三者的任意一项不匹配targetOrigin提供的值，那么消息就不会被发送；只有三者完全匹配，消息才会被发送。这个机制用来控制消息可以发送到哪些窗口；例如，当用postMessage传送密码时，这个参数就显得尤为重要，必须保证它的值与这条包含密码的信息的预期接受者的orign属性完全一致，来防止密码被恶意的第三方截获。<strong>如果你明确的知道消息应该发送到哪个窗口，那么请始终提供一个有确切值的targetOrigin，而不是”*“。不提供确切的目标将导致数据泄露到任何对数据感兴趣的恶意站点</strong>。</p>
+</blockquote>
+<h5 id="transfer"><a href="#transfer" class="headerlink" title="[transfer]"></a>[transfer]</h5><blockquote>
+<p>是一串和message 同时传递的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Transferable" target="_blank" rel="noopener">Transferable</a> 对象. 这些对象的所有权将被转移给消息的接收方，而发送一方将不再保有所有权。</p>
+</blockquote>
+<p>当目标窗口接收到消息之后会触发一个message事件，将MessageEvent对象传进来，因此我们可以通过为目标窗口添加message事件来监听通信。而父页面上发过来的信息以及相应的事件属性</p>
+<h3 id="4-使用示例"><a href="#4-使用示例" class="headerlink" title="4. 使用示例"></a>4. 使用示例</h3><p>那么具体怎么使用呢？主要是通过<code>otherWindow.postMessage(message, targetOrigin)</code>来调用。比如我们要跟iframe内嵌的iframe通信，那么这个otherWindow就是这个iframe的window对象，我们可以通过<code>document.querySelector(&#39;#iframeid&#39;).contentWindow</code>来获取，然后通过postMessage方法来发送消息。而在iframe页面收到消息时，会触发一个message事件，接受一个messageEvent对象，从父页面上传进来的消息和相关事件的属性就挂载在这个messageEvent对象上。我们可以通过监听messge来接受父页面上传过来的消息</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">"message"</span>, event);</span><br></pre></td></tr></table></figure>
+<p>event 对象中主要包含以下属性。</p>
+<h5 id="data"><a href="#data" class="headerlink" title="data"></a>data</h5><blockquote>
+<p>从其他 window 中传递过来的对象，通过event.data获取。在 Gecko 6.0 (Firefox 6.0 / Thunderbird 6.0 / SeaMonkey 2.3)之前， 参数 message 必须是一个字符串。 从 Gecko 6.0 (Firefox 6.0 / Thunderbird 6.0 / SeaMonkey 2.3)开始，参数 message被使用结构化克隆算法进行序列化。<strong>这意味着你可以将各种各样的数据对象安全地传递到目标窗口，对象或者数组，而不仅仅是可以发送字符串</strong>。</p>
+</blockquote>
+<h5 id="origin"><a href="#origin" class="headerlink" title="origin"></a>origin</h5><blockquote>
+<p>调用 postMessage 时消息发送方窗口的 origin ，通过event.origin获取。<strong>此属性用来判断发送方的身份，防止恶意的第三方向页面发送恶意消息进行攻击</strong><br>.要注意的是，当你的页面使用非服务器环境（也就是直接双击打开页面）时这个属性值为null，在本地进行测试时请注意这一点，因为你可能拿不到origin的值。因此最好使用nginx或者Apache之类的web容器进行测试。</p>
+</blockquote>
+<h5 id="source"><a href="#source" class="headerlink" title="source"></a>source</h5><blockquote>
+<p>调用 postMessage 时消息发送方window对象的引用，可以借此实现两个页面之间的实时通信，通过event.source获取</p>
+</blockquote>
+<h5 id="父页面代码"><a href="#父页面代码" class="headerlink" title="父页面代码"></a>父页面代码</h5><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>parent<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>this is parent window<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"parentMsg"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"sendParentMsg"</span>&gt;</span>发送信息到iframe<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"contents"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>这里会展示收到的信息<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"demo.html"</span> <span class="attr">frameborder</span>=<span class="string">"2"</span> <span class="attr">id</span>=<span class="string">"childIframe"</span> <span class="attr">height</span>=<span class="string">"500"</span> <span class="attr">width</span>=<span class="string">"800"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> origin, win;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// 为父页面绑定message事件，接受来自iframe发送的消息</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>, event =&gt; &#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">document</span>.querySelector(<span class="string">'.contents'</span>).innerHTML += <span class="string">`&lt;p&gt; 收到信息：<span class="subst">$&#123;event.data&#125;</span>, 来自于<span class="subst">$&#123;event.origin&#125;</span>&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="javascript">    <span class="comment">// win可以是iframe的引用，也可以是通过通过父页面打开的子页面的window引用，比如子页面是通过window.open打开的，那么win可以是win = window.open(url, '_blank'),这样便可以实现两个tab页之间的通信</span></span></span><br><span class="line"><span class="javascript">    win = <span class="built_in">document</span>.querySelector(<span class="string">'#childIframe'</span>).contentWindow;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.querySelector(<span class="string">'#sendParentMsg'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> parentMsg = <span class="built_in">document</span>.querySelector(<span class="string">'#parentMsg'</span>).value.trim();</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (parentMsg) &#123;</span></span><br><span class="line"><span class="javascript">            win.postMessage(parentMsg, <span class="string">'*'</span>);</span></span><br><span class="line"><span class="javascript">            <span class="built_in">document</span>.querySelector(<span class="string">'#parentMsg'</span>).value = <span class="string">''</span>;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">    &#125;)</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="iframe页面代码"><a href="#iframe页面代码" class="headerlink" title="iframe页面代码"></a>iframe页面代码</h5><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>child<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>this is iframe page<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"subpageInput"</span>&gt;</span> 请输入信息<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"subpageInput"</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"sendSubpage"</span>&gt;</span>发送信息到父页面<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"contents"</span>&gt;</span>     </span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> parentWin, parentOrigin;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// 监听来自父页面的消息</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>, event =&gt; &#123;</span></span><br><span class="line"><span class="javascript">        parentOrigin = event.origin; <span class="comment">// 获取发送方页面的origin，通过判断此属性来识别发送方的身份</span></span></span><br><span class="line"><span class="javascript">        parentWin = event.source; <span class="comment">// 获取发送发window对象的引用，可以通过这个对象调用postMessage方法实现父子页面互相通信。</span></span></span><br><span class="line"><span class="javascript">        <span class="built_in">document</span>.querySelector(<span class="string">'.contents'</span>).innerHTML += <span class="string">`&lt;p&gt;iframe 收到信息：<span class="subst">$&#123;event.data&#125;</span>, 来自于<span class="subst">$&#123;event.origin&#125;</span>&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.querySelector(<span class="string">'.sendSubpage'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> subMessage = <span class="built_in">document</span>.querySelector(<span class="string">'#subpageInput'</span>).value.trim();</span></span><br><span class="line"><span class="javascript">        <span class="keyword">if</span> (subMessage) &#123;</span></span><br><span class="line"><span class="javascript">            <span class="comment">// submessage为要发送的信息，'*'为指定某个域接受信息</span></span></span><br><span class="line"><span class="javascript">            parentWin.postMessage(subMessage, <span class="string">'*'</span>)</span></span><br><span class="line"><span class="javascript">            <span class="built_in">document</span>.querySelector(<span class="string">'#subpageInput'</span>).value = <span class="string">''</span>;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">    &#125;)</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://7xt6mo.com1.z0.glb.clouddn.com/postMessage.png" alt=""></p>
+<h3 id="5-使用场景"><a href="#5-使用场景" class="headerlink" title="5. 使用场景"></a>5. 使用场景</h3><h5 id="1-页面之间的通信"><a href="#1-页面之间的通信" class="headerlink" title="(1) 页面之间的通信"></a>(1) 页面之间的通信</h5><pre><code>当你使用多页应用时，需要两个页面之间进行实时的通信，而又不想通过服务端进行websocket之类借助服务端实现的通信，那postMessage将是一个很好的方式。子页面可以通过window.open方法打开，var win = window.open(pageurl, &apos;_blank&apos;);那么这个win就是新打开的tab窗口的引用，可以同win.postMessage方法来对新打开的tab页发送消息。当你在新打开的页面监听message事件，便可以从message事件对象中得到原页面发送的消息，同时可以得到原页面的window对象的引用source，这时候就可以在新的页面上利用这个source调用postMessage方法来对原页面发消息。这样就实现了两个页面的实时通信。
+</code></pre><h5 id="2-通过iframe授权登录"><a href="#2-通过iframe授权登录" class="headerlink" title="(2) 通过iframe授权登录"></a>(2) 通过iframe授权登录</h5><p>当公司有多个网站或者多款产品，而这些网站的账号密码是可以通用的，比如我注册了我司的网站a，那么我再登录我司的网站b的时候就可以通过网站a的用户名和密码来登录网站b，类似于令牌一样的，那么你只需要做一套登录页面就可以。实现的原理很简单，比如我们需要在index.html页面上需要进行某个操作，而这个操作需要用户登录之后才可以进行，那我们便可以通过引入一个iframe，或者打开一个新的tab页面来让用户进行登录(这个iframe页或者新的tab页就是我们需要的登录页)，然后在index上监听message事件，当登录成功或者失败之后，通过postMessage将登录结果发送回index页面，这样父页面便可以通过这个登录结果进行后续的操作。</p>
+<h3 id="6-安全隐患"><a href="#6-安全隐患" class="headerlink" title="6. 安全隐患"></a>6. 安全隐患</h3><p>页面监听到message事件之后必须对源页面合法性进行校验，也就是说你必须校验event.origin属性，确保这个消息是可信页面发送过来的，否则如果是恶意的第三方网站发送的恶意代码，那么可能造成一些严重的后果。例如你的站点监听着一个message，并且没有判断message的来源，导致可以给他发message，message中有websocket的url的话，站点会和发送message的站点建立websocket链接，并且会把认证后的token传递给发送者站点。再比如你是需要将event.data的值进行dom操作，如果恶意的第三方将xss攻击代码加入data，那么如果你不校验消息来源的合法性的话，就很可能造成xss攻击。<strong>如果您不希望从其他网站接收message，请不要为message事件添加任何事件侦听器,否则，请始终使用origin和source属性验证发件人的身份。</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 校验origin合法性的方法,如果只想接受来自'https://verify.com'的消息</span></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>, event =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> origin = event.origin;</span><br><span class="line">    <span class="keyword">if</span> (<span class="regexp">/^https:\/\/verify.com$/</span>.test(origin)) &#123;</span><br><span class="line">        <span class="comment">// 此处进行敏感操作</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 当校验不通过，则什么也不做，丢弃此消息</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="7-浏览器兼容情况"><a href="#7-浏览器兼容情况" class="headerlink" title="7. 浏览器兼容情况"></a>7. 浏览器兼容情况</h3><p><img src="http://7xt6mo.com1.z0.glb.clouddn.com/postMessage-caniuse.png" alt=""></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>不用打赏，你喜欢就好<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html5/">html5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/postMessage/">postMessage</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-book icon"></i>
+	<a class="article-category-link" href="/categories/html5/">html5</a>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://tiantang-tt.github.io/2017/07/03/postMessage-in-html5/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/09/18/h5-mobile-autofit-layout/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          移动端适配方案浅析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/18/config-https-in-nginx/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">nginx配置https</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 柳轻侯
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">https</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ecmascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">相等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等操作符</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等和全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">event</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">h5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">mobile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">viewport</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">RegExp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">正则</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">localStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">sessionStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">webStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">浏览器本地存储</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">spider</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">crawler</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">html5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">postMessage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">jsonp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nodejs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">websocket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">socket.io</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://itbugs.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>宇轩阁</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://weixiaochu.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>A1ie2</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

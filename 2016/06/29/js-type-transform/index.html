@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
+  <title>js隐式类型转化例子分析 | 轻言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.前言偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+<meta name="keywords" content="隐式类型转换,sb,js隐式类型转换,一段js代码输出sb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js隐式类型转化例子分析">
+<meta property="og:url" content="http://tiantang-tt.github.io/2016/06/29/js-type-transform/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1.前言偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-01T11:38:18.988Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js隐式类型转化例子分析">
+<meta name="twitter:description" content="1.前言偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]][~+[]]+~~!+[]]+({}+[])[[~!+[]~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。">
+  
+    <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+
+  
+
+</head>
+</html>
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">柳轻侯</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">— 黄金白璧买歌笑</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/随笔/">随笔</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			
+    			
+            
+    			
+    			<a data-idx="2" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">柳轻侯</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">柳轻侯</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">— 黄金白璧买歌笑</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/随笔/">随笔</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-js-type-transform" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      js隐式类型转化例子分析
+    </h1>
+  
+
+        <a href="/2016/06/29/js-type-transform/" class="archive-article-date">
+  	<time datetime="2016-06-29T05:45:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-29</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>偶然间看到一段很有意思的代码，一段不含任何字母数字，只包含各种括号，加减号的代码执行结果出现了’sb’一个字符串，(eval(‘(!(~+[])+{})[–[~+””][+[]]<em>[~+[]]+~~!+[]]+({}+[])[[~!+[]</em>~+[]]]’)结果返回’sb’)真是amazing，当时百思不得姐，回过头仔细想想，一段段的分析一下，原理便水落石出了。</p>
+<a id="more"></a>
+<hr>
+<h3 id="2-思路"><a href="#2-思路" class="headerlink" title="2.思路"></a>2.思路</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">eval</span>(<span class="string">'(!(~+[])+&#123;&#125;)[--[~+""][+[]]*[~+[]]+~~!+[]]+(&#123;&#125;+[])[[~!+[]*~+[]]]'</span>)   <span class="comment">//'sb'</span></span><br></pre></td></tr></table></figure>
+<p>乍一看毫无头绪，这段代码中没有任何英文，也没有数字，那么字符串’sb’是怎么出现的？仔细分析，代码中多次出现了’!’,’+’，’!’的作用是取反，返回一个布尔值，那么可能会出现’false’或者’true’，那么我们要的’sb’中的’s’已经出现，而’+’有一个重要的作用，那就是等同于Number()函数的效果，将值转为number类型，并且有拼接字符串的作用，如果’+’的一边是字符串而另一边不是，那么将会被隐式的转换为字符串类型并进行拼接。到这里，思路应该很清晰了，某些被转换后的值会出现英文字母和数字，然后再结合’[]’那么就可以取到相应的字母了。下面来具体分析原理。</p>
+<h3 id="3-具体分析"><a href="#3-具体分析" class="headerlink" title="3.具体分析"></a>3.具体分析</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">(!(~+[])+&#123;&#125;)[--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]]+(&#123;&#125;+[])[[~!+[]*~+[]]]</span><br><span class="line"></span><br><span class="line"><span class="comment">//将上面代码进行拆分，可得到如下部分</span></span><br><span class="line">(!(~+[])+&#123;&#125;)  ，[--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]] ， (&#123;&#125;+[]) ， [[~!+[]*~+[]]]</span><br><span class="line"><span class="comment">//分别将上述四部分用$1,$2,$3,$4来表示，即求$1和$2的运算结果 + $3和$4的运算结果。</span></span><br><span class="line"><span class="keyword">var</span> $<span class="number">1</span>, $<span class="number">2</span>, $<span class="number">3</span>, $<span class="number">4</span>;</span><br><span class="line">	$<span class="number">1</span> = (!(~+[])+&#123;&#125;);</span><br><span class="line">	$<span class="number">2</span> = [--[~+<span class="string">""</span>][+[]]*[~+[]]+~~!+[]];</span><br><span class="line">	$<span class="number">3</span> = (&#123;&#125;+[]);</span><br><span class="line">	$<span class="number">4</span> = [[~!+[]*~+[]]];</span><br><span class="line"></span><br><span class="line"><span class="comment">//分析$1 = (!(~+[])+&#123;&#125;);运算顺序为先计算(~+[]),然后对其取反，再与&#123;&#125;相加</span></span><br><span class="line">(~+[])           <span class="comment">//返回-1， +[]此处的加号相当Number函数，所以+[]返回0，再对其进行按位非操作，即取相反数再减去1</span></span><br><span class="line">!(~+[])          <span class="comment">//返回false</span></span><br><span class="line"><span class="literal">false</span> + &#123;&#125;       <span class="comment">//返回'false[object Object]', 一元加操作符会将布尔值和对象通过toString()方法分别</span></span><br><span class="line">                 <span class="comment">//转为'false'和'[object Object]'</span></span><br><span class="line"><span class="comment">//所以$1的运算结果为'false[object Object]'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//分析$2 = [--[~+""][+[]]*[~+[]]+~~!+[]]; 先计算--[~+""][+[]]，然后计算[~+[]]，两相作乘，然后与~~!+[]的结果相加</span></span><br><span class="line">--[~+<span class="string">""</span>][+[]]          <span class="comment">//返回-2，[~+""]返回[-1],[+[]]返回[0]，即为--[-1][0]</span></span><br><span class="line">                       <span class="comment">//由于方括号[]优先级高于--， 所以返回-2</span></span><br><span class="line">[~+[]]                 <span class="comment">//返回[-1]</span></span><br><span class="line">--[~+<span class="string">""</span>][+[]]*[~+[]]   <span class="comment">//返回2，一元乘操作符会将非数字转为数字，[-1]被转为-1,即为(-2)*(-1) </span></span><br><span class="line">~~!+[]                 <span class="comment">//返回1，~操作符会将布尔值转为number</span></span><br><span class="line">[<span class="number">2</span> + <span class="number">1</span>]</span><br><span class="line"><span class="comment">//所以$2的运算结果为[3]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//分析$3 = (&#123;&#125;+[]),一元加操作符会将对象通过toString()分别 转为'[object Object]' 和 ''</span></span><br><span class="line">(&#123;&#125;+[])          <span class="comment">//返回'[object Object]'</span></span><br><span class="line"><span class="comment">//所以$3的运算结果为'[object Object]'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//分析$4 = [[~!+[]*~+[]]];先计算~!+[]，后计算~+[]，然后结果相乘</span></span><br><span class="line">~!+[]           <span class="comment">//返回-2</span></span><br><span class="line">~+[]            <span class="comment">//返回-1</span></span><br><span class="line">[[~!+[]*~+[]]]  <span class="comment">//返回[[2]]</span></span><br><span class="line"><span class="comment">//所以$4的运算结果为[[2]]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//因此整个表达式可以简化为</span></span><br><span class="line"><span class="string">'false[object Object]'</span>[<span class="number">3</span>] + <span class="string">'[object Object]'</span>[[<span class="number">2</span>]]</span><br><span class="line"><span class="comment">//返回'sb'</span></span><br><span class="line"><span class="comment">//此处要注意'string'[[2]]这种写法，string后面跟方括号，里面需要一个number类型的数值n来返回'string'</span></span><br><span class="line"><span class="comment">//的第n位上的字符，因此方括号里面的值会被通过Number()方法转为数值类型，[2]被转为2</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h3><p>1.主要考察js中隐式类型转换,一元+和~操作符将值转为number类型的值，相当于Number方法<br>2.当+操作符两边类型不同时，若有一边为字符串，则将另一边也转为字符串，然后执行拼接。<br>3.将对象转为基本类型值时，先调用valueOf方法，若还是对象，则调用toString方法。<br>4.数组的valueOf方法返回其自身。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>不用打赏，你喜欢就好<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-book icon"></i>
+	<a class="article-category-link" href="/categories/javascript/">javascript</a>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://tiantang-tt.github.io/2016/06/29/js-type-transform/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/09/22/pretty-js-pieces/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          短小精悍的js代码段
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HTMLCollection和NodeList以及NamedNodeMap之间的关系</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 柳轻侯
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">https</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ecmascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">相等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等操作符</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等和全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">event</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">h5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">mobile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">viewport</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">RegExp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">正则</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">localStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">sessionStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">webStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">浏览器本地存储</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">spider</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">crawler</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">html5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">postMessage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">jsonp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nodejs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">websocket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">socket.io</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://itbugs.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>宇轩阁</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://weixiaochu.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>A1ie2</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

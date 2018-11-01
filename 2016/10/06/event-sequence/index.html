@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
+  <title>js事件顺序执行 | 轻言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1. 前言前几天朋友问到一个问题,js中的依次绑定多个点击事件，那么这些事件的执行顺序跟绑定顺序有联系吗？当然通过属性绑定事件只能绑定覆盖之前的事件，此处按下不表。通过addEventListener和attachEvent可以为dom对象绑定多个事件，由于某些原因，可能并不会将执行逻辑写到同一个处理程序中，而是在代码执行的不同阶段先后添加了处理不同逻辑的事件，那么事件的执行顺序是按照添加的顺序执">
+<meta name="keywords" content="js事件,顺序执行,js监听事件顺序执行,js事件按顺序执行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js事件顺序执行">
+<meta property="og:url" content="http://tiantang-tt.github.io/2016/10/06/event-sequence/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1. 前言前几天朋友问到一个问题,js中的依次绑定多个点击事件，那么这些事件的执行顺序跟绑定顺序有联系吗？当然通过属性绑定事件只能绑定覆盖之前的事件，此处按下不表。通过addEventListener和attachEvent可以为dom对象绑定多个事件，由于某些原因，可能并不会将执行逻辑写到同一个处理程序中，而是在代码执行的不同阶段先后添加了处理不同逻辑的事件，那么事件的执行顺序是按照添加的顺序执">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-01T11:38:18.987Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js事件顺序执行">
+<meta name="twitter:description" content="1. 前言前几天朋友问到一个问题,js中的依次绑定多个点击事件，那么这些事件的执行顺序跟绑定顺序有联系吗？当然通过属性绑定事件只能绑定覆盖之前的事件，此处按下不表。通过addEventListener和attachEvent可以为dom对象绑定多个事件，由于某些原因，可能并不会将执行逻辑写到同一个处理程序中，而是在代码执行的不同阶段先后添加了处理不同逻辑的事件，那么事件的执行顺序是按照添加的顺序执">
+  
+    <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+
+  
+
+</head>
+</html>
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">柳轻侯</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">— 黄金白璧买歌笑</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/随笔/">随笔</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			
+    			
+            
+    			
+    			<a data-idx="2" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">柳轻侯</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">柳轻侯</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">— 黄金白璧买歌笑</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/随笔/">随笔</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-event-sequence" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      js事件顺序执行
+    </h1>
+  
+
+        <a href="/2016/10/06/event-sequence/" class="archive-article-date">
+  	<time datetime="2016-10-06T03:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-06</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p>前几天朋友问到一个问题,js中的依次绑定多个点击事件，那么这些事件的执行顺序跟绑定顺序有联系吗？当然通过属性绑定事件只能绑定覆盖之前的事件，此处按下不表。通过addEventListener和attachEvent可以为dom对象绑定多个事件，由于某些原因，可能并不会将执行逻辑写到同一个处理程序中，而是在代码执行的不同阶段先后添加了处理不同逻辑的事件，那么事件的执行顺序是按照添加的顺序执行的吗，如果不是，该怎么让事件顺序执行。</p>
+<a id="more"></a>
+<h3 id="2-分析"><a href="#2-分析" class="headerlink" title="2. 分析"></a>2. 分析</h3><p>为dom绑定多个事件有两个方法，addEventListener和attachEvent，前者是属于dom2级事件，支持ie9及以上，chrome,ff,通过此方法为dom绑定的事件会按照绑定的先后顺序执行，然而对于ie8以下的浏览器，并不支持dom2级事件，只能使用attachEvent来绑定事件，此方法虽然也可以绑定多个事件，但是事件的执行顺序确实与绑定顺序截然相反。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.querySelector(<span class="string">'btn'</span>);</span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'first'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'second'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 点击按钮之后先弹出'first',后弹出'second'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> btn = <span class="built_in">document</span>.querySelector(<span class="string">'btn'</span>);</span><br><span class="line"><span class="built_in">document</span>.attachEvent(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'first'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">document</span>.attachEvent(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'second'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 点击按钮之后先弹出'second',后弹出'first'</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-多个事件顺序执行"><a href="#3-多个事件顺序执行" class="headerlink" title="3. 多个事件顺序执行"></a>3. 多个事件顺序执行</h3><p>如果因为业务需要一定要让绑定的事件按顺序执行，且支持ie8，那我们不得不对这两种方法做兼容。通过看jquery代码得到启发，我们可以把每次绑定的事件的事件处理程序通过压栈操作压入数组，当事件触发的时候，通过数组的迭代来顺序执行数组中的函数.这样一来，事件处理程序其实是和dom结构完全解耦了，不再是直接绑定在dom上，而是存储在一个数组中。这样一来，事件处理程序的执行作用域可能就会发生变化，那么我们需要在迭代数组的时候将上下文传入，这样就可以完美解决了。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> DomEvent = <span class="function"><span class="keyword">function</span> (<span class="params">dom</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!dom) &#123;</span><br><span class="line">		<span class="keyword">return</span> ;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">this</span>.el = dom;</span><br><span class="line">&#125;;</span><br><span class="line">DomEvent.prototype = &#123;</span><br><span class="line">	<span class="keyword">constructor</span>: DomEvent,</span><br><span class="line">	add: function (type, func) &#123;</span><br><span class="line">		<span class="keyword">var</span> el = <span class="keyword">this</span>.el,</span><br><span class="line">			self = <span class="keyword">this</span>;</span><br><span class="line">			eventList = <span class="keyword">this</span>[type + <span class="string">'Events'</span>];</span><br><span class="line">		<span class="keyword">if</span> (!eventList) &#123;</span><br><span class="line">			<span class="keyword">if</span> (el.addEventListener) &#123;</span><br><span class="line">				el.addEventListener(type, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">					self._fire(type);</span><br><span class="line">				&#125;);</span><br><span class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.attachEvent) &#123;</span><br><span class="line">				el.attachEvent(<span class="string">'on'</span> + type, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">					self._fire(type);</span><br><span class="line">				&#125;);</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				el[<span class="string">'on'</span> + type] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">					self._fire(type);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">this</span>[type + <span class="string">'Events'</span>] = [];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">this</span>[type + <span class="string">'Events'</span>].push(func);</span><br><span class="line">	&#125;,</span><br><span class="line">	_fire: <span class="function"><span class="keyword">function</span> (<span class="params">type</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">var</span> eventList = <span class="keyword">this</span>[type + <span class="string">'Events'</span>];</span><br><span class="line">		<span class="keyword">if</span> (!eventList) &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//ie8不支持forEach,需要做兼容</span></span><br><span class="line">		eventList.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">func</span>) </span>&#123;</span><br><span class="line">			func.call(<span class="keyword">this</span>.el);</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> div = <span class="built_in">document</span>.querySelector(<span class="string">'#test'</span>);</span><br><span class="line"><span class="keyword">var</span> des = <span class="keyword">new</span> DomEvent(div);</span><br><span class="line">des.add(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	alert(<span class="string">'first'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">des.add(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	alert(<span class="string">'second'</span>);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//先弹出first,然后是second</span></span><br><span class="line">des.add(<span class="string">'mouseover'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	alert(<span class="string">'over1'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">des.add(<span class="string">'mouseover'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	alert(<span class="string">'over2'</span>);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//鼠标滑过时先弹出over1，然后是over2</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-原理"><a href="#4-原理" class="headerlink" title="4.原理"></a>4.原理</h3><p>至此，顺序添加的事件都能顺序执行，且支持ie8（forEeach自己去做兼容），核心思想就是把多个事件合并为一个事件，在这个事件中顺序执行不同时段添加的处理程序，通过数组压栈来控制调用顺序。也就是所有的事件公用一个入口，然后在入口中处理调用顺序，依次调用。</p>
+<h3 id="5-缺点"><a href="#5-缺点" class="headerlink" title="5.缺点"></a>5.缺点</h3><p>使用此方法有个缺点，那就是每个dom结构只能创建一个DomEvent对象，这导致如果需要在不同的作用域下为同一个dom结构绑定事件，必须将DomEvent对象创建在全局下，或者某个相对独立的作用域的父级作用域。如果为同一个dom结构创建对个DomEvent对象，那么将与原生绑定方法无异。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>不用打赏，你喜欢就好<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/event/">event</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-book icon"></i>
+	<a class="article-category-link" href="/categories/javascript/">javascript</a>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://tiantang-tt.github.io/2016/10/06/event-sequence/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/12/01/principle-of-jsonp/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          jsonp跨域的原理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/22/pretty-js-pieces/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">短小精悍的js代码段</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 柳轻侯
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">https</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ecmascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">相等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等操作符</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等和全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">event</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">h5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">mobile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">viewport</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">RegExp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">正则</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">localStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">sessionStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">webStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">浏览器本地存储</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">spider</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">crawler</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">html5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">postMessage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">jsonp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nodejs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">websocket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">socket.io</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://itbugs.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>宇轩阁</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://weixiaochu.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>A1ie2</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

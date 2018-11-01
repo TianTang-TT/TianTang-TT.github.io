@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
+  <title>websocket实现聊天室功能，仿微信pc端 | 轻言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1. 前言随着浏览器对html5的支持，我们现在可以用前端做一些很有意思的事情，比如在线聊天室，今天就谈谈怎么用nodejs+websocket实现一个简单的在线聊天室。本文用socket.io打造一个在线聊天室，取名为uchat，‘有聊’或者叫‘友聊‘。">
+<meta name="keywords" content="nodejs+websocket,聊天室,在线聊天室,socketio聊天室">
+<meta property="og:type" content="article">
+<meta property="og:title" content="websocket实现聊天室功能，仿微信pc端">
+<meta property="og:url" content="http://tiantang-tt.github.io/2017/01/09/websocket-chatroom/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1. 前言随着浏览器对html5的支持，我们现在可以用前端做一些很有意思的事情，比如在线聊天室，今天就谈谈怎么用nodejs+websocket实现一个简单的在线聊天室。本文用socket.io打造一个在线聊天室，取名为uchat，‘有聊’或者叫‘友聊‘。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-01T11:38:18.990Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="websocket实现聊天室功能，仿微信pc端">
+<meta name="twitter:description" content="1. 前言随着浏览器对html5的支持，我们现在可以用前端做一些很有意思的事情，比如在线聊天室，今天就谈谈怎么用nodejs+websocket实现一个简单的在线聊天室。本文用socket.io打造一个在线聊天室，取名为uchat，‘有聊’或者叫‘友聊‘。">
+  
+    <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+
+  
+
+</head>
+</html>
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">柳轻侯</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">— 黄金白璧买歌笑</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/随笔/">随笔</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			
+    			
+            
+    			
+    			<a data-idx="2" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">柳轻侯</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">柳轻侯</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">— 黄金白璧买歌笑</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/随笔/">随笔</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-websocket-chatroom" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      websocket实现聊天室功能，仿微信pc端
+    </h1>
+  
+
+        <a href="/2017/01/09/websocket-chatroom/" class="archive-article-date">
+  	<time datetime="2017-01-09T11:02:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-09</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p>随着浏览器对html5的支持，我们现在可以用前端做一些很有意思的事情，比如在线聊天室，今天就谈谈怎么用nodejs+websocket实现一个简单的在线聊天室。本文用socket.io打造一个在线聊天室，取名为uchat，‘有聊’或者叫‘友聊‘。</p>
+<a id="more"></a>
+<h3 id="2-主要技术和模块"><a href="#2-主要技术和模块" class="headerlink" title="2.主要技术和模块"></a>2.主要技术和模块</h3><h5 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h5><ul>
+<li>socket.io  封装了websocket，提供了友好的api，使用方便</li>
+<li>template-native.js art-template模板引擎</li>
+</ul>
+<h5 id="后台"><a href="#后台" class="headerlink" title="后台"></a>后台</h5><ul>
+<li>nodejs     v6.9.1，基本支持了es6语法</li>
+<li>express    静态资源服务器</li>
+<li>socket.io  websocket库，后台也得支持websocket不是吗</li>
+</ul>
+<h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><blockquote>
+<p>主要模拟微信网页端的交互和UI，通过socket.io来发送和接受消息，支持emoji表情和图片的发送。发送图片主要是利用了html5的FileReader，然后发送dataurl，这样只需要将img标签的src设置为base64的url就可以正常显示图片了。至于emoji的发送，因为每个客户端的emojis都是一样的，所以emoji本身并不会经过socket来传输，传输的仅仅是一个特定的emoji编码，这样前端接收到这个编码之后就可以正常显示相应的emoji了。</p>
+</blockquote>
+<h3 id="3-主要代码"><a href="#3-主要代码" class="headerlink" title="3. 主要代码"></a>3. 主要代码</h3><p>前端html代码具体就不展示了，感兴趣的可以查看 <a href="https://github.com/Back0/UChat" target="_blank" rel="noopener">uchat</a>;主要讲解一下node端的实现和前端的思路。服务端主要用了socket.io，这个前面已经说过了，既然是聊天室，那肯定就需要展示在线人员列表以及在线人数，因此我用了es6的Map对象存储当前在线人员，因为可以它方便的进行增删改查，如果有用数组来实现的话要相对麻烦很多。在建立连接对象的时候创建一个Map对象map，利用socket对象的id来作为连接用户的唯一表示，也把它作为用户在map对象中的唯一key（map中的key不允许重复）。然后通过socket来监听一个自定义login事件，当用户在前端发触发login的时候，后端将当前连接的socketId作为key，然后创建一个对象存储用户数据，包括用户名以及一些其他用户数据，然后将这个key和对象存储到map中，同时将用户登录的消息广播到其他的客户端。当某个用户在前端发送了消息之后，服务端接受消息，并把它转发到除了发送者之外的所有客户端中。图片和表情的发送也是类似的思路。当某个客户端断开连接之后，服务端监听到disconnet时间，然后将该用户从map对象中移除，然后将消息广播给其他客户端。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> users = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line"><span class="keyword">const</span> socketIO = <span class="function"><span class="params">io</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 当用户在客户端发送websocket请求和服务端建立socket连接之后会触发服务端的connection事件</span></span><br><span class="line">  io.on(<span class="string">'connection'</span>, socket =&gt; &#123;</span><br><span class="line">    <span class="comment">// 每个客户端都有一个连接对象，其中id属性为唯一标识</span></span><br><span class="line">    <span class="keyword">let</span> userId = socket.id;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 监听登陆事件，用户登陆之后将用户信息存储于map对象中</span></span><br><span class="line">    socket.on(<span class="string">'login'</span>, name =&gt; &#123;</span><br><span class="line">      <span class="keyword">let</span> headline = <span class="string">''</span>;</span><br><span class="line">      <span class="keyword">if</span> (!isLogin(userId)) &#123;</span><br><span class="line">        users.set(userId, &#123;name, headline&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> msg = <span class="string">`<span class="subst">$&#123;name&#125;</span> joined`</span>;</span><br><span class="line">        <span class="comment">// 通知其他用户有人加入群聊</span></span><br><span class="line">        io.sockets.emit(<span class="string">'message'</span>, &#123;<span class="attr">type</span>: <span class="string">'system'</span>, <span class="attr">data</span>: msg&#125;);</span><br><span class="line">        io.sockets.emit(<span class="string">'membersChange'</span>, userArr());</span><br><span class="line">      &#125;      </span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 接受消息事件</span></span><br><span class="line">    socket.on(<span class="string">'message'</span>, msg =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (isLogin(userId)) &#123;</span><br><span class="line">        socket.broadcast.emit(<span class="string">'message'</span>, msg);</span><br><span class="line">      &#125;     </span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="comment">// 从在线列表中删除断连用户</span></span><br><span class="line">    socket.on(<span class="string">'disconnect'</span>, () =&gt; &#123;</span><br><span class="line">      <span class="keyword">let</span> user = users.get(userId);</span><br><span class="line">      <span class="keyword">let</span> msg = <span class="string">`<span class="subst">$&#123;user.name&#125;</span> left`</span>;</span><br><span class="line">      users.delete(userId);</span><br><span class="line">      socket.broadcast.emit(<span class="string">'membersChange'</span>, userArr());</span><br><span class="line">      socket.broadcast.emit(<span class="string">'message'</span>, &#123;<span class="attr">type</span>: <span class="string">'system'</span>, <span class="attr">data</span>: msg&#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 判断用户是否已登陆</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">isLogin</span> (<span class="params">id</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (users.has(id)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">userArr</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">let</span> values = users.values();</span><br><span class="line">      <span class="keyword">return</span> [...values]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  以上是服务端的主要逻辑，清晰明了，代码也不多，那么在客户端呢。首先我们引入了socket.io的库（前后端都用了socket.io，只不过前端是客户端的socket.io），写了一个登陆界面，需要填入用户昵称，毕竟你需要知道消息是谁发来的。填入昵称，点击登陆之后才会建立socket连接，因为这时候才能算你登陆成功，否则将不会在后端的map对象中存储用户信息。登陆之后就进入了群聊界面，主要三部分，用户列表，对话区，输入区。建立了一个全局的uchat对象来保存一个客户端实例，构造这个对象的同时绑定了登陆逻辑，当用户成功登陆之后就可以进行这个实例的初始化了。实例的初始化主要包括以下的部分，获取当前在线的用户列表，绑定一些页面的事件，比如发送消息，发送图片，选择表情。当用户点击表情按钮的时候进行表情的下载（不放在初始化中是为了提高首页加载速度），然后展示表情面板。<br>  写输入区的时候遇到一个问题，我之前使用textarea来做的输入区，用来发送文本消息，传送图片也没有问题因为图片不会在输入区显示，而是选择好之后就直接发送了，没有后悔药。但是发表情的时候不能这样搞啊，先得在输入区显示，然后万一点错了还可以删除或者更换，然后可以图文一起发送。但是textaera中是不能显示图片表情的，这个问题有点蛋疼，想了很久也没有想到合适的解决方案，于是查看了网页微信，发现是用的p标签来做的输入区，然后设置contenteditable为true，真一语惊醒梦中人，图片在p标签中可以显示啊，于是我将输入区修改为了p标签，这样就可以愉快的选择输入表情了。但是还有个问题，那就是每个客户端要选的表情都是那么些，每个表情在客户端都有（你要发表情肯定得提前在客户端下载好）,每次都通过socket直接传输表情数据岂不是显得很浪费，白下那么多表情了？那么既然每个用户的可选择表情都是一样的，而且客户端本地下好了这些表情，如果我知道别的客户端发来的是什么表情，直接显示我本地的表情不就好了？恩，看起来没毛病，那么我怎么知道对方发来的是什么表情呢？？？在这里，我对每个表情都制定了一个编号，构建了一定的规则，表情的类型编号都是[emoji:type_number]的形式，type是表情类型，number是具体的表情编号，跟表情图片的文件名保持一致，这样就能直接通过编号来找到指定的表情了。所以表情面板中的img标签都会有data-type和data-num两个属性。当用户选择某个表情之后，js会复制这个表情的img标签，然后显示在下方的输入区中，这样就能在输入区中显示图片了。点击发送键的时候先对输入区内容做过滤，把img标签换成[emoji:type_number]的形式发送，当别的客户端收到一段文本消息之后也做过滤，把其中的[emoji:type_number]换成相应的img标签，这样就能在对话区显示相应的图片了。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> uchat = <span class="literal">null</span>;</span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  uchat = <span class="keyword">new</span> UChat();</span><br><span class="line">  uchat.login();  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">UChat</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.socket = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.emojiLoaded = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">UChat.prototype = &#123;</span><br><span class="line">  login: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> loginPage = <span class="built_in">document</span>.querySelector(<span class="string">'#login'</span>);</span><br><span class="line">    <span class="keyword">var</span> userInput = loginPage.querySelector(<span class="string">'.username'</span>);</span><br><span class="line">    <span class="keyword">var</span> loginBtn = loginPage.querySelector(<span class="string">'.btn-login'</span>);</span><br><span class="line">    loginBtn.addEventListener(<span class="string">'click'</span>, join);</span><br><span class="line">    userInput.addEventListener(<span class="string">'keydown'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (e.keyCode === <span class="number">13</span> || e.code.toLowerCase() === <span class="string">'enter'</span>) &#123;</span><br><span class="line">        join();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">join</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> username = userInput.value;</span><br><span class="line">      <span class="keyword">if</span> (!username.trim().length) &#123;</span><br><span class="line">        alert(<span class="string">'请输入昵称'</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;      </span><br><span class="line">      userInput.value = <span class="string">''</span>;</span><br><span class="line">      loginPage.style.display = <span class="string">'none'</span>;</span><br><span class="line">      self.name = username;</span><br><span class="line">      self.init();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="comment">// 显示左侧用户资料</span></span><br><span class="line">    <span class="keyword">this</span>.displayProgile();</span><br><span class="line">    <span class="comment">// 链接到服务器</span></span><br><span class="line">    <span class="keyword">this</span>.socket = io.connect();</span><br><span class="line">    <span class="comment">// 建立连接</span></span><br><span class="line">    <span class="keyword">this</span>.socket.on(<span class="string">'connect'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 此处需要展示登陆界面</span></span><br><span class="line">      self.socket.emit(<span class="string">'login'</span>, self.name);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">this</span>.socket.on(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">msg</span>) </span>&#123;</span><br><span class="line">      self.addDialogItem(msg);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 当前群聊人员变动</span></span><br><span class="line">    <span class="keyword">this</span>.socket.on(<span class="string">'membersChange'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">memberArr</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 更新在线人员列表</span></span><br><span class="line">      self.upDateMemItem(memberArr);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">this</span>.bindEvent();</span><br><span class="line">  &#125;,</span><br><span class="line">  displayProgile: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> profile = <span class="built_in">document</span>.querySelector(<span class="string">'#members .profile'</span>);</span><br><span class="line">    profile.querySelector(<span class="string">'.nick-name'</span>).innerText = self.name;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * [bindEvent 绑定事件入口]</span></span><br><span class="line"><span class="comment">   * @return &#123;[undefined]&#125; </span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  bindEvent: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 发送消息</span></span><br><span class="line">    <span class="keyword">this</span>.bindSendMsg();</span><br><span class="line">    <span class="comment">// 发送表情</span></span><br><span class="line">    <span class="keyword">this</span>.bindSendEmoji();</span><br><span class="line">    <span class="comment">// 发送图片</span></span><br><span class="line">    <span class="keyword">this</span>.bindSendImg();</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * [bindSendMsg 发送信息]</span></span><br><span class="line"><span class="comment">   * @return &#123;[type]&#125; [description]</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  addDialogItem: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 接收到后台发来的信息然后在对话区展现出来</span></span><br><span class="line">    <span class="comment">// &#123;type: 信息类型, data: 具体的信息&#125;</span></span><br><span class="line">    <span class="keyword">var</span> html = template(<span class="string">'msgTpl'</span>, data);</span><br><span class="line">    <span class="comment">// 过滤，将表情代码换成图片</span></span><br><span class="line">    html = <span class="keyword">this</span>.codeToImg(html);</span><br><span class="line">    <span class="keyword">var</span> dialogArea = <span class="built_in">document</span>.querySelector(<span class="string">'#chatting .dialogs'</span>);</span><br><span class="line">    dialogArea.innerHTML += html;</span><br><span class="line">    <span class="comment">// 消息更新后滚动条滚到底</span></span><br><span class="line">    dialogArea.scrollTop = dialogArea.scrollHeight;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * [upDateMemItem 更新在线人员列表]</span></span><br><span class="line"><span class="comment">   * @param  &#123;[type]&#125; memberArr [description]</span></span><br><span class="line"><span class="comment">   * @return &#123;[type]&#125;           [description]</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  upDateMemItem: <span class="function"><span class="keyword">function</span>(<span class="params">memberArr</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> memHtml = template(<span class="string">'memTpl'</span>, &#123;<span class="attr">memberArr</span>: memberArr&#125;);</span><br><span class="line">    <span class="keyword">var</span> memList = <span class="built_in">document</span>.querySelector(<span class="string">'.mems-list'</span>);</span><br><span class="line">    memList.innerHTML = memHtml;</span><br><span class="line">    <span class="built_in">document</span>.querySelector(<span class="string">'#dialog .count'</span>).innerText = memberArr.length;</span><br><span class="line">  &#125;,</span><br><span class="line">  bindSendMsg: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> speakArea = <span class="built_in">document</span>.querySelector(<span class="string">'#typing #typeContent'</span>);</span><br><span class="line">    <span class="keyword">var</span> sendBtn = <span class="built_in">document</span>.querySelector(<span class="string">'#typing .btn-send'</span>);</span><br><span class="line">    <span class="comment">// 点击按钮发送</span></span><br><span class="line">    sendBtn.addEventListener(<span class="string">'click'</span>, sendMsg);</span><br><span class="line">    <span class="comment">// 回车发送</span></span><br><span class="line">    speakArea.addEventListener(<span class="string">'keydown'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (e.keyCode === <span class="number">13</span> || e.code.toLowerCase() === <span class="string">'enter'</span>) &#123;</span><br><span class="line">        sendMsg(e);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">sendMsg</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> speaking = speakArea.innerHTML;</span><br><span class="line">      speaking = self.imgToCode(speaking);</span><br><span class="line">      <span class="keyword">if</span> (speaking.trim().length) &#123;</span><br><span class="line">        self.socket.send(&#123;<span class="attr">msgType</span>: <span class="string">'text'</span>, <span class="attr">data</span>: speaking, <span class="attr">username</span>: self.name&#125;);</span><br><span class="line">        <span class="comment">// 把信息显示在对话区域</span></span><br><span class="line">        self.addDialogItem(&#123;<span class="attr">type</span>: <span class="string">'self'</span>, <span class="attr">data</span>: speaking, <span class="attr">username</span>: self.name&#125;);</span><br><span class="line">        <span class="comment">// 清空输入区</span></span><br><span class="line">        speakArea.innerHTML = <span class="string">''</span>;</span><br><span class="line">        e.preventDefault();<span class="comment">//这句话可以阻止回车事件冒泡;如果注释掉这句话,那么会有空格残余;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  bindSendImg: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> file = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> reader = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> fileName = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">var</span> imgReg = <span class="regexp">/\.(jpg|jpeg|png|gif)$/</span>;</span><br><span class="line">    <span class="keyword">var</span> imgInput = <span class="built_in">document</span>.querySelector(<span class="string">'#typing .uploadImg'</span>);</span><br><span class="line">    imgInput.addEventListener(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!<span class="keyword">this</span>.files.length) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      file = <span class="keyword">this</span>.files[<span class="number">0</span>];</span><br><span class="line">      fileName = file.name;</span><br><span class="line">      <span class="keyword">if</span> (!imgReg.test(fileName.toLowerCase())) &#123;</span><br><span class="line">        alert(<span class="string">'请选择一张图片'</span>);</span><br><span class="line">        imgInput.value = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      reader = <span class="keyword">new</span> FileReader();</span><br><span class="line">      <span class="comment">// 图片读取完毕之后马上显示</span></span><br><span class="line">      reader.onload = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">        self.addDialogItem(&#123;<span class="attr">type</span>: <span class="string">'self'</span>, <span class="attr">data</span>: e.target.result, <span class="attr">msgType</span>: <span class="string">'img'</span>, <span class="attr">username</span>: self.name&#125;);</span><br><span class="line">        self.socket.send(&#123;<span class="attr">type</span>: <span class="string">'dialog'</span>, <span class="attr">msgType</span>: <span class="string">'img'</span>, <span class="attr">data</span>: e.target.result, <span class="attr">username</span>: self.name&#125;);</span><br><span class="line">        imgInput.value = <span class="string">''</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      reader.readAsDataURL(file);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">  bindSendEmoji: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">var</span> emojiTool = <span class="built_in">document</span>.querySelector(<span class="string">'#typing .tools .emoji'</span>);</span><br><span class="line">    <span class="keyword">var</span> container = emojiTool.querySelector(<span class="string">'.emoji-container'</span>);</span><br><span class="line">    <span class="keyword">var</span> emojiSelector = container.querySelector(<span class="string">'.selector'</span>);</span><br><span class="line">    <span class="keyword">var</span> emojiTab = container.querySelector(<span class="string">'.tab'</span>);</span><br><span class="line">    <span class="keyword">var</span> img, qqFragment, tsjFragment;</span><br><span class="line">    emojiTool.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> qqSection = container.querySelector(<span class="string">'section[data-type=qq]'</span>);</span><br><span class="line">      <span class="keyword">var</span> tsjSection = container.querySelector(<span class="string">'section[data-type=tsj]'</span>);</span><br><span class="line">      <span class="keyword">if</span> (container.clientHeight &gt; <span class="number">10</span>) &#123;</span><br><span class="line">        container.style.display = <span class="string">'none'</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        container.style.display = <span class="string">'block'</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 下载表情</span></span><br><span class="line">      <span class="keyword">if</span> (!self.emojiLoaded) &#123;</span><br><span class="line">        qqFragment = <span class="built_in">document</span>.createDocumentFragment();</span><br><span class="line">        tsjFragment = <span class="built_in">document</span>.createDocumentFragment();</span><br><span class="line">        <span class="comment">// qq表情75个</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">75</span>; i++) &#123;</span><br><span class="line">          img = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>);</span><br><span class="line">          img.setAttribute(<span class="string">'data-type'</span>, <span class="string">'qq'</span>);</span><br><span class="line">          img.setAttribute(<span class="string">'data-num'</span>, i);</span><br><span class="line">          img.src = <span class="string">'assets/imgs/qq/'</span> + i + <span class="string">'.gif'</span>;</span><br><span class="line">          qqFragment.appendChild(img);</span><br><span class="line">        &#125;</span><br><span class="line">        qqSection.appendChild(qqFragment);</span><br><span class="line">        <span class="comment">// 兔斯基表情18个</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">1</span>; j &lt;= <span class="number">69</span>; j++) &#123;</span><br><span class="line">          img = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>);</span><br><span class="line">          img.setAttribute(<span class="string">'data-type'</span>, <span class="string">'tsj'</span>);</span><br><span class="line">          img.setAttribute(<span class="string">'data-num'</span>, j);</span><br><span class="line">          img.src = <span class="string">'assets/imgs/tsj/'</span> + j + <span class="string">'.gif'</span>;</span><br><span class="line">          tsjFragment.appendChild(img);</span><br><span class="line">        &#125;</span><br><span class="line">        tsjSection.appendChild(tsjFragment);</span><br><span class="line">        self.emojiLoaded = <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      e.stopPropagation();</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 选择表情类型</span></span><br><span class="line">    emojiSelector.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123; </span><br><span class="line">      <span class="keyword">var</span> target = e.target.parentNode;</span><br><span class="line">      <span class="keyword">var</span> type = target.getAttribute(<span class="string">'data-type'</span>);</span><br><span class="line">      <span class="keyword">if</span> (!type) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">var</span> sections = container.querySelectorAll(<span class="string">'.emoji-list'</span>);</span><br><span class="line">      [].slice.call(sections).forEach(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> itemType = item.getAttribute(<span class="string">'data-type'</span>);</span><br><span class="line">        <span class="keyword">if</span> (itemType === type) &#123;</span><br><span class="line">          item.style.display = <span class="string">'block'</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          item.style.display = <span class="string">'none'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      e.stopPropagation();</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 选择表情</span></span><br><span class="line">    emojiTab.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> target = e.target;</span><br><span class="line">      <span class="keyword">var</span> type = target.parentNode.getAttribute(<span class="string">'data-type'</span>);</span><br><span class="line">      <span class="keyword">var</span> num = target.getAttribute(<span class="string">'data-num'</span>);</span><br><span class="line">      <span class="keyword">if</span> (!type || !num) <span class="keyword">return</span>;</span><br><span class="line">      <span class="keyword">var</span> speakArea = <span class="built_in">document</span>.querySelector(<span class="string">'#typing #typeContent'</span>);</span><br><span class="line">      speakArea.innerHTML += target.outerHTML;</span><br><span class="line">      container.style.display = <span class="string">'none'</span>;</span><br><span class="line">      e.stopPropagation();</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="comment">// 点击空白处隐藏表情面板</span></span><br><span class="line">    <span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      container.style.display = <span class="string">'none'</span>;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  imgToCode: <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> emojiReg = <span class="regexp">/&lt;img.+?data-type="(\w+)".+?data-num="(\d+)".*?&gt;/g</span>;</span><br><span class="line">    <span class="keyword">return</span> str.replace(emojiReg, <span class="string">'[emoji:$1_$2]'</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  codeToImg: <span class="function"><span class="keyword">function</span> (<span class="params">str</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> codeReg = <span class="regexp">/\[emoji:(\w+?)_(\d+?)\]/g</span>;</span><br><span class="line">    <span class="keyword">return</span> str.replace(codeReg, <span class="string">'&lt;img src="assets/imgs/$1/$2.gif"&gt;'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h3><p>  也没什么好说的，写这种长文总是缺乏耐心。</p>
+<h3 id="5-参考"><a href="#5-参考" class="headerlink" title="5. 参考"></a>5. 参考</h3><p><a href="http://www.cnblogs.com/Wayou/p/hichat_built_with_nodejs_socket.html" target="_blank" rel="noopener">Node.js + Web Socket 打造即时聊天程序嗨聊</a>;</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>不用打赏，你喜欢就好<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/socket-io/">socket.io</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/websocket/">websocket</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-book icon"></i>
+	<a class="article-category-link" href="/categories/nodejs/">nodejs</a>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://tiantang-tt.github.io/2017/01/09/websocket-chatroom/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/04/18/config-https-in-nginx/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          nginx配置https
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/22/node-crawler/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">node爬虫抓取知乎动态</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 柳轻侯
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">https</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ecmascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">相等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等操作符</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等和全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">event</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">h5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">mobile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">viewport</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">RegExp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">正则</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">localStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">sessionStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">webStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">浏览器本地存储</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">spider</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">crawler</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">html5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">postMessage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">jsonp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nodejs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">websocket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">socket.io</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://itbugs.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>宇轩阁</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://weixiaochu.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>A1ie2</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

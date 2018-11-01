@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
+  <title>浏览器本地存储,localStorage,sessionStorage | 轻言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.前言一般来说，当我们首次登陆某个网站的时候，浏览器会默认提供一个“记住密码”的功能来询问你是否需要浏览器来记住你的登陆密码，这些密码会以加密的形式安全的存放在你的本地磁盘上。但是我们需要的往往并不仅仅是记住密码而已，有时候我们希望存储更多的信息在本地。浏览器tab页中的信息通常会在关闭标签页的时候销毁，只有那些保存在cookie的信息会被写入到磁盘中，所以当你再次打开浏览器的时候，除了cook">
+<meta name="keywords" content="localStorage,sessionStorage,webStorage,浏览器本地存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器本地存储,localStorage,sessionStorage">
+<meta property="og:url" content="http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1.前言一般来说，当我们首次登陆某个网站的时候，浏览器会默认提供一个“记住密码”的功能来询问你是否需要浏览器来记住你的登陆密码，这些密码会以加密的形式安全的存放在你的本地磁盘上。但是我们需要的往往并不仅仅是记住密码而已，有时候我们希望存储更多的信息在本地。浏览器tab页中的信息通常会在关闭标签页的时候销毁，只有那些保存在cookie的信息会被写入到磁盘中，所以当你再次打开浏览器的时候，除了cook">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/heavenimUfMv.jpg">
+<meta property="og:updated_time" content="2018-11-01T11:38:18.988Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器本地存储,localStorage,sessionStorage">
+<meta name="twitter:description" content="1.前言一般来说，当我们首次登陆某个网站的时候，浏览器会默认提供一个“记住密码”的功能来询问你是否需要浏览器来记住你的登陆密码，这些密码会以加密的形式安全的存放在你的本地磁盘上。但是我们需要的往往并不仅仅是记住密码而已，有时候我们希望存储更多的信息在本地。浏览器tab页中的信息通常会在关闭标签页的时候销毁，只有那些保存在cookie的信息会被写入到磁盘中，所以当你再次打开浏览器的时候，除了cook">
+<meta name="twitter:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/heavenimUfMv.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+
+  
+
+</head>
+</html>
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">柳轻侯</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">— 黄金白璧买歌笑</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/随笔/">随笔</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			
+    			
+            
+    			
+    			<a data-idx="2" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">柳轻侯</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">柳轻侯</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">— 黄金白璧买歌笑</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/随笔/">随笔</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-localStorage-sessionStorage" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      浏览器本地存储,localStorage,sessionStorage
+    </h1>
+  
+
+        <a href="/2016/04/07/localStorage-sessionStorage/" class="archive-article-date">
+  	<time datetime="2016-04-07T11:39:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-07</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>一般来说，当我们首次登陆某个网站的时候，浏览器会默认提供一个“记住密码”的功能来询问你是否需要浏览器来记住你的登陆密码，这些密码会以加密的形式安全的存放在你的本地磁盘上。但是我们需要的往往并不仅仅是记住密码而已，有时候我们希望存储更多的信息在本地。浏览器tab页中的信息通常会在关闭标签页的时候销毁，只有那些保存在cookie的信息会被写入到磁盘中，所以当你再次打开浏览器的时候，除了cookie中的信息，你上次访问网页的信息将会全部丢失，因此我们不得不一次次的输入那些重复的信息，白白浪费自己的时间，而现在，html5提供的本地存储功能webStorage可以帮我们完美的解决这个问题。</p>
+<a id="more"></a>
+<hr>
+<p><br></p>
+<h3 id="2-webStorage"><a href="#2-webStorage" class="headerlink" title="2.webStorage"></a>2.webStorage</h3><p>以往我们用cookie来将需要的信息保存到本地，下次需要这些信息的时候直接从cookie中获取就可以了，这种便捷的方式一直以来是web开发人员本地存储的主要方式，但这种方式也有自己的弊端，比如cookie大小有限制，相当轻量，因此能存放的信息量不大，而且每发请求都会带上相应的cookie，如果cookie中包含敏感信息，那么这种行为就相当危险了。web Storage主要有以下两个目标</p>
+<ul>
+<li>提供一种cookie之外存储的会话的途径.</li>
+<li>提供一种可以存储大量可以跨会话存储的机制</li>
+</ul>
+<p>支持webStorage的浏览器的window上定义了两个属性，localStorage和sessionStorage,这两个属性都是storage对象的实例，下面是storage接口的定义</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">interface Storage &#123;</span><br><span class="line">  readonly attribute <span class="keyword">unsigned</span> <span class="keyword">long</span> length;</span><br><span class="line">  DOMString? key(<span class="keyword">unsigned</span> <span class="keyword">long</span> index);</span><br><span class="line">  getter DOMString? getItem(DOMString key);</span><br><span class="line">  <span class="function">setter <span class="keyword">void</span> <span class="title">setItem</span><span class="params">(DOMString key, DOMString value)</span></span>;</span><br><span class="line">  <span class="function">deleter <span class="keyword">void</span> <span class="title">removeItem</span><span class="params">(DOMString key)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>所以localStorage和sessionStorage也拥有setItem,getItem,removeItem等方法，下面分别来讲这两种存储方法各有什么特点。ps:下文中的webStorage对象指的是localStorage或sessionStorage</p>
+<hr>
+<p><br></p>
+<h3 id="3-localStorage和webStorage"><a href="#3-localStorage和webStorage" class="headerlink" title="3.localStorage和webStorage"></a>3.localStorage和webStorage</h3><p>由于webStorage中信息的存储（目前）只能存储字符串，所以如果存储别的类型的数据，会被浏览器默认转为字符串存储起来。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//api</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//若key不存在，则创建该key,并把相应的值设为value，</span></span><br><span class="line"><span class="comment">//若key已经存在，则判断当前value和原始值oldvalue是否相等，若相等，则do nogthing，什么也不做(__注意:此种情况不会触发事件)</span></span><br><span class="line"><span class="comment">//若key存在且value!=oldvalue,则用value覆盖oldValue;</span></span><br><span class="line">setItem(key,value):存储一条记录</span><br><span class="line"></span><br><span class="line"><span class="comment">//若key不存在，则do nothing，什么也不做(__注意:此种情况不会触发事件)</span></span><br><span class="line"><span class="comment">//若key存在，则返回该key相对应的value</span></span><br><span class="line">getItem(key):获取一条记录</span><br><span class="line"></span><br><span class="line"><span class="comment">//若key不存在，则do nothing，什么也不做(__注意:此种情况不会触发事件)</span></span><br><span class="line"><span class="comment">//若key存在，则清除对应的记录</span></span><br><span class="line">removeItem(key):清除一条记录</span><br><span class="line"></span><br><span class="line">clear():清除当前webStorage对象的所有键值对</span><br><span class="line"></span><br><span class="line"><span class="comment">//若n&gt;length,则返回null</span></span><br><span class="line">key(n):获取第n条记录的key</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取当前webStorage对象的记录条数</span></span><br><span class="line">length:总数属性</span><br></pre></td></tr></table></figure>
+<p>这里要注意的一点是可以通过设置属性来存储一条记录，通过查询该属性来获取该记录，通过delete操作符来删除该记录(非ie8及以下)</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> ls = localStorage;</span><br><span class="line">ls.setItem(<span class="string">"name"</span>,<span class="string">"honor"</span>)        <span class="comment">//等价于ls.name = "honor"</span></span><br><span class="line">ls.setItem(<span class="string">"name"</span>,<span class="string">"柳轻侯"</span>)       <span class="comment">//直接覆盖原来的oldvalue,相当于ls.name = "柳轻侯"</span></span><br><span class="line">ls.removeItem(<span class="string">"name"</span>)             <span class="comment">//等价于delete(ls.name),此举仅在非ie8下生效</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p><br></p>
+<h3 id="4-生命周期和作用域"><a href="#4-生命周期和作用域" class="headerlink" title="4.生命周期和作用域"></a>4.生命周期和作用域</h3><p>如我们所知，cookie可以设置domain和cookie,那么localStorage和sessionStorage是否也有作用域和生命周期呢，答案是显然的，并且不同的作用域和生命周期是localStorage和sessionStorage的主要区别。和cooie不同，ls(localStorage)和ss(sessionStorage)有默认的作用域和生命周期，ls存储的数据是永久性的(存储在用户的磁盘上)，除非用户可以得去清除存储的数据，否则将一直存在下去，不会过期。</p>
+<p>可读取共同ls的文档应该是同源的(同协议，同域，同端口)，通源文档分享同一个ls对象，可以相互读取或覆盖对方的数据，两个不同窗口tab页之间可以相互通信，没有类似于cookie的path限制，或者你可以把ls的path当成’/‘。但有一点需要注意，虽然同源文档共同维护同一个ls对象，且这个ls对象是存储在用户的磁盘上的，但是 不同的浏览器却又有相对独立的作用域，比如你使用chrome为<a href="http://www.test.com设置了一个ls对象，你用FireFox访问www.text.com却访问不到上次在chrome中设置的ls对象，别的浏览器也一样。" target="_blank" rel="noopener">www.test.com设置了一个ls对象，你用FireFox访问www.text.com却访问不到上次在chrome中设置的ls对象，别的浏览器也一样。</a></p>
+<p>ss对象的生命周期一般是当前window对象的生命周期，也就是说除非当前tab页关闭，否则这个ss对象是一直存在的，当然前提是你刷新的tab页跟之前的页面是同源的(同协议，同域，同端口)。但是不同的window之间是不可以共享同一个ss，即使两个window的url是一模一样的，也就是说，不同的tab页之间的信息共享是被严格限制的，no way!.</p>
+<hr>
+<p><br></p>
+<h3 id="5-存储事件"><a href="#5-存储事件" class="headerlink" title="5.存储事件"></a>5.存储事件</h3><p>只要ls或ss的数据对象发生改变，浏览器在其他对该数据可见的窗口对象上会触发存储事件（在对数据进行改变的窗口上反而不会触发，也就是说同源的a页面和b页面，如果a页面中对ls对象做出修改，那么会在b页面上触发存储事件，而a页面上却不会触发。（__注意： 只有数据真正发生改变时才会触发存储事件，do nothing的情况是不会触发事件的）。 我们可以通过dom2的事件监听方法addEventListere方法监听storage事件</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//与storage事件相关的五个属性（ie8不支持）</span></span><br><span class="line">key: 被设置或移除的键名字，如果为clear事件，则该属性为<span class="literal">null</span></span><br><span class="line">newVlaue：被设置项的新值，如果书removeItem事件，则该属性为<span class="literal">null</span></span><br><span class="line">oldValue: 被设置或移除的项的原始值，若该项是新增项，则该属性是<span class="literal">null</span></span><br><span class="line">storageArea: 目标<span class="built_in">window</span>对象上的localStorage属性或sessionStorage属性</span><br><span class="line">url: 触发该事件的文档的url</span><br></pre></td></tr></table></figure>
+<hr>
+<p><br></p>
+<h3 id="6-浏览器支持"><a href="#6-浏览器支持" class="headerlink" title="6.浏览器支持"></a>6.浏览器支持</h3><p><img src="http://7xt6mo.com1.z0.glb.clouddn.com/heavenimUfMv.jpg" alt=""></p>
+<p>chrome和safri的ss和ls大小限制为2.5Mb,其他浏览器为5Mb,这个容量足以应对大部分需求。要特别注意，ie8不支持delete操作符，为保证兼容性，应该尽量使用stemItem,getItem，removeItem</p>
+<hr>
+<p><br></p>
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7.总结"></a>7.总结</h3><p>总体来说html5的本都存储还是很强大的，可以我们大部分需求，但并非所有浏览器都实现了这个接口，所以在使用之前最好先检测一下看浏览器是否支持ls和ss。另外，目前ls和ss都只能存储字符串，如果想要存储一些复杂的接口，可将其先转化为字符串然后存储，用的时候再将格式还原。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>不用打赏，你喜欢就好<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/localStorage/">localStorage</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sessionStorage/">sessionStorage</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webStorage/">webStorage</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/浏览器本地存储/">浏览器本地存储</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-book icon"></i>
+	<a class="article-category-link" href="/categories/javascript/">javascript</a>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/06/08/FE-guide/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          前端开发规范
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/05/equal-in-js/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">javascript中的相等操作符</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 柳轻侯
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">https</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ecmascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">相等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等操作符</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等和全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">event</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">h5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">mobile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">viewport</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">RegExp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">正则</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">localStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">sessionStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">webStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">浏览器本地存储</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">spider</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">crawler</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">html5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">postMessage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">jsonp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nodejs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">websocket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">socket.io</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://itbugs.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>宇轩阁</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://weixiaochu.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>A1ie2</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

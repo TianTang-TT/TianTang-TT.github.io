@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
+  <title>javascript中的相等操作符 | 轻言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.前言我们在编程的过程中，经常会遇到判断两个变量是否相等的情况，ECMAscript提供了两种相等操作符”==”和”===”来判断，这两种操作都会返回一个boolean值。一般来说，我们把”==”称之为相等，称”===”为全等。当两相比较的两个变量数据类型一致时，情况比较简单，而当操作符两边的变量类型不一致，甚至其中的某个变量是对象时，情况就比较复杂了，下面分别介绍当操作数类型不同时运算结果会怎">
+<meta name="keywords" content="javascript,js,ecmascript,相等,全等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript中的相等操作符">
+<meta property="og:url" content="http://tiantang-tt.github.io/2016/04/05/equal-in-js/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1.前言我们在编程的过程中，经常会遇到判断两个变量是否相等的情况，ECMAscript提供了两种相等操作符”==”和”===”来判断，这两种操作都会返回一个boolean值。一般来说，我们把”==”称之为相等，称”===”为全等。当两相比较的两个变量数据类型一致时，情况比较简单，而当操作符两边的变量类型不一致，甚至其中的某个变量是对象时，情况就比较复杂了，下面分别介绍当操作数类型不同时运算结果会怎">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-01T11:38:18.987Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="javascript中的相等操作符">
+<meta name="twitter:description" content="1.前言我们在编程的过程中，经常会遇到判断两个变量是否相等的情况，ECMAscript提供了两种相等操作符”==”和”===”来判断，这两种操作都会返回一个boolean值。一般来说，我们把”==”称之为相等，称”===”为全等。当两相比较的两个变量数据类型一致时，情况比较简单，而当操作符两边的变量类型不一致，甚至其中的某个变量是对象时，情况就比较复杂了，下面分别介绍当操作数类型不同时运算结果会怎">
+  
+    <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+
+  
+
+</head>
+</html>
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">柳轻侯</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">— 黄金白璧买歌笑</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/随笔/">随笔</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			
+    			
+            
+    			
+    			<a data-idx="2" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">柳轻侯</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">柳轻侯</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">— 黄金白璧买歌笑</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/随笔/">随笔</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-equal-in-js" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      javascript中的相等操作符
+    </h1>
+  
+
+        <a href="/2016/04/05/equal-in-js/" class="archive-article-date">
+  	<time datetime="2016-04-05T04:41:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-05</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>我们在编程的过程中，经常会遇到判断两个变量是否相等的情况，ECMAscript提供了两种相等操作符”==”和”===”来判断，这两种操作都会返回一个boolean值。一般来说，我们把”==”称之为相等，称”===”为全等。当两相比较的两个变量数据类型一致时，情况比较简单，而当操作符两边的变量类型不一致，甚至其中的某个变量是对象时，情况就比较复杂了，下面分别介绍当操作数类型不同时运算结果会怎么样。</p>
+<a id="more"></a>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="2-全等操作符-“-”"><a href="#2-全等操作符-“-”" class="headerlink" title="2.全等操作符 “===”"></a>2.全等操作符 “===”</h3><p>全等操作符”===”的情况相对来说比较简单。当用全等操作符”===”来判断时，首先检查操作符两边操作数数据类型是否一致，若不一致，则直接返回false,否则，才进行下一步判断。如果是两个boolean的比较，则”===”两边必须同为true或同为false,才可以返回true,否则返回false.若两相比较的是数字，那么只有当这两个数字大小相等时才会返回true，否则返回false。如果要比较的两个变量是字符串，先比较两个字符串的长度length是否相等，如果长度不一样，则返回false,如果相等，则从两个变量的第一个字符开始比较是否相等，一直比较到最后一位，如果其中的某一位不想等，则返回false,否则返回true,(<strong>注意:字符串的比较是不会忽略空格的，所以在比较两个字符串是否相等时，为确保安全，应该先去除空格，然后把两个字符串同转为大写或者小写之后再进行比较</strong>)。而null只有在null===null的情况下才会返回true,其它情况都返回false,同样，undefined只有在undefined===undefined的情况下才会返回true,否则返回false。如：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//若数据类类型不同，则直接返回false</span></span><br><span class="line"><span class="literal">true</span> === <span class="number">1</span>       <span class="comment">//false</span></span><br><span class="line"><span class="string">"1"</span> === <span class="number">1</span>        <span class="comment">//false</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">//boolean的比较</span></span><br><span class="line"><span class="literal">true</span> === <span class="literal">true</span>    <span class="comment">//true</span></span><br><span class="line"><span class="literal">true</span> === <span class="literal">false</span>   <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//string的比较</span></span><br><span class="line"><span class="string">"hello"</span> === <span class="string">"helloworrld"</span> <span class="comment">//false</span></span><br><span class="line"><span class="string">"hello"</span> === <span class="string">"world"</span>  <span class="comment">//false</span></span><br><span class="line"><span class="string">"hello"</span> === <span class="string">" hello"</span> <span class="comment">//false</span></span><br><span class="line"><span class="string">"hello"</span> === <span class="string">"hellO"</span>  <span class="comment">//false</span></span><br><span class="line"><span class="string">"hello"</span> === <span class="string">"hello"</span>  <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//number的比较</span></span><br><span class="line"><span class="number">1</span> === <span class="number">1</span>    <span class="comment">//true</span></span><br><span class="line"><span class="number">1</span> === <span class="number">1.0</span>  <span class="comment">//true</span></span><br><span class="line"><span class="number">1</span> === <span class="number">1.2</span>  <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//null和undefined的比较</span></span><br><span class="line"><span class="literal">undefined</span> === <span class="literal">undefined</span>   <span class="comment">//true</span></span><br><span class="line"><span class="literal">null</span> === <span class="literal">null</span>             <span class="comment">//true</span></span><br><span class="line"><span class="literal">undefined</span> === <span class="literal">null</span>        <span class="comment">//false,两者在"=="时才返回true</span></span><br></pre></td></tr></table></figure>
+<p>如果进行”===”比较的两个操作数不是基本类型值，而是两个对象，这时候判断依据就是，判断这两个变量是否是”同一个”对象</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a,b,c;</span><br><span class="line">a = b = &#123;</span><br><span class="line">	name : <span class="string">'柳轻侯'</span>,</span><br><span class="line">	city : <span class="string">'南京'</span></span><br><span class="line">&#125;;</span><br><span class="line">c = &#123;</span><br><span class="line">	name : <span class="string">'柳轻侯'</span>,</span><br><span class="line">	city : <span class="string">'南京'</span></span><br><span class="line">&#125;;</span><br><span class="line">a === b      <span class="comment">//true</span></span><br><span class="line">a === c      <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+<p>两个对象仅仅”长得一样”是不够的，a和c都是Object实例，且两者拥有相同的属性和值，可是这两个却不是”同一个”对象，因为实际上a和c指向了两个不同的实例，所以这两个对象是不全等的。而a和b却是指向了同一个对象，换个说法，a和b是同一个对象的不同别名，他们实际上指向的对象是完全相同的，所以a === b。”!==” 与 “===” 比较规则一样，在此不再赘述。</p>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="3-相等操作符”-”"><a href="#3-相等操作符”-”" class="headerlink" title="3.相等操作符”==”"></a>3.相等操作符”==”</h3><p>全等操作符在进行判断的时候，如果两个变量的类型不同，则直接返回false,而与此不同，”==”相等操作符在判断的时候，如果两个变量的类型不同，则会做一个<a href="">隐式的类型转换</a>，把要比较的两个值转化为相同的类型再做比较，那么这种转化规则是怎么样的？</p>
+<p>在转化不同数据类型时，相等和不等操作符遵循下面的基本规则</p>
+<ul>
+<li>如果其中一个操作数是是boolean值，则在比较之前会先将boolean值转化为number值，true转化为1，false转为0;</li>
+<li>如果其中一个操作数是string类型，而另一个是number类型，则在比较之前先将string类型转化为number类型再进行判断;</li>
+<li>在比较之前，undefined和null是不会转为其他值进行比较的;</li>
+<li>如果其中一个操作数是对象，而另一个是基本类型值，则在比较之前先将对象转为基本类型值，然后再依据前面的规则进行后续的比较;</li>
+</ul>
+<p>两个操作数在比较时遵循下列规则</p>
+<ul>
+<li>undefined和null是相等的，即：undefined == null;</li>
+<li>如果有一个操作数是NaN，那么返回false，即使两个操作数都是NaN,也会返回false;</li>
+<li>如果两个操作数是对象，则比较规则跟”===”的比较规则是一样的，除非这两个操作数是同一个对象，则返回true，否则返回false;</li>
+</ul>
+<p>此处需要注意的是，NaN == NaN是返回false的，NaN意思是 not a number,也就是说该操作数是一个非数字，这个非数字是不确定的，它的值是未知的，甚至可能根本就不能用javascript的语法表示出来，这样一个未知量是不能用来进行特定比较的，两个未知的东西，如果不能确定它的值是什么，当然不能说 NaN == NaN。那么既然不能用”==”来比较，我们怎么去判定一个变量是不是NaN呢 ，既然不能用相等来判定，那么不妨反其道而行之，用”!=”来判定，判定一个变量是否不等于NaN。比如：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//如果需要判定一个变量是不是NaN,可以如下</span></span><br><span class="line"><span class="comment">//a是你需要判定的变量</span></span><br><span class="line"><span class="keyword">if</span>((<span class="keyword">typeof</span> a === <span class="string">"number"</span>) &amp;&amp; a != <span class="literal">NaN</span> )&#123;   <span class="comment">//此处需要注意，NaN也是number类型</span></span><br><span class="line">	<span class="comment">//TODO  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="4-常见比较情况及其结果"><a href="#4-常见比较情况及其结果" class="headerlink" title="4.常见比较情况及其结果"></a>4.常见比较情况及其结果</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="literal">null</span> == <span class="literal">undefined</span>   <span class="comment">// true </span></span><br><span class="line"><span class="string">"NaN"</span> == <span class="literal">NaN</span>        <span class="comment">// false </span></span><br><span class="line"><span class="number">5</span> == <span class="literal">NaN</span>            <span class="comment">// false </span></span><br><span class="line"><span class="literal">NaN</span> == <span class="literal">NaN</span>          <span class="comment">// false  </span></span><br><span class="line"><span class="literal">NaN</span> != <span class="literal">NaN</span>          <span class="comment">// true </span></span><br><span class="line"><span class="literal">false</span> == <span class="number">0</span>          <span class="comment">// true </span></span><br><span class="line"><span class="literal">true</span> == <span class="number">1</span>           <span class="comment">// true </span></span><br><span class="line"><span class="literal">true</span> == <span class="number">2</span>           <span class="comment">// false </span></span><br><span class="line"><span class="literal">undefined</span> == <span class="number">0</span>      <span class="comment">// false </span></span><br><span class="line"><span class="literal">null</span> == <span class="number">0</span>           <span class="comment">// false</span></span><br><span class="line"><span class="string">"5"</span> == <span class="number">5</span>            <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="5-典型例题解析"><a href="#5-典型例题解析" class="headerlink" title="5.典型例题解析"></a>5.典型例题解析</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">![] == []            <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<p>这是一道比较容易令人困惑的题，按照正常的思维模式，对一个操作数逻辑取反，跟这个操作数本身的值是相对的，如果这个操作数本身的值是true,那么取反之后就是false，反之，如果这个操作数的值是false，那么对其逻辑取反之后就是true，无论如何也不会是同一个值，可是事实上却是![] == []。首先，![]的值是false，因为这里[]被当成了一个数组的实例，是一个对象，而对象都是真值，对其取反，得到一个假值，也就是false。其次看等号右边，[]是一个对象，要将其转为基本类型值，会先调用数组的valueOf方法，而数组的valueOf方法返回数组本身，没有得到一个基本值，这时候要继续调用数组的toString方法，得到一个””空字符串，所以这时候也就变成了false == “”是否为真的问题了，而根据前面的规则，如果有一个操作数为boolean值，会将其转为数值，false转化为0。进而，问题转化为0 == “”是否为真值的问题，当number和string比较时，会将string转为number，而””会转为0。最后，问题变演化成了0 == 0是否为真值，毋庸置疑，结果是true。这里要注意的就是![]，它被当成了一个整体的逻辑值，是直接对对象进行取反，是一个假值，而不是先把[]转化为基本值再取反</p>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="6-小结"><a href="#6-小结" class="headerlink" title="6.小结"></a>6.小结</h3><p>“==”在比较不同类型值得时候会进行隐式的类型转化，而”===”不会转化，全等一定相等，相等却不一定全等，这是一个充分不必要条件。undefined和null相等而不全等，且在相等比较的时候不会转化为其他类型的值。NaN是不等于NaN 的，要判断某个变量是不是NaN，要用”!=”。对象和非对象在进行比较的时候会先转为基本类型值然后再根据上面的规则进行比较。</p>
+<p><br></p>
+<hr>
+<p><br></p>
+<h3 id="7-参考资料"><a href="#7-参考资料" class="headerlink" title="7.参考资料"></a>7.参考资料</h3><ul>
+<li>《javascript高级程序设计》</li>
+<li>《javascript权威指南》</li>
+</ul>
+<hr>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>不用打赏，你喜欢就好<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ecmascript/">ecmascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js中的相等和全等/">js中的相等和全等</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js中的相等操作符/">js中的相等操作符</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/全等/">全等</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/相等/">相等</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-book icon"></i>
+	<a class="article-category-link" href="/categories/javascript/">javascript</a>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://tiantang-tt.github.io/2016/04/05/equal-in-js/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/04/07/localStorage-sessionStorage/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          浏览器本地存储,localStorage,sessionStorage
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/01/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 柳轻侯
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">https</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ecmascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">相等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等操作符</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等和全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">event</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">h5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">mobile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">viewport</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">RegExp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">正则</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">localStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">sessionStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">webStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">浏览器本地存储</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">spider</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">crawler</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">html5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">postMessage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">jsonp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nodejs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">websocket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">socket.io</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://itbugs.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>宇轩阁</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://weixiaochu.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>A1ie2</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
