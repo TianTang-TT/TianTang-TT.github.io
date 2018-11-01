@@ -22,5 +22,3 @@
 	git add .
 	git commit -m'message'
 	git push -u origin hexo  // 之后就可以直接使用git push 代替git push -u origin hexo
-
-	
