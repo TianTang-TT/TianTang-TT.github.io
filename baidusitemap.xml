@@ -6,7 +6,7 @@
     
   <url>
     <loc>http://tiantang-tt.github.io/2017/01/09/websocket-chatroom/</loc>
-    <lastmod>2018-11-02T03:21:26.078Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.688Z</lastmod>
     <data>
         <display>
         <title>websocket实现聊天室功能，仿微信pc端</title>
@@ -31,8 +31,30 @@
 
     
   <url>
+    <loc>http://tiantang-tt.github.io/2018/11/02/use-local-image-in-hexo/</loc>
+    <lastmod>2018-11-02T07:03:26.687Z</lastmod>
+    <data>
+        <display>
+        <title>在hexo中使用本地图片</title>
+        <pubTime>2018-11-02T03:35:21.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+        <tag>图床</tag>
+         
+         
+           
+             
+              <breadCrumb title="hexo" url="http://tiantang-tt.github.io/categories/hexo/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://tiantang-tt.github.io/2016/12/01/principle-of-jsonp/</loc>
-    <lastmod>2018-11-02T03:21:26.078Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.687Z</lastmod>
     <data>
         <display>
         <title>jsonp跨域的原理</title>
@@ -53,28 +75,8 @@
 
     
   <url>
-    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
-    <lastmod>2018-11-02T03:21:26.078Z</lastmod>
-    <data>
-        <display>
-        <title>短小精悍的js代码段</title>
-        <pubTime>2016-09-22T04:23:56.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://tiantang-tt.github.io/2017/07/03/postMessage-in-html5/</loc>
-    <lastmod>2018-11-02T03:21:26.078Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.687Z</lastmod>
     <data>
         <display>
         <title>postMessage实现页面间通信</title>
@@ -95,65 +97,8 @@
 
     
   <url>
-    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
-    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
-    <data>
-        <display>
-        <title>js隐式类型转化例子分析</title>
-        <pubTime>2016-06-29T05:45:57.000Z</pubTime>
-        
-        <tag>javascript</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/01/01/hello-world/</loc>
-    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
-    <data>
-        <display>
-        <title>Hello World</title>
-        <pubTime>2015-12-31T16:00:00.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
-    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
-    <data>
-        <display>
-        <title>js常用正则校验</title>
-        <pubTime>2016-06-16T11:20:27.000Z</pubTime>
-        
-        <tag>RegExp</tag>
-         
-        <tag>正则</tag>
-         
-         
-           
-             
-              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://tiantang-tt.github.io/2016/12/22/node-crawler/</loc>
-    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.687Z</lastmod>
     <data>
         <display>
         <title>node爬虫抓取知乎动态</title>
@@ -176,20 +121,56 @@
 
     
   <url>
-    <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
-    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
+    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
+    <lastmod>2018-11-02T07:03:26.687Z</lastmod>
     <data>
         <display>
-        <title>浏览器本地存储,localStorage,sessionStorage</title>
-        <pubTime>2016-04-07T11:39:46.000Z</pubTime>
+        <title>短小精悍的js代码段</title>
+        <pubTime>2016-09-22T04:23:56.000Z</pubTime>
         
-        <tag>localStorage</tag>
+        <tag>javascript</tag>
          
-        <tag>sessionStorage</tag>
          
-        <tag>webStorage</tag>
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
+    <lastmod>2018-11-02T07:03:26.686Z</lastmod>
+    <data>
+        <display>
+        <title>js常用正则校验</title>
+        <pubTime>2016-06-16T11:20:27.000Z</pubTime>
+        
+        <tag>RegExp</tag>
          
-        <tag>浏览器本地存储</tag>
+        <tag>正则</tag>
+         
+         
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
+    <lastmod>2018-11-02T07:03:26.686Z</lastmod>
+    <data>
+        <display>
+        <title>js隐式类型转化例子分析</title>
+        <pubTime>2016-06-29T05:45:57.000Z</pubTime>
+        
+        <tag>javascript</tag>
          
          
            
@@ -203,7 +184,7 @@
     
   <url>
     <loc>http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/</loc>
-    <lastmod>2018-11-02T03:21:26.076Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.686Z</lastmod>
     <data>
         <display>
         <title>移动端适配方案浅析</title>
@@ -229,8 +210,71 @@
 
     
   <url>
+    <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
+    <lastmod>2018-11-02T07:03:26.686Z</lastmod>
+    <data>
+        <display>
+        <title>浏览器本地存储,localStorage,sessionStorage</title>
+        <pubTime>2016-04-07T11:39:46.000Z</pubTime>
+        
+        <tag>localStorage</tag>
+         
+        <tag>sessionStorage</tag>
+         
+        <tag>webStorage</tag>
+         
+        <tag>浏览器本地存储</tag>
+         
+         
+           
+             
+              <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/01/01/hello-world/</loc>
+    <lastmod>2018-11-02T07:03:26.686Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2015-12-31T16:00:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://tiantang-tt.github.io/2017/04/18/config-https-in-nginx/</loc>
+    <lastmod>2018-11-02T07:03:26.685Z</lastmod>
+    <data>
+        <display>
+        <title>nginx配置https</title>
+        <pubTime>2017-04-18T09:18:49.000Z</pubTime>
+        
+        <tag>nginx</tag>
+         
+        <tag>https</tag>
+         
+         
+           
+             
+              <breadCrumb title="nginx" url="http://tiantang-tt.github.io/categories/nginx/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://tiantang-tt.github.io/2016/10/06/event-sequence/</loc>
-    <lastmod>2018-11-02T03:21:26.076Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.685Z</lastmod>
     <data>
         <display>
         <title>js事件顺序执行</title>
@@ -252,7 +296,7 @@
     
   <url>
     <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
-    <lastmod>2018-11-02T03:21:26.076Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.685Z</lastmod>
     <data>
         <display>
         <title>javascript中的相等操作符</title>
@@ -284,7 +328,7 @@
     
   <url>
     <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
-    <lastmod>2018-11-02T03:21:26.075Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.685Z</lastmod>
     <data>
         <display>
         <title>HTMLCollection和NodeList以及NamedNodeMap之间的关系</title>
@@ -305,30 +349,8 @@
 
     
   <url>
-    <loc>http://tiantang-tt.github.io/2017/04/18/config-https-in-nginx/</loc>
-    <lastmod>2018-11-02T03:21:26.075Z</lastmod>
-    <data>
-        <display>
-        <title>nginx配置https</title>
-        <pubTime>2017-04-18T09:18:49.000Z</pubTime>
-        
-        <tag>nginx</tag>
-         
-        <tag>https</tag>
-         
-         
-           
-             
-              <breadCrumb title="nginx" url="http://tiantang-tt.github.io/categories/nginx/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
-    <lastmod>2018-11-02T03:21:26.075Z</lastmod>
+    <lastmod>2018-11-02T07:03:26.684Z</lastmod>
     <data>
         <display>
         <title>前端开发规范</title>
