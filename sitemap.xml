@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://tiantang-tt.github.io/readme.html</loc>
-    
-    <lastmod>2018-11-02T03:24:43.508Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://tiantang-tt.github.io/google72609fb2830ba225.html</loc>
     
     <lastmod>2018-11-02T03:21:26.079Z</lastmod>
@@ -51,6 +44,13 @@
   </url>
   
   <url>
+    <loc>http://tiantang-tt.github.io/2016/01/01/hello-world/</loc>
+    
+    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
     
     <lastmod>2018-11-02T03:21:26.077Z</lastmod>
@@ -66,13 +66,6 @@
   
   <url>
     <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
-    
-    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/01/01/hello-world/</loc>
     
     <lastmod>2018-11-02T03:21:26.077Z</lastmod>
     

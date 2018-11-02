@@ -4,7 +4,6 @@
 
     
     
-    
   <url>
     <loc>http://tiantang-tt.github.io/2017/01/09/websocket-chatroom/</loc>
     <lastmod>2018-11-02T03:21:26.078Z</lastmod>
@@ -116,6 +115,21 @@
 
     
   <url>
+    <loc>http://tiantang-tt.github.io/2016/01/01/hello-world/</loc>
+    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2015-12-31T16:00:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
     <lastmod>2018-11-02T03:21:26.077Z</lastmod>
     <data>
@@ -182,21 +196,6 @@
              
               <breadCrumb title="javascript" url="http://tiantang-tt.github.io/categories/javascript/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/01/01/hello-world/</loc>
-    <lastmod>2018-11-02T03:21:26.077Z</lastmod>
-    <data>
-        <display>
-        <title>Hello World</title>
-        <pubTime>2015-12-31T16:00:00.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>
