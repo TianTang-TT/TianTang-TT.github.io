@@ -20,19 +20,19 @@ keywords: [hexo, 图床, hexo使用本地图片]
 
 ### 3.使用方法
 
-1. 配置hexo
++ 配置hexo
 在hexo根目录下的`_config.yml`中,将`post_asset_folder`设置为true（默认为false)
 ```
 post_asset_folder: true
 // 此属性开启，将会在你使用命令`hexo n 'article name' 的时候，自动在`/source/_posts下创建跟md文件同名的文件夹
 ```
 
-2. 安装`hexo-asset-image`
++ 安装`hexo-asset-image`
 ```
 npm i -S hexo-asset-image
 ```
 
-3. 创建md文件
++ 创建md文件
 ```
 hexo n 'use-local-image-in-hexo'
 ```
@@ -45,7 +45,7 @@ source
 |   |--use-local-image-in-hexo.md
 ```
 
-4. 在md中引入本地图片
++ 在md中引入本地图片
 我们在新创建的同名文件夹中放入一张测试图片`a.png`
 ```
 source
@@ -57,7 +57,7 @@ source
 ```md
 ![本地图片](use-local-image-in-hexo/a.png)
 ```
-效果
++ 效果
 
 ![本地图片](use-local-image-in-hexo/a.png)
 
@@ -67,3 +67,21 @@ source
 hexo g
 ```
 生成了如下的目录
+```
+public
+|-- 2018
+|   |--11
+|   |   |--02
+|   |   |   |--use-local-image-in-hexo
+|   |   |   |--a.png  
+```
+真正生成的img标签路径是如下
+
+![图片路径](use-local-image-in-hexo/imgPath.png)
+实际效果跟我们的目录结构完全保持一致。跟文章相关的图片和生成的html文件位于同一个文件夹下，perfect
+
+### 5. 总结
+至此，我们的图片改造方案基本完成，但是之前的文章丢失的图片由于七牛的原因，可能暂时找不回来了。而且之前的创建方式都是单文件的形式，为了跟后面的保持一致，需要改造成这种目录的形式，道阻且长。这件事也为我敲响了警钟，使用第三方服务的时候一定要慎之又慎！
+
+### 6. 参考资料
+[http://etrd.org/2017/01/23/hexo%E4%B8%AD%E5%AE%8C%E7%BE%8E%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/](http://etrd.org/2017/01/23/hexo%E4%B8%AD%E5%AE%8C%E7%BE%8E%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/)
