@@ -32,28 +32,30 @@ keywords: [h5, mobile, viewport, layoutviewport, visualviewport, dpr, px, ppi, m
 > dpr = 物理像素/设备独立像素(在某一方向上，x方向或者y方向)，是指在移动开发中设备独立像素个css像素占用多少物理像素，如2代表1个css像素用2x2个物理像素像素来渲染。未缩放情况下，即为1css像素由多少物理像素来渲染。在js中，通过window.devicePixelRatio来获取，在css中通过device-pixel-ratio来获取。
 
 下图中一组红绿蓝组成一个物理像素点,图像由许许多多的物理像素点组合渲染出来，最终达到我们页面上看到的效果。
-![](http://7xt6mo.com1.z0.glb.clouddn.com/687474703a2f2f6f70656f6b6634756b2e626b742e636c6f7564646e2e636f6d2f312e6a706567.jpg)
+![](h5-mobile-autofit-layout/pixel.jpg)
 
 在普通屏幕下，1设备独立像素(css像素）由1物理像素渲染，1:1;而在dpr为2的屏幕下，1设备独立像素(css像素)是由4物理像素来渲染，1:4。
-![](http://7xt6mo.com1.z0.glb.clouddn.com/retina-web-3.jpg)
+![](h5-mobile-autofit-layout/standard-retina.jpg)
 
 从下面的图片中可以很直观的看出渲染效果，高清屏下渲染1css像素由更多的物理像素点来渲染，因此看上去更加的细腻清晰。
-![](http://7xt6mo.com1.z0.glb.clouddn.com/68747470733a2f2f7773332e73696e61696d672e636e2f6c617267652f303036744e6337396779316667396474786e396c7a6a333064773035726161722e6a7067.jpg)
+![](h5-mobile-autofit-layout/iphone3-iphone4.jpg)
 
 根本原理就是渲染同样尺寸的css像素，高清屏用了更多的物理像素点，使得单位面积的像素点数目更多(ppi更高)
-![](http://7xt6mo.com1.z0.glb.clouddn.com/3.png)
+
+![](h5-mobile-autofit-layout/iphone3gs.jpg) ![](h5-mobile-autofit-layout/iphone4.jpg)
+
 
 ### 4. 图片高清问题
 ##### 位图像素
 > 一个位图像素是栅格图像(如：png, jpg, gif等),最小的数据单元。每一个位图像素都包含着一些自身的显示信息(如：显示位置，颜色值，透明度等)。
 
 理论上来说，1个位图像素对应于1个物理像素，图片才能得到完美清晰的展示，在一般的屏幕下，我们也确实是这么做的，假设需要显示一个`200x300px`的图片元素，那我们用一张`200x300px`的图片便能完美呈现，但是在如果在高清屏下，这么做图片就会显得有点模糊。还是以iphone6为例，又上面的内容我们可以知道，在iphone6下，1个设备独立像素实际上是由4个物理像素点来渲染，那么`200x300`像素的图实际上就会有`400x600`个物理像素点来渲染，而我们提供的图片却只有`200x300`，因此便会出现1个位图像素由4个物理像素点来渲染的情况，而问题是这4个像素点所取的色值跟这1个位图像素的色值是不一样的，遵循的原理是就近取色，色值只能跟这个位图像素的色值相近，而不是相同，因此图片会在高清屏下出现模糊的情况。
-![](http://7xt6mo.com1.z0.glb.clouddn.com/4.png)
+![](h5-mobile-autofit-layout/down-sampled.jpg)
 
 那么这种情况我们怎么解决呢，答案就是@2x图，也就是2倍图。这也是为什么在一开始说设计师将画布放大，提供@2x图和@3x图(为dpr为3的设备准备)的原因。在iphone6下，我们渲染一个`200x300px`的图，使用的将是@2x图，也就是`400x600px`的元素，由于1css像素由4物理像素渲染，那么一个位图像素一一对应一个物理像素，达到1:1的匹配度，高清图得以完美呈现。
 
 但是如果我们在所有的屏幕上都是用@2x图的话，又会出现什么问题呢。前面说到了在dpr为1的屏幕下，1css像素=1物理像素，之间已经是1:1对应的关系了。还举之前的栗子，我们有一个`200x300px`的图片元素要渲染，提供了@2x的图来渲染这个元素，因为1css像素由1物理像素来渲染，提供的`400x600`像素的图就会显得有点'多余'，1个物理像素点只能就近的选取1个位图像素来渲染。虽然不会造成模糊，但是看起来图片却是损失了锐利度，而且造成了资源的浪费。
-![](http://7xt6mo.com1.z0.glb.clouddn.com/2.png)
+![](h5-mobile-autofit-layout/up-sampled.jpg)
 
 如何解决这种问题？前文中提到，我们可以在css和js中都可以获取到dpr，那么我们通过不同的dpr来加载不同的图片。针对不同的dpr，当需要图片的时候，我们可以在图片url上缀上@2x还是@3x图片的信息，比如需要一张图logo.png,它的地址是
 `http://www.test.com/img/logo.png`
@@ -72,7 +74,7 @@ http://www.test.com/img/logo_@3x.png
 
 ### 5. 1px边框问题
 图片1像素边框的问题大概是设计师比较关注的问题，那么，什么是1像素边框问题。在retina屏幕下，1px的css像素实际上是由4个物理像素来渲染的，体现在宽高上就是1px宽的border，实际上是由2px的物理像素来渲染的。设计稿上是最细的线1px的边框，在实际的retina屏幕下却是由2物理像素来渲染的，而设计师要的则是最细的1px的物理像素渲染的线。也就是说，实际上我们需要在代码中写0.5px，那这样，这条线就会由1个物理像素的宽度了。但是问题是，除了iOS 8及以上，ios7以下，android等其他系统里，0.5px会被当成为0px处理。
-![](http://7xt6mo.com1.z0.glb.clouddn.com/1.png)
+![](h5-mobile-autofit-layout/1px.jpg)
 
 如何实现这样的一个0.5px的线呢，一种简单的做法就是元素的scale
 ```CSS
@@ -105,7 +107,7 @@ http://www.test.com/img/logo_@3x.png
 
 ### 6. 多屏适配问题
 做PC页面的时候，我们按照设计图的尺寸来就好，这个侧边栏200px，那个按钮50px的。可是，当我们开始做移动端页面的时候，设计师给了一份宽度为750px的设计图。那么，我们把这份设计图实现在各个手机上的过程就是『适配』。
-![](http://7xt6mo.com1.z0.glb.clouddn.com/rem-6.jpg)
+![](h5-mobile-autofit-layout/auto-fit.jpg)
 上图是著名的手淘前端团队的协作模式，而整个手淘设计师和前端开发的适配协作基本思路是：
 * 选择一种尺寸作为设计和开发基准
 * 定义一套适配规则，自动适配剩下的
@@ -121,8 +123,9 @@ http://www.test.com/img/logo_@3x.png
 > 理想视口，不需要用户缩放和横向滚动条就能正常的查看网站的所有内容；显示的文字的大小是合适，何种分辨率下，显示出来的大小都是差不多的。当然，不只是文字，其他元素像图片什么的也是这个道理。Ideal viewport尺寸视屏幕而定，即屏幕宽度，也就是设备独立像素尺寸。
 
 拿ios设备举例，layout viewport固定为980px，默认打开页面的情况下，visual viewport会将这个框缩放到980px。这样我们就能看到全部的内容了
-![](http://7xt6mo.com1.z0.glb.clouddn.com/1187269555-56fe00de67dec_articlex.png)
-![](http://7xt6mo.com1.z0.glb.clouddn.com/670635995-56fe00df1806c_articlex.png)
+
+![](h5-mobile-autofit-layout/mobile_layoutviewport.jpg) ![](h5-mobile-autofit-layout/mobile_visualviewport.jpg) ![](h5-mobile-autofit-layout/mobile_viewportzoomedout.jpg)
+
 默认情况下html元素的宽取自layout viewport，那么不同机型浏览器的layout是不同的，ios980px，android800px。在pc端我们通过document.documentElement.clientWidth取得viewport的宽度。在移动端中，clientWidth获取的将是layout viewport的尺寸，而innerWidth获取的是visual viewport的尺寸。一般情况下我们会设置meta标签：
 
 ```CSS
