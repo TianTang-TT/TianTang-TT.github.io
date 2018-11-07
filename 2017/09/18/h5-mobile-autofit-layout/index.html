@@ -16,21 +16,23 @@
 <meta property="og:site_name" content="轻言">
 <meta property="og:description" content="1. 背景随着移动设备的越来越普及，各种智能手持设备日新月异，为人们带来方便快捷的生活方式和体验，而对于前端开发者来说，不同尺寸，不同平台的兼容性适配性问题却变得越来越麻烦，逐渐变成了一个让人头疼的问题。当然，魔高一尺，道高一丈，优秀的解决方案也不断涌现，如淘宝移动端适配方案lib-flexible, 网易适配方案的，真正实现了write once, run everywhere, 那么这种做法深">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/687474703a2f2f6f70656f6b6634756b2e626b742e636c6f7564646e2e636f6d2f312e6a706567.jpg">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/retina-web-3.jpg">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/68747470733a2f2f7773332e73696e61696d672e636e2f6c617267652f303036744e6337396779316667396474786e396c7a6a333064773035726161722e6a7067.jpg">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/3.png">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/4.png">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/2.png">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/1.png">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/rem-6.jpg">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/1187269555-56fe00de67dec_articlex.png">
-<meta property="og:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/670635995-56fe00df1806c_articlex.png">
-<meta property="og:updated_time" content="2018-11-02T07:10:19.944Z">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/pixel.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/standard-retina.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/iphone3-iphone4.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/iphone3gs.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/iphone4.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/down-sampled.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/up-sampled.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/1px.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/auto-fit.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/mobile_layoutviewport.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/mobile_visualviewport.jpg">
+<meta property="og:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/mobile_viewportzoomedout.jpg">
+<meta property="og:updated_time" content="2018-11-07T12:49:46.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="移动端适配方案浅析">
 <meta name="twitter:description" content="1. 背景随着移动设备的越来越普及，各种智能手持设备日新月异，为人们带来方便快捷的生活方式和体验，而对于前端开发者来说，不同尺寸，不同平台的兼容性适配性问题却变得越来越麻烦，逐渐变成了一个让人头疼的问题。当然，魔高一尺，道高一丈，优秀的解决方案也不断涌现，如淘宝移动端适配方案lib-flexible, 网易适配方案的，真正实现了write once, run everywhere, 那么这种做法深">
-<meta name="twitter:image" content="http://7xt6mo.com1.z0.glb.clouddn.com/687474703a2f2f6f70656f6b6634756b2e626b742e636c6f7564646e2e636f6d2f312e6a706567.jpg">
+<meta name="twitter:image" content="http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/pixel.jpg">
   
     <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
   
@@ -186,19 +188,20 @@
 <h5 id="设备像素比-dpr"><a href="#设备像素比-dpr" class="headerlink" title="设备像素比(dpr)"></a>设备像素比(dpr)</h5><blockquote>
 <p>dpr = 物理像素/设备独立像素(在某一方向上，x方向或者y方向)，是指在移动开发中设备独立像素个css像素占用多少物理像素，如2代表1个css像素用2x2个物理像素像素来渲染。未缩放情况下，即为1css像素由多少物理像素来渲染。在js中，通过window.devicePixelRatio来获取，在css中通过device-pixel-ratio来获取。</p>
 </blockquote>
-<p>下图中一组红绿蓝组成一个物理像素点,图像由许许多多的物理像素点组合渲染出来，最终达到我们页面上看到的效果。<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/687474703a2f2f6f70656f6b6634756b2e626b742e636c6f7564646e2e636f6d2f312e6a706567.jpg" alt=""></p>
-<p>在普通屏幕下，1设备独立像素(css像素）由1物理像素渲染，1:1;而在dpr为2的屏幕下，1设备独立像素(css像素)是由4物理像素来渲染，1:4。<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/retina-web-3.jpg" alt=""></p>
-<p>从下面的图片中可以很直观的看出渲染效果，高清屏下渲染1css像素由更多的物理像素点来渲染，因此看上去更加的细腻清晰。<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/68747470733a2f2f7773332e73696e61696d672e636e2f6c617267652f303036744e6337396779316667396474786e396c7a6a333064773035726161722e6a7067.jpg" alt=""></p>
-<p>根本原理就是渲染同样尺寸的css像素，高清屏用了更多的物理像素点，使得单位面积的像素点数目更多(ppi更高)<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/3.png" alt=""></p>
+<p>下图中一组红绿蓝组成一个物理像素点,图像由许许多多的物理像素点组合渲染出来，最终达到我们页面上看到的效果。<br><img src="/2017/09/18/h5-mobile-autofit-layout/pixel.jpg" alt=""></p>
+<p>在普通屏幕下，1设备独立像素(css像素）由1物理像素渲染，1:1;而在dpr为2的屏幕下，1设备独立像素(css像素)是由4物理像素来渲染，1:4。<br><img src="/2017/09/18/h5-mobile-autofit-layout/standard-retina.jpg" alt=""></p>
+<p>从下面的图片中可以很直观的看出渲染效果，高清屏下渲染1css像素由更多的物理像素点来渲染，因此看上去更加的细腻清晰。<br><img src="/2017/09/18/h5-mobile-autofit-layout/iphone3-iphone4.jpg" alt=""></p>
+<p>根本原理就是渲染同样尺寸的css像素，高清屏用了更多的物理像素点，使得单位面积的像素点数目更多(ppi更高)</p>
+<p><img src="/2017/09/18/h5-mobile-autofit-layout/iphone3gs.jpg" alt=""> <img src="/2017/09/18/h5-mobile-autofit-layout/iphone4.jpg" alt=""></p>
 <h3 id="4-图片高清问题"><a href="#4-图片高清问题" class="headerlink" title="4. 图片高清问题"></a>4. 图片高清问题</h3><h5 id="位图像素"><a href="#位图像素" class="headerlink" title="位图像素"></a>位图像素</h5><blockquote>
 <p>一个位图像素是栅格图像(如：png, jpg, gif等),最小的数据单元。每一个位图像素都包含着一些自身的显示信息(如：显示位置，颜色值，透明度等)。</p>
 </blockquote>
-<p>理论上来说，1个位图像素对应于1个物理像素，图片才能得到完美清晰的展示，在一般的屏幕下，我们也确实是这么做的，假设需要显示一个<code>200x300px</code>的图片元素，那我们用一张<code>200x300px</code>的图片便能完美呈现，但是在如果在高清屏下，这么做图片就会显得有点模糊。还是以iphone6为例，又上面的内容我们可以知道，在iphone6下，1个设备独立像素实际上是由4个物理像素点来渲染，那么<code>200x300</code>像素的图实际上就会有<code>400x600</code>个物理像素点来渲染，而我们提供的图片却只有<code>200x300</code>，因此便会出现1个位图像素由4个物理像素点来渲染的情况，而问题是这4个像素点所取的色值跟这1个位图像素的色值是不一样的，遵循的原理是就近取色，色值只能跟这个位图像素的色值相近，而不是相同，因此图片会在高清屏下出现模糊的情况。<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/4.png" alt=""></p>
+<p>理论上来说，1个位图像素对应于1个物理像素，图片才能得到完美清晰的展示，在一般的屏幕下，我们也确实是这么做的，假设需要显示一个<code>200x300px</code>的图片元素，那我们用一张<code>200x300px</code>的图片便能完美呈现，但是在如果在高清屏下，这么做图片就会显得有点模糊。还是以iphone6为例，又上面的内容我们可以知道，在iphone6下，1个设备独立像素实际上是由4个物理像素点来渲染，那么<code>200x300</code>像素的图实际上就会有<code>400x600</code>个物理像素点来渲染，而我们提供的图片却只有<code>200x300</code>，因此便会出现1个位图像素由4个物理像素点来渲染的情况，而问题是这4个像素点所取的色值跟这1个位图像素的色值是不一样的，遵循的原理是就近取色，色值只能跟这个位图像素的色值相近，而不是相同，因此图片会在高清屏下出现模糊的情况。<br><img src="/2017/09/18/h5-mobile-autofit-layout/down-sampled.jpg" alt=""></p>
 <p>那么这种情况我们怎么解决呢，答案就是@2x图，也就是2倍图。这也是为什么在一开始说设计师将画布放大，提供@2x图和@3x图(为dpr为3的设备准备)的原因。在iphone6下，我们渲染一个<code>200x300px</code>的图，使用的将是@2x图，也就是<code>400x600px</code>的元素，由于1css像素由4物理像素渲染，那么一个位图像素一一对应一个物理像素，达到1:1的匹配度，高清图得以完美呈现。</p>
-<p>但是如果我们在所有的屏幕上都是用@2x图的话，又会出现什么问题呢。前面说到了在dpr为1的屏幕下，1css像素=1物理像素，之间已经是1:1对应的关系了。还举之前的栗子，我们有一个<code>200x300px</code>的图片元素要渲染，提供了@2x的图来渲染这个元素，因为1css像素由1物理像素来渲染，提供的<code>400x600</code>像素的图就会显得有点’多余’，1个物理像素点只能就近的选取1个位图像素来渲染。虽然不会造成模糊，但是看起来图片却是损失了锐利度，而且造成了资源的浪费。<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/2.png" alt=""></p>
+<p>但是如果我们在所有的屏幕上都是用@2x图的话，又会出现什么问题呢。前面说到了在dpr为1的屏幕下，1css像素=1物理像素，之间已经是1:1对应的关系了。还举之前的栗子，我们有一个<code>200x300px</code>的图片元素要渲染，提供了@2x的图来渲染这个元素，因为1css像素由1物理像素来渲染，提供的<code>400x600</code>像素的图就会显得有点’多余’，1个物理像素点只能就近的选取1个位图像素来渲染。虽然不会造成模糊，但是看起来图片却是损失了锐利度，而且造成了资源的浪费。<br><img src="/2017/09/18/h5-mobile-autofit-layout/up-sampled.jpg" alt=""></p>
 <p>如何解决这种问题？前文中提到，我们可以在css和js中都可以获取到dpr，那么我们通过不同的dpr来加载不同的图片。针对不同的dpr，当需要图片的时候，我们可以在图片url上缀上@2x还是@3x图片的信息，比如需要一张图logo.png,它的地址是<br><code>http://www.test.com/img/logo.png</code><br>那么，在dpr不同的设备下，这个url的文件名应该是不同的<br><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// dpr = 1</span></span><br><span class="line">http:<span class="comment">//www.test.com/img/logo.png</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// dpr = 2</span></span><br><span class="line">http:<span class="comment">//www.test.com/img/logo_@2x.png</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// dpr = 3</span></span><br><span class="line">http:<span class="comment">//www.test.com/img/logo_@3x.png</span></span><br></pre></td></tr></table></figure></p>
 <p>具体到代码中，我们可以借助scss，less等工具来实现，根据不同的dpr加载不同的图片。</p>
-<h3 id="5-1px边框问题"><a href="#5-1px边框问题" class="headerlink" title="5. 1px边框问题"></a>5. 1px边框问题</h3><p>图片1像素边框的问题大概是设计师比较关注的问题，那么，什么是1像素边框问题。在retina屏幕下，1px的css像素实际上是由4个物理像素来渲染的，体现在宽高上就是1px宽的border，实际上是由2px的物理像素来渲染的。设计稿上是最细的线1px的边框，在实际的retina屏幕下却是由2物理像素来渲染的，而设计师要的则是最细的1px的物理像素渲染的线。也就是说，实际上我们需要在代码中写0.5px，那这样，这条线就会由1个物理像素的宽度了。但是问题是，除了iOS 8及以上，ios7以下，android等其他系统里，0.5px会被当成为0px处理。<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/1.png" alt=""></p>
+<h3 id="5-1px边框问题"><a href="#5-1px边框问题" class="headerlink" title="5. 1px边框问题"></a>5. 1px边框问题</h3><p>图片1像素边框的问题大概是设计师比较关注的问题，那么，什么是1像素边框问题。在retina屏幕下，1px的css像素实际上是由4个物理像素来渲染的，体现在宽高上就是1px宽的border，实际上是由2px的物理像素来渲染的。设计稿上是最细的线1px的边框，在实际的retina屏幕下却是由2物理像素来渲染的，而设计师要的则是最细的1px的物理像素渲染的线。也就是说，实际上我们需要在代码中写0.5px，那这样，这条线就会由1个物理像素的宽度了。但是问题是，除了iOS 8及以上，ios7以下，android等其他系统里，0.5px会被当成为0px处理。<br><img src="/2017/09/18/h5-mobile-autofit-layout/1px.jpg" alt=""></p>
 <p>如何实现这样的一个0.5px的线呢，一种简单的做法就是元素的scale<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-class">.scale</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.scale</span><span class="selector-pseudo">:after</span>&#123;</span><br><span class="line">    <span class="attribute">content</span>:<span class="string">""</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">bottom</span>:<span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">left</span>:<span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">right</span>:<span class="number">0px</span>;</span><br><span class="line">    <span class="attribute">border-bottom</span>:<span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">    <span class="attribute">-webkit-transform</span>:<span class="built_in">scaleY</span>(.5);</span><br><span class="line">    <span class="attribute">-webkit-transform-origin</span>:<span class="number">0</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>我们在代码中继续写<code>border: 1px solid #ddd</code>,然后通过<code>transform:scaleY(0.5)</code>缩小0.5倍来达到0.5px的目的，但是这样的hack不够通用(比如圆角)，写起来也很麻烦。<br>网上解决方案也很多，这里比较推荐的还是<code>页面整体scale</code>方案，对于<code>dpr=2</code>的页面，比如iphone6，加入如下的<code>meta</code>标签，将页面缩放<code>1/dpr</code>以实现0.5px的效果。<br><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=640,initial-scale=0.5,maximum-scale=0.5, minimum-scale=0.5,user-scalable=no"</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>这样可以完美实现1px物理像素的线，但是同时也带来了一些问题：</p>
@@ -206,7 +209,7 @@
 <li>字体大小会被缩放</li>
 <li>页面布局也会被缩放<br>这两个问题后面会讲到。</li>
 </ul>
-<h3 id="6-多屏适配问题"><a href="#6-多屏适配问题" class="headerlink" title="6. 多屏适配问题"></a>6. 多屏适配问题</h3><p>做PC页面的时候，我们按照设计图的尺寸来就好，这个侧边栏200px，那个按钮50px的。可是，当我们开始做移动端页面的时候，设计师给了一份宽度为750px的设计图。那么，我们把这份设计图实现在各个手机上的过程就是『适配』。<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/rem-6.jpg" alt=""><br>上图是著名的手淘前端团队的协作模式，而整个手淘设计师和前端开发的适配协作基本思路是：</p>
+<h3 id="6-多屏适配问题"><a href="#6-多屏适配问题" class="headerlink" title="6. 多屏适配问题"></a>6. 多屏适配问题</h3><p>做PC页面的时候，我们按照设计图的尺寸来就好，这个侧边栏200px，那个按钮50px的。可是，当我们开始做移动端页面的时候，设计师给了一份宽度为750px的设计图。那么，我们把这份设计图实现在各个手机上的过程就是『适配』。<br><img src="/2017/09/18/h5-mobile-autofit-layout/auto-fit.jpg" alt=""><br>上图是著名的手淘前端团队的协作模式，而整个手淘设计师和前端开发的适配协作基本思路是：</p>
 <ul>
 <li>选择一种尺寸作为设计和开发基准</li>
 <li>定义一套适配规则，自动适配剩下的</li>
@@ -221,7 +224,9 @@
 <h5 id="ideal-viewport"><a href="#ideal-viewport" class="headerlink" title="ideal viewport"></a>ideal viewport</h5><blockquote>
 <p>理想视口，不需要用户缩放和横向滚动条就能正常的查看网站的所有内容；显示的文字的大小是合适，何种分辨率下，显示出来的大小都是差不多的。当然，不只是文字，其他元素像图片什么的也是这个道理。Ideal viewport尺寸视屏幕而定，即屏幕宽度，也就是设备独立像素尺寸。</p>
 </blockquote>
-<p>拿ios设备举例，layout viewport固定为980px，默认打开页面的情况下，visual viewport会将这个框缩放到980px。这样我们就能看到全部的内容了<br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/1187269555-56fe00de67dec_articlex.png" alt=""><br><img src="http://7xt6mo.com1.z0.glb.clouddn.com/670635995-56fe00df1806c_articlex.png" alt=""><br>默认情况下html元素的宽取自layout viewport，那么不同机型浏览器的layout是不同的，ios980px，android800px。在pc端我们通过document.documentElement.clientWidth取得viewport的宽度。在移动端中，clientWidth获取的将是layout viewport的尺寸，而innerWidth获取的是visual viewport的尺寸。一般情况下我们会设置meta标签：</p>
+<p>拿ios设备举例，layout viewport固定为980px，默认打开页面的情况下，visual viewport会将这个框缩放到980px。这样我们就能看到全部的内容了</p>
+<p><img src="/2017/09/18/h5-mobile-autofit-layout/mobile_layoutviewport.jpg" alt=""> <img src="/2017/09/18/h5-mobile-autofit-layout/mobile_visualviewport.jpg" alt=""> <img src="/2017/09/18/h5-mobile-autofit-layout/mobile_viewportzoomedout.jpg" alt=""></p>
+<p>默认情况下html元素的宽取自layout viewport，那么不同机型浏览器的layout是不同的，ios980px，android800px。在pc端我们通过document.documentElement.clientWidth取得viewport的宽度。在移动端中，clientWidth获取的将是layout viewport的尺寸，而innerWidth获取的是visual viewport的尺寸。一般情况下我们会设置meta标签：</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-tag">width</span>：控制 <span class="selector-tag">layout</span> <span class="selector-tag">viewport</span> 的大小。</span><br><span class="line"><span class="selector-tag">height</span>：和 <span class="selector-tag">width</span> 相对应，指定高度。</span><br><span class="line"><span class="selector-tag">initial-scale</span>：初始缩放比例，也即是当页面第一次 <span class="selector-tag">load</span> 的时候缩放比例。</span><br><span class="line"><span class="selector-tag">maximum-scale</span>：允许用户缩放到的最大比例。</span><br><span class="line"><span class="selector-tag">minimum-scale</span>：允许用户缩放到的最小比例。</span><br><span class="line"><span class="selector-tag">user-scalable</span>：用户是否可以手动缩放</span><br></pre></td></tr></table></figure>
 <p>meta标签中的width设置的就是layout viewport的尺寸，默认情况下，visual viewport会将页面缩放到和layout viewport同样的宽度，具体情况请看<a href="https://segmentfault.com/a/1190000004403496" target="_blank" rel="noopener">viewport知识</a>.当我们设置以下meta标签的时候，ideal viewport = visual viewpor = layout viewport;<br><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale = 1, user-scalable=no"</span> /&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>目前来说，移动端适配方案最实用的方案莫过于使用rem进行适配。对于rem的适配，我们要做的就是针对不同dpr不同尺寸改变html元素的<code>font-size</code>大小，网易的移动端适配方案，还有手淘的<code>lib-flexible</code>都是基于此原理的。</p>
@@ -567,15 +572,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)">jsonp</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)">图床</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">jsonp</a>
               </li>
              
               <li class="article-tag-list-item">

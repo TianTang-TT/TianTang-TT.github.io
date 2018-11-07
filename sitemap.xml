@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/</loc>
+    
+    <lastmod>2018-11-07T12:49:46.029Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tiantang-tt.github.io/2018/11/02/use-local-image-in-hexo/</loc>
     
     <lastmod>2018-11-02T07:27:52.982Z</lastmod>
@@ -30,6 +37,13 @@
   </url>
   
   <url>
+    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
+    
+    <lastmod>2018-11-02T07:10:19.945Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tiantang-tt.github.io/2016/12/22/node-crawler/</loc>
     
     <lastmod>2018-11-02T07:10:19.945Z</lastmod>
@@ -44,21 +58,7 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
-    
-    <lastmod>2018-11-02T07:10:19.945Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
-    
-    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
+    <loc>http://tiantang-tt.github.io/2016/10/06/event-sequence/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
     
@@ -72,14 +72,14 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/10/06/event-sequence/</loc>
+    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/</loc>
+    <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
     
