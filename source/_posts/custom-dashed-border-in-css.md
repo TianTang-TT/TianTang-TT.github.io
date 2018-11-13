@@ -131,4 +131,4 @@ keywords: [css自定义虚线框, border-dashed, 使用border-image自定义虚�
 理论上来说系统提供的虚线已经够用了，但是对虚线间距无能为力，尤其是一些自定义的边框，可能不仅仅局限于虚线,可能是花纹或者别的图案，这时候我们就可以考虑用border-image来实现。但是这也增加了工作量，提升了维护难度，而且这种模拟方案可能存在一些你没有发现的问题，因此，对特定的业务场景，需要有特殊的考量，不能拘泥于惯性思维模式 。
 
 ### 8. 参考资料
-[](https://aotu.io/notes/2016/11/02/border-image/index.html)
+[https://aotu.io/notes/2016/11/02/border-image/index.html](https://aotu.io/notes/2016/11/02/border-image/index.html)
