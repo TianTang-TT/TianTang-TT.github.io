@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/</loc>
+    
+    <lastmod>2018-11-13T05:51:50.413Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tiantang-tt.github.io/2017/09/18/h5-mobile-autofit-layout/</loc>
     
     <lastmod>2018-11-07T12:49:46.029Z</lastmod>
@@ -37,14 +44,14 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
+    <loc>http://tiantang-tt.github.io/2016/12/22/node-crawler/</loc>
     
     <lastmod>2018-11-02T07:10:19.945Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/12/22/node-crawler/</loc>
+    <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
     
     <lastmod>2018-11-02T07:10:19.945Z</lastmod>
     
@@ -72,7 +79,7 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
+    <loc>http://tiantang-tt.github.io/2016/01/01/hello-world/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
     
@@ -86,14 +93,14 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/01/01/hello-world/</loc>
+    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
+    <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
     
     <lastmod>2018-11-02T07:10:19.943Z</lastmod>
     
@@ -114,7 +121,7 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
+    <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
     
     <lastmod>2018-11-02T07:10:19.943Z</lastmod>
     

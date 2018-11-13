@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="dns-prefetch" href="http://tiantang-tt.github.io">
+  <title>css自定义虚线框 | 轻言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1. 背景前些日子，视觉设计师突然找到我说，咱们h5中按钮的虚线框的虚线连线是不是太稀疏了，能不能稍微密集一点，而且，不同的浏览器中表现也不太一样。？？？，有这个现象？？？，我打开网站看了下，好像是有这么回事，但是border的虚线样式是系统自带的，并且不能自己定义的，调整虚线框连线的间距，这个问题有点棘手。但是看着设计师期待的目光，我只能说，让我试试吧。">
+<meta name="keywords" content="css自定义虚线框,border-dashed,使用border-image自定义虚线框">
+<meta property="og:type" content="article">
+<meta property="og:title" content="css自定义虚线框">
+<meta property="og:url" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/index.html">
+<meta property="og:site_name" content="轻言">
+<meta property="og:description" content="1. 背景前些日子，视觉设计师突然找到我说，咱们h5中按钮的虚线框的虚线连线是不是太稀疏了，能不能稍微密集一点，而且，不同的浏览器中表现也不太一样。？？？，有这个现象？？？，我打开网站看了下，好像是有这么回事，但是border的虚线样式是系统自带的，并且不能自己定义的，调整虚线框连线的间距，这个问题有点棘手。但是看着设计师期待的目光，我只能说，让我试试吧。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border-chrome.png">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border-safari.png">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border-firefox.png">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border-IE12.png">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border.png">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/border-image.gif">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border-compare.png">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/border-image-support.png">
+<meta property="og:updated_time" content="2018-11-13T05:51:50.413Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="css自定义虚线框">
+<meta name="twitter:description" content="1. 背景前些日子，视觉设计师突然找到我说，咱们h5中按钮的虚线框的虚线连线是不是太稀疏了，能不能稍微密集一点，而且，不同的浏览器中表现也不太一样。？？？，有这个现象？？？，我打开网站看了下，好像是有这么回事，但是border的虚线样式是系统自带的，并且不能自己定义的，调整虚线框连线的间距，这个问题有点棘手。但是看着设计师期待的目光，我只能说，让我试试吧。">
+<meta name="twitter:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border-chrome.png">
+  
+    <link rel="alternative" href="/atom.xml" title="轻言" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/main.css?v=4.0.0">
+  
+
+  
+
+</head>
+</html>
+<body>
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">柳轻侯</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">— 黄金白璧买歌笑</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/tags/随笔/">随笔</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a data-idx="0" q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a data-idx="1" q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			
+    			
+            
+    			
+    			<a data-idx="2" q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-sort"></i></div>
+  		<h1 class="header-author js-mobile-header hide">柳轻侯</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="http://7xt6mo.com1.z0.glb.clouddn.com/avatar" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">柳轻侯</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">— 黄金白璧买歌笑</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/tags/随笔/">随笔</a></li>
+		        
+		        
+		        	<li><a href="/archives/">所有文章</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/TianTang-TT" title="github"><i class="icon-github"></i></a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-custom-dashed-border-in-css" class="article article-type-post " itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      css自定义虚线框
+    </h1>
+  
+
+        <a href="/2018/11/12/custom-dashed-border-in-css/" class="archive-article-date">
+  	<time datetime="2018-11-12T09:32:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-12</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h3><p>前些日子，视觉设计师突然找到我说，咱们h5中按钮的虚线框的虚线连线是不是太稀疏了，能不能稍微密集一点，而且，不同的浏览器中表现也不太一样。？？？，有这个现象？？？，我打开网站看了下，好像是有这么回事，但是border的虚线样式是系统自带的，并且不能自己定义的，调整虚线框连线的间距，这个问题有点棘手。但是看着设计师期待的目光，我只能说，让我试试吧。</p>
+<a id="more"></a>
+<h3 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2. 基本概念"></a>2. 基本概念</h3><p>在css中定义虚线边框的时候，我们第一个总是想到的border-style: dashed,这个属性是由css提供，浏览器原生支持的，是实现虚线框的最简单方便的方式，但是，这种方式有一个很大的弊端，那就是在各个浏览器中表现不一致，并且这种浏览器原生提供的表现样式是无法自定义覆盖的，也就是上面设计师所说的，浏览器提供的虚线间距或者样式不是你想要的，你想要短连线，或者小圆点作为虚线框的连线，但是却不能通过修改border的样式来自定义这种效果。</p>
+<p>我们可以看看同样的虚线框代码，在不同浏览器中的表现</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"btn"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.btn</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">2px</span> dashed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/11/12/custom-dashed-border-in-css/dashed-border-chrome.png" alt=""> <img src="/2018/11/12/custom-dashed-border-in-css/dashed-border-safari.png" alt=""> </p>
+<p><img src="/2018/11/12/custom-dashed-border-in-css/dashed-border-firefox.png" alt=""> <img src="/2018/11/12/custom-dashed-border-in-css/dashed-border-IE12.png" alt=""></p>
+<p>虽然pc上的截图看起来都差不多，但是仔细观察还是能发现，那就是虚线框之间的连接线间距是不一样的，然而设计是给出的设计是这样的，那么如何实现这样的带圆角的虚线框，并保证在各个浏览器下表现都是一致的呢。而且，由于我们的解决方案还得需有普适性，所以要尽量满足以下两个条件</p>
+<ol>
+<li>支持圆角</li>
+<li>宽高自适应容器</li>
+<li>不破坏dom结构</li>
+</ol>
+<h3 id="3-border-style"><a href="#3-border-style" class="headerlink" title="3. border-style"></a>3. border-style</h3><p>我们知道<code>border</code>一共有三个属性，而跟虚线框相关的，就只有·<code>border-style: dashed</code>了，想一想，似乎通过设置border的其他样式来实现自定义虚线框这条路是行不通的。那么原生的<code>border</code>属性无能为力，我们能不能想办法模拟出一个自己想要的虚线框呢</p>
+<h3 id="4-伪元素模拟"><a href="#4-伪元素模拟" class="headerlink" title="4. 伪元素模拟"></a>4. 伪元素模拟</h3><p>在尽量不破坏原来dom结构的前提下，我们使用伪元素来模拟边框。但是伪元素<code>::after</code>和<code>::before</code>只能模拟出两条边框，那剩下的两条边框怎么办呢，这时候我们只能退而求其次，再引入别的标签来模拟剩下的两条边框。模拟的元素是凑够了，那么如何模拟出虚线框呢。<br>要能自定义虚线间距，还要自适应宽高，那么我们可以使用背景图片来做虚线，只要设计师给的虚线间距是特定的，那我们就不需要考虑手动控制虚线的间距了，至于自适应容器的宽高，很自然的，联想到了<code>background-repeat: repeat-x</code>来解决，同样的，高度自适应就是<code>repeat-y</code>。<br>用背景图片来做，就要引入额外起码两张图片，增加了http请求，这就有点不完美了，我们可以通过线性渐变<code>repeating-linear-gradient</code>来实现</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.btn</span> &#123;</span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">repeating-linear-gradient</span>(to right, rgba(0,0,0,0), <span class="built_in">rgba</span>(0,0,0,0) <span class="number">5px</span>,black <span class="number">5px</span>, black <span class="number">10px</span>,<span class="built_in">rgba</span>(0,0,0,0) <span class="number">10px</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就可以避免引入图片引起的额外产生的http请求了。但是这样做也有一些不足之处</p>
+<ol>
+<li>为了模拟虚线额外引入了dom，破坏了原来的dom结构</li>
+<li>不支持圆角</li>
+</ol>
+<h3 id="5-图片覆盖"><a href="#5-图片覆盖" class="headerlink" title="5. 图片覆盖"></a>5. 图片覆盖</h3><p>既然拆分模拟的思路不但占用了两个伪元素，还引入额外的dom元素破坏了原有的dom结构，那我们何不考虑整体替换呢，直接一张虚线框的图片覆盖到dom元素上，通过<code>pointer-events: none</code>来实现事件的穿透，这样不是可以一劳永逸的解决这个问题了吗。如下图，我们根据dom的尺寸，切出如下的虚线框图片</p>
+<p><img src="/2018/11/12/custom-dashed-border-in-css/dashed-border.png" alt=""></p>
+<p>然后将这个图片覆盖到dom元素上，即实现了自定义的间距，又支持了圆角，但是问题也存在，如果元素的尺寸是动态的，那么这个图片将会被拉伸，导致不同尺寸的元素虚线框间距不一样，连线长度也不一样。这是我们不能接受的。</p>
+<h3 id="6-border-image"><a href="#6-border-image" class="headerlink" title="6. border-image"></a>6. border-image</h3><p>如果我们能克服上述方法的问题，那么这种方法就变得可以接受。将上述两种方法方法结合一下，用图片来模拟虚线边框和圆角，使用<code>repeat</code>来使尺寸实现自适应，那么就可以同时满足要求的条件了。</p>
+<p>先看一下<code>border-image</code>使用使用方法。可参考<a href="https://aotu.io/notes/2016/11/02/border-image/index.html" target="_blank" rel="noopener">border-image 的正确用法</a></p>
+<p><img src="/2018/11/12/custom-dashed-border-in-css/border-image.gif" alt=""></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">border-image ： none | &lt;image&gt; [ &lt;number&gt; | &lt;percentage&gt;]&#123;1,4&#125; [ / &lt;border-width&gt;&#123;1,4&#125; ]? [ stretch | repeat | round ]&#123;0,2&#125;</span><br></pre></td></tr></table></figure>
+<p>虚线边框代码</p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line">%<span class="attribute">border</span> &#123;</span><br><span class="line">    &amp;:after &#123;</span><br><span class="line">        <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">        <span class="attribute">display</span>: block;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">        <span class="attribute">position</span>: absolute;</span><br><span class="line">        <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">        <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">        <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">        <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#DCDCDC</span>;</span><br><span class="line">        <span class="attribute">border-radius</span>:.<span class="number">08rem</span>;</span><br><span class="line">        <span class="attribute">pointer-events</span>: none;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;<span class="selector-class">.checked</span> &#123;</span><br><span class="line">        &amp;:after &#123;</span><br><span class="line">            <span class="attribute">top</span>: -<span class="number">0.01rem</span>;</span><br><span class="line">            <span class="attribute">left</span>: -<span class="number">0.01rem</span>;</span><br><span class="line">            <span class="attribute">border-width</span>: .<span class="number">02rem</span>;</span><br><span class="line">            <span class="attribute">border-color</span>: <span class="number">#555</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="selector-class">.name</span> &#123;</span><br><span class="line">            <span class="attribute">color</span>: <span class="number">#252525</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;<span class="selector-class">.none</span> &#123;</span><br><span class="line">        &amp;:after &#123;</span><br><span class="line">            <span class="attribute">border-width</span>: .<span class="number">1rem</span>;</span><br><span class="line">            <span class="attribute">border-image-slice</span>: <span class="number">18</span>;</span><br><span class="line">            <span class="attribute">border-image-repeat</span>: repeat;</span><br><span class="line">            <span class="attribute">border-image-source</span>: url(<span class="string">'../../images/prod/bg-border-dashed@2x.png'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        &amp;<span class="selector-class">.checked</span>:after &#123;</span><br><span class="line">            <span class="attribute">top</span>: -<span class="number">0.01rem</span>;</span><br><span class="line">            <span class="attribute">left</span>: -<span class="number">0.01rem</span>;</span><br><span class="line">            <span class="attribute">border-image-source</span>: url(<span class="string">'../../images/prod/bg-border-dashed-checked@2x.png'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果对比</p>
+<p><img src="/2018/11/12/custom-dashed-border-in-css/dashed-border-compare.png" alt=""></p>
+<p>缺点：</p>
+<ol>
+<li>圆角角度特定(依图片而定)，不同圆角角度需要切不同的图</li>
+<li>角落出可能会出现碎屑</li>
+</ol>
+<p>兼容性<br><img src="/2018/11/12/custom-dashed-border-in-css/border-image-support.png" alt=""></p>
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h3><p>理论上来说系统提供的虚线已经够用了，但是对虚线间距无能为力，尤其是一些自定义的边框，可能不仅仅局限于虚线,可能是花纹或者别的图案，这时候我们就可以考虑用border-image来实现。但是这也增加了工作量，提升了维护难度，而且这种模拟方案可能存在一些你没有发现的问题，因此，对特定的业务场景，需要有特殊的考量，不能拘泥于惯性思维模式 。</p>
+<h3 id="8-参考资料"><a href="#8-参考资料" class="headerlink" title="8. 参考资料"></a>8. 参考资料</h3><p><a href="https://aotu.io/notes/2016/11/02/border-image/index.html" target="_blank" rel="noopener"></a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>不用打赏，你喜欢就好<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-book icon"></i>
+	<a class="article-category-link" href="/categories/css/">css</a>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2018/11/02/use-local-image-in-hexo/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">在hexo中使用本地图片</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 柳轻侯
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js?v=4.0.0"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">https</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">ecmascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">相等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等操作符</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">js中的相等和全等</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">event</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">h5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">mobile</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">viewport</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">RegExp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">正则</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">localStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">sessionStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">webStorage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">浏览器本地存储</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">html5</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">postMessage</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">图床</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">node</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">spider</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">crawler</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">jsonp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">nodejs</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">websocket</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">socket.io</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">css</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="https://itbugs.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>宇轩阁</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://weixiaochu.cn" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>A1ie2</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
