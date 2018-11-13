@@ -69,6 +69,10 @@ keywords: [css自定义虚线框, border-dashed, 使用border-image自定义虚�
 
 ![](custom-dashed-border-in-css/border-image.gif)
 
+作用原理
+
+![](custom-dashed-border-in-css/border-image-width.gif)
+
 ```css
  border-image ： none | <image> [ <number> | <percentage>]{1,4} [ / <border-width>{1,4} ]? [ stretch | repeat | round ]{0,2}
 ```
