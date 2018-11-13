@@ -22,9 +22,10 @@
 <meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border-IE12.png">
 <meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border.png">
 <meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/border-image.gif">
+<meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/border-image-width.gif">
 <meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/dashed-border-compare.png">
 <meta property="og:image" content="http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/border-image-support.png">
-<meta property="og:updated_time" content="2018-11-13T06:59:13.592Z">
+<meta property="og:updated_time" content="2018-11-13T07:50:45.508Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="css自定义虚线框">
 <meta name="twitter:description" content="1. 背景前些日子，视觉设计师突然找到我说，咱们h5中按钮的虚线框的虚线连线是不是太密集了，能不能稍微稀疏一点，而且，不同的浏览器中表现也不太一样。？？？，有这个现象？？？，我打开网站看了下，好像是有这么回事，但是border的虚线样式是系统自带的，并且不能自己定义的，调整虚线框连线的间距，这个问题有点棘手。但是看着设计师期待的目光，我只能说，让我试试吧。">
@@ -192,6 +193,8 @@
 <h3 id="6-border-image"><a href="#6-border-image" class="headerlink" title="6. border-image"></a>6. border-image</h3><p>如果我们能克服上述方法的问题，那么这种方法就变得可以接受。将上述两种方法方法结合一下，用图片来模拟虚线边框和圆角，使用<code>repeat</code>来使尺寸实现自适应，那么就可以同时满足要求的条件了。</p>
 <p>先看一下<code>border-image</code>使用使用方法。可参考<a href="https://aotu.io/notes/2016/11/02/border-image/index.html" target="_blank" rel="noopener">border-image 的正确用法</a></p>
 <p><img src="/2018/11/12/custom-dashed-border-in-css/border-image.gif" alt=""></p>
+<p>作用原理</p>
+<p><img src="/2018/11/12/custom-dashed-border-in-css/border-image-width.gif" alt=""></p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line">border-image ： none | &lt;image&gt; [ &lt;number&gt; | &lt;percentage&gt;]&#123;1,4&#125; [ / &lt;border-width&gt;&#123;1,4&#125; ]? [ stretch | repeat | round ]&#123;0,2&#125;</span><br></pre></td></tr></table></figure>
 <p>虚线边框代码</p>
 <figure class="highlight scss"><table><tr><td class="code"><pre><span class="line">%<span class="attribute">border</span> &#123;</span><br><span class="line">    &amp;:after &#123;</span><br><span class="line">        <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">        <span class="attribute">display</span>: block;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">        <span class="attribute">position</span>: absolute;</span><br><span class="line">        <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">        <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">        <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">        <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#DCDCDC</span>;</span><br><span class="line">        <span class="attribute">border-radius</span>:.<span class="number">08rem</span>;</span><br><span class="line">        <span class="attribute">pointer-events</span>: none;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;<span class="selector-class">.checked</span> &#123;</span><br><span class="line">        &amp;:after &#123;</span><br><span class="line">            <span class="attribute">top</span>: -<span class="number">0.01rem</span>;</span><br><span class="line">            <span class="attribute">left</span>: -<span class="number">0.01rem</span>;</span><br><span class="line">            <span class="attribute">border-width</span>: .<span class="number">02rem</span>;</span><br><span class="line">            <span class="attribute">border-color</span>: <span class="number">#555</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="selector-class">.name</span> &#123;</span><br><span class="line">            <span class="attribute">color</span>: <span class="number">#252525</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;<span class="selector-class">.none</span> &#123;</span><br><span class="line">        &amp;:after &#123;</span><br><span class="line">            <span class="attribute">border-width</span>: .<span class="number">1rem</span>;</span><br><span class="line">            <span class="attribute">border-image-slice</span>: <span class="number">18</span>;</span><br><span class="line">            <span class="attribute">border-image-repeat</span>: repeat;</span><br><span class="line">            <span class="attribute">border-image-source</span>: url(<span class="string">'../../images/prod/bg-border-dashed@2x.png'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        &amp;<span class="selector-class">.checked</span>:after &#123;</span><br><span class="line">            <span class="attribute">top</span>: -<span class="number">0.01rem</span>;</span><br><span class="line">            <span class="attribute">left</span>: -<span class="number">0.01rem</span>;</span><br><span class="line">            <span class="attribute">border-image-source</span>: url(<span class="string">'../../images/prod/bg-border-dashed-checked@2x.png'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -396,15 +399,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)">https</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)">开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">css</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -416,7 +415,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)">css</a>
+                <a href="javascript:void(0)">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">https</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -448,6 +451,14 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)">RegExp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">正则</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)">h5</a>
               </li>
              
@@ -460,11 +471,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)">RegExp</a>
+                <a href="javascript:void(0)">node</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)">正则</a>
+                <a href="javascript:void(0)">spider</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)">crawler</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -489,18 +504,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)">postMessage</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)">node</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)">spider</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)">crawler</a>
               </li>
              
               <li class="article-tag-list-item">

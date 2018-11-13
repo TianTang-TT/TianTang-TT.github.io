@@ -4,7 +4,7 @@
   <url>
     <loc>http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/</loc>
     
-    <lastmod>2018-11-13T06:59:13.592Z</lastmod>
+    <lastmod>2018-11-13T07:50:45.508Z</lastmod>
     
   </url>
   
@@ -44,6 +44,13 @@
   </url>
   
   <url>
+    <loc>http://tiantang-tt.github.io/2016/12/22/node-crawler/</loc>
+    
+    <lastmod>2018-11-02T07:10:19.945Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tiantang-tt.github.io/2016/09/22/pretty-js-pieces/</loc>
     
     <lastmod>2018-11-02T07:10:19.945Z</lastmod>
@@ -58,28 +65,7 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/12/22/node-crawler/</loc>
-    
-    <lastmod>2018-11-02T07:10:19.945Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://tiantang-tt.github.io/2016/10/06/event-sequence/</loc>
-    
-    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
-    
-    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
     
@@ -93,6 +79,13 @@
   </url>
   
   <url>
+    <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
+    
+    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
@@ -100,14 +93,21 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
+    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
+    
+    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
     
     <lastmod>2018-11-02T07:10:19.943Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
+    <loc>http://tiantang-tt.github.io/2017/04/18/config-https-in-nginx/</loc>
     
     <lastmod>2018-11-02T07:10:19.943Z</lastmod>
     
@@ -121,7 +121,7 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2017/04/18/config-https-in-nginx/</loc>
+    <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
     
     <lastmod>2018-11-02T07:10:19.943Z</lastmod>
     
