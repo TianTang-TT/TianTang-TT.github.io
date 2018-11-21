@@ -4,7 +4,7 @@
   <url>
     <loc>http://tiantang-tt.github.io/2018/11/12/custom-dashed-border-in-css/</loc>
     
-    <lastmod>2018-11-13T07:50:45.508Z</lastmod>
+    <lastmod>2018-11-21T13:12:32.642Z</lastmod>
     
   </url>
   
@@ -65,6 +65,20 @@
   </url>
   
   <url>
+    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
+    
+    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
+    
+    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tiantang-tt.github.io/2016/10/06/event-sequence/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
@@ -79,30 +93,9 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/04/07/localStorage-sessionStorage/</loc>
-    
-    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://tiantang-tt.github.io/2016/06/16/js-common-regs/</loc>
     
     <lastmod>2018-11-02T07:10:19.944Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/06/29/js-type-transform/</loc>
-    
-    <lastmod>2018-11-02T07:10:19.944Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
-    
-    <lastmod>2018-11-02T07:10:19.943Z</lastmod>
     
   </url>
   
@@ -114,7 +107,7 @@
   </url>
   
   <url>
-    <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
+    <loc>http://tiantang-tt.github.io/2016/04/05/equal-in-js/</loc>
     
     <lastmod>2018-11-02T07:10:19.943Z</lastmod>
     
@@ -122,6 +115,13 @@
   
   <url>
     <loc>http://tiantang-tt.github.io/2016/06/08/FE-guide/</loc>
+    
+    <lastmod>2018-11-02T07:10:19.943Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tiantang-tt.github.io/2016/06/27/HTMLCollection-NodeList-NamedNodeMap/</loc>
     
     <lastmod>2018-11-02T07:10:19.943Z</lastmod>
     
