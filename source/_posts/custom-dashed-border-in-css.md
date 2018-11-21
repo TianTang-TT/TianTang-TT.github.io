@@ -131,6 +131,51 @@ keywords: [css自定义虚线框, border-dashed, 使用border-image自定义虚�
 兼容性
 ![](custom-dashed-border-in-css/border-image-support.png)
 
+### 7. svg
+随着svg的普及以及各大浏览器对svg格式的支持，越来越多的图片以svg的形式出现，强大的svg可以帮我们来实现这个需求
+
+```html
+<div class="btn">
+  	<svg class="svg-content" viewbox="0 0 100% 100%" preserveAspectRatio="none">
+  		<rect class="svg-rect" stroke-dasharray="4,4" stroke-opacity="0.9"
+  			x="2" y="2" rx="6" ry="6"
+  			style="fill: #fff;stroke: #000;stroke-width: 2px;fill-opacity: 0.1;">
+  		</rect>
+  	</svg>
+  </div>
+```
+```css
+.btn {
+	margin: 100px;
+	width: 200px;
+	height: 50px;
+	position: relative;
+}
+.svg-content {
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	width: 100%;
+    height: 100%;
+}
+.svg-rect {
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+}
+```
+效果图
+
+![](custom-dashed-border-in-css/svg-dashed-border.png)
+
+优点:
+1. 不需要额外的图片，直接可以在html书写
+2. 方便控制，可以精细化的控制虚线的间距，颜色等，不需要额外的切图，便于维护
+
+缺点:
+1. 引入了额外dom结构，不能通过纯css来实现
+2. svg内的rect尺寸不能动态适应svg元素的尺寸
+
+
 ### 7. 总结
 理论上来说系统提供的虚线已经够用了，但是对虚线间距无能为力，尤其是一些自定义的边框，可能不仅仅局限于虚线,可能是花纹或者别的图案，这时候我们就可以考虑用border-image来实现。但是这也增加了工作量，提升了维护难度，而且这种模拟方案可能存在一些你没有发现的问题，因此，对特定的业务场景，需要有特殊的考量，不能拘泥于惯性思维模式 。
 
