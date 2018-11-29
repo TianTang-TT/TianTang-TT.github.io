@@ -37,7 +37,7 @@ default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
-render_drafts: false
+render_drafts: true # 渲染草稿
 post_asset_folder: true # 生成文件夹，用以存放生成的html和静态资源文件
 relative_link: false
 future: true
